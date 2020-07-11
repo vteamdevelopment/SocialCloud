@@ -10,6 +10,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
+        <activity android:name="com.vteam.testdemo.top.ImageViewerActivity"></activity>
+        <activity android:name="com.vteam.testdemo.top.ChatActivity" />
+        <activity android:name="com.vteam.testdemo.top.ProfileActivity" />
+        <activity android:name="com.vteam.testdemo.top.GroupChatActivity" />
+        <activity android:name="com.vteam.testdemo.top.PhoneLoginActivity" />
+        <activity android:name="com.vteam.testdemo.top.SettingsActivity" />
+        <activity android:name="com.vteam.testdemo.top.RegisterActivity" />
+        <activity android:name="com.vteam.testdemo.top.LoginActivity" />
+        <activity android:name="com.vteam.testdemo.top.LandingActivity">
+        </activity>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity
+            android:name="com.vteam.testdemo.top.FindFriendsActivity"
+            android:parentActivityName="com.vteam.testdemo.top.LandingActivity" />
+
         <activity
             android:name=".SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
