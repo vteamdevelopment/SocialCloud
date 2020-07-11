@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.vteam.testdemo.SettingsActivity">
+    tools:context="com.vteam.testdemo.top.SettingsActivity">
 
     <include
         layout="@layout/app_bar_layout"
@@ -15,8 +15,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/set_profile_image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="90dp"

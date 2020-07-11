@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,14 +53,14 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
+        setActionBar();
+        InitializeFields();
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
         UserProfileImagesRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
-        InitializeFields();
-        userName.setVisibility(View.INVISIBLE);
+//        userName.setEnabled(false);
 
         UpdateAccountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,13 +117,19 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name") && (dataSnapshot.hasChild("image")))) {
-                    String retrieveUserName = dataSnapshot.child("name").toString();
-                    String retrieveStatus = dataSnapshot.child("status").toString();
-                    String retrieveProfilePhoto = dataSnapshot.child("image").toString();
+                    String retrieveUserName = dataSnapshot.child("name").getValue().toString();
+                    String retrieveStatus = dataSnapshot.child("status").getValue().toString();
+                    String retrieveProfilePhoto = dataSnapshot.child("image").getValue().toString();
 
                     userName.setText(retrieveUserName);
                     userStatus.setText(retrieveStatus);
-                    Picasso.get().load(retrieveProfilePhoto).into(userProfileImage);
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference httpsReference = storage.getReferenceFromUrl(retrieveProfilePhoto);
+
+                    Glide.with(SettingsActivity.this)
+                            .load(httpsReference)
+                            .into(userProfileImage);
+//                    Picasso.get().load(.).into(userProfileImage);
                 } else if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name"))) {
                     String retrieveUserName = dataSnapshot.child("name").getValue().toString();
                     String retrievesStatus = dataSnapshot.child("status").getValue().toString();
@@ -157,8 +164,12 @@ public class SettingsActivity extends AppCompatActivity {
 
         loadingBar = new ProgressDialog(this);
 
+
+    }
+
+    private void setActionBar() {
         SettingsToolBar = (Toolbar) findViewById(R.id.settings_toolbar);
-        // setSupportActionBar(SettingsToolBar);
+        setSupportActionBar(SettingsToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setTitle("Account Settings");
@@ -197,7 +208,7 @@ public class SettingsActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(SettingsActivity.this, "Profile Image uploaded Successfully...", Toast.LENGTH_SHORT).show();
 
-                            final String downloaedUrl = task.getResult().getMetadata().getReference().getDownloadUrl().toString();
+                            final String downloaedUrl = task.getResult().getUploadSessionUri().toString();
 
                             RootRef.child("Users").child(currentUserID).child("image")
                                     .setValue(downloaedUrl)
