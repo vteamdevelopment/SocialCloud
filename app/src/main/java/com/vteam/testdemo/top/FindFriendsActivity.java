@@ -17,6 +17,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 import com.vteam.testdemo.R;
 
@@ -26,6 +27,9 @@ public class FindFriendsActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private RecyclerView FindFriendsRecyclerList;
     private DatabaseReference UsersRef;
+    private Query query;
+    private FirebaseRecyclerAdapter<Contacts, FindFriendViewHolder> adapter;
+    ;
 
 
     @Override
@@ -34,6 +38,7 @@ public class FindFriendsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_find_friends);
 
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        query = UsersRef.limitToLast(50);
 
         FindFriendsRecyclerList = (RecyclerView) findViewById(R.id.find_friends_recycler_list);
         FindFriendsRecyclerList.setLayoutManager(new LinearLayoutManager(this));
@@ -52,9 +57,9 @@ public class FindFriendsActivity extends AppCompatActivity {
 
         FirebaseRecyclerOptions<Contacts> options =
                 new FirebaseRecyclerOptions.Builder<Contacts>()
-                        .setQuery(UsersRef, Contacts.class)
+                        .setQuery(query, Contacts.class)
                         .build();
-        FirebaseRecyclerAdapter<Contacts, FindFriendViewHolder> adapter =
+        adapter =
                 new FirebaseRecyclerAdapter<Contacts, FindFriendViewHolder>(options) {
                     @Override
                     protected void onBindViewHolder(@NonNull FindFriendViewHolder holder, final int position, @NonNull Contacts model) {
@@ -85,8 +90,15 @@ public class FindFriendsActivity extends AppCompatActivity {
                     }
                 };
         FindFriendsRecyclerList.setAdapter(adapter);
+        adapter.startListening();
     }
 
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
 
     public static class FindFriendViewHolder extends RecyclerView.ViewHolder {
         TextView userName, userStatus;
@@ -100,4 +112,5 @@ public class FindFriendsActivity extends AppCompatActivity {
             profileImage = itemView.findViewById(R.id.users_profile_image);
         }
     }
+
 }

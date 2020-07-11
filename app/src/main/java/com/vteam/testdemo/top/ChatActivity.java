@@ -77,6 +77,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        setActionBar();
 
         mAuth = FirebaseAuth.getInstance();
         messageSenderID = mAuth.getCurrentUser().getUid();
@@ -144,24 +145,15 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void IntializeControllers() {
-        ChatToolBar = (Toolbar) findViewById(R.id.chat_toolbar);
-        setSupportActionBar(ChatToolBar);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowCustomEnabled(true);
-
-        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View actionBarView = layoutInflater.inflate(R.layout.custom_chat_bar, null);
-        actionBar.setCustomView(actionBarView);
 
         loadingBar = new ProgressDialog(this);
 
-        userName = (TextView) findViewById(R.id.custom_profile_image);
+        userName = (TextView) findViewById(R.id.custom_profile_name);
         userImage = (CircleImageView) findViewById(R.id.custom_profile_image);
         userLastSeen = (TextView) findViewById(R.id.custom_user_last_seen);
 
-        SendMessageButton = (ImageButton) findViewById(R.id.send_message_button);
+        SendMessageButton = (ImageButton) findViewById(R.id.send_message_btn);
         SendFilesButton = (ImageButton) findViewById(R.id.send_files_btn);
         MessageInputText = (EditText) findViewById(R.id.input_message);
 
@@ -179,6 +171,19 @@ public class ChatActivity extends AppCompatActivity {
         SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
         saveCurrentTime = currentTime.format(calendar.getTime());
 
+    }
+
+    private void setActionBar() {
+        ChatToolBar = (Toolbar) findViewById(R.id.chat_toolbar);
+        setSupportActionBar(ChatToolBar);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View actionBarView = layoutInflater.inflate(R.layout.custom_chat_bar, null);
+        actionBar.setCustomView(actionBarView);
     }
 
     @Override
