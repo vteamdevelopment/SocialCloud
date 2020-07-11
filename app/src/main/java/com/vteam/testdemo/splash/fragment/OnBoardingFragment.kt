@@ -61,13 +61,13 @@ class OnBoardingFragment : Fragment() {
         if (mobileNumber.length==10){
 
             if(activity is SplashActivity){
-                (activity as SplashActivity).addFragment(OtpFragment.newInstance(),
-                    SplashActivity.TransactionType.REPLACE,OtpFragment.javaClass.simpleName,R.id.container,
-                    bundle = bundleOf(Constants.KEY.MOBILE_NUMBER to mobileNumber,Constants.KEY.COUNTRY_CODE to countryCode)
-                )
+                OtpFragment::class.simpleName?.let {
+                    (activity as SplashActivity).addFragment(OtpFragment.newInstance(),
+                        SplashActivity.TransactionType.REPLACE, it,R.id.container,
+                        bundle = bundleOf(Constants.KEY.MOBILE_NUMBER to mobileNumber,Constants.KEY.COUNTRY_CODE to countryCode)
+                    )
+                }
             }
         }
     }
-
-
 }
