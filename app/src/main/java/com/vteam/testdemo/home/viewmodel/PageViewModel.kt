@@ -1,4 +1,4 @@
-package com.vteam.testdemo.ui.main
+package com.vteam.testdemo.home.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

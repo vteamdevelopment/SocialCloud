@@ -1,14 +1,16 @@
-package com.vteam.testdemo.ui.main
+package com.vteam.testdemo.home.adapter
 
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.vteam.testdemo.R
+import com.vteam.testdemo.home.fragment.PlaceholderFragment
 
 private val TAB_TITLES = arrayOf(
         R.string.tab_text_1,
-        R.string.tab_text_2
+        R.string.tab_text_2,
+        R.string.tab_text_3
 )
 
 /**
