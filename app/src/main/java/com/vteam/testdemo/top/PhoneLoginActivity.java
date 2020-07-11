@@ -49,16 +49,12 @@ public class PhoneLoginActivity extends AppCompatActivity {
 
         SendVerificationCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 String phoneNumber = InputPhoneNumber.getText().toString();
 
-                if (TextUtils.isEmpty(phoneNumber))
-                {
+                if (TextUtils.isEmpty(phoneNumber)) {
                     Toast.makeText(PhoneLoginActivity.this, "Please enter your phone number first...", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     loadingBar.setTitle("Phone Verification");
                     loadingBar.setMessage("please wait, while we are authenticating your phone...");
                     loadingBar.setCanceledOnTouchOutside(false);
@@ -76,19 +72,15 @@ public class PhoneLoginActivity extends AppCompatActivity {
 
         VerifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 SendVerificationCodeButton.setVisibility(View.INVISIBLE);
                 InputPhoneNumber.setVisibility(View.INVISIBLE);
 
                 String verificationCode = InputVerificationCode.getText().toString();
 
-                if (TextUtils.isEmpty(verificationCode))
-                {
+                if (TextUtils.isEmpty(verificationCode)) {
                     Toast.makeText(PhoneLoginActivity.this, "Please write verification code first...", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     loadingBar.setTitle("Verification Code");
                     loadingBar.setMessage("please wait, while we are verifying verification code...");
                     loadingBar.setCanceledOnTouchOutside(false);
@@ -102,14 +94,12 @@ public class PhoneLoginActivity extends AppCompatActivity {
 
         callbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
-            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential)
-            {
+            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                 signInWithPhoneAuthCredential(phoneAuthCredential);
             }
 
             @Override
-            public void onVerificationFailed(FirebaseException e)
-            {
+            public void onVerificationFailed(FirebaseException e) {
                 loadingBar.dismiss();
                 Toast.makeText(PhoneLoginActivity.this, "Invalid Phone Number, Please enter correct phone number with your country code...", Toast.LENGTH_SHORT).show();
 
@@ -143,26 +133,20 @@ public class PhoneLoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful())
-                        {
+                        if (task.isSuccessful()) {
                             loadingBar.dismiss();
                             Toast.makeText(PhoneLoginActivity.this, "Congratulations, you're logged in successfully...", Toast.LENGTH_SHORT).show();
                             SendUserToMainActivity();
-                        }
-                        else
-                        {
+                        } else {
                             String message = task.getException().toString();
-                            Toast.makeText(PhoneLoginActivity.this, "Error : "  +  message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PhoneLoginActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
 
-
-
-    private void SendUserToMainActivity()
-    {
+    private void SendUserToMainActivity() {
         Intent mainIntent = new Intent(PhoneLoginActivity.this, LandingActivity.class);
         startActivity(mainIntent);
         finish();

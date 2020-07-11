@@ -8,10 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.squareup.picasso.Picasso;
 import com.vteam.testdemo.R;
 
-public class ImageViewerActivity extends AppCompatActivity
-{
-   private ImageView imageView;
-   private String imageUrl;
+public class ImageViewerActivity extends AppCompatActivity {
+    private ImageView imageView;
+    private String imageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -14,8 +14,7 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
 
-        switch (i)
-        {
+        switch (i) {
             case 0:
                 ChatsFragment chatsFragment = new ChatsFragment();
                 return chatsFragment;
@@ -44,10 +43,8 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
 
     @Nullable
     @Override
-    public CharSequence getPageTitle(int position)
-    {
-        switch (position)
-        {
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
             case 0:
                 return "Chats";
 
