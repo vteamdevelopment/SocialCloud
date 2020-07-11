@@ -36,6 +36,7 @@ public class FindFriendsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_friends);
+        setActionBar();
 
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         query = UsersRef.limitToLast(50);
@@ -43,12 +44,15 @@ public class FindFriendsActivity extends AppCompatActivity {
         FindFriendsRecyclerList = (RecyclerView) findViewById(R.id.find_friends_recycler_list);
         FindFriendsRecyclerList.setLayoutManager(new LinearLayoutManager(this));
 
-//        mToolbar = (Toolbar) findViewById(R.id.find_friends_toolbar);
-//        setSupportActionBar(mToolbar);
+
+    }
+
+    private void setActionBar() {
+        mToolbar = (Toolbar) findViewById(R.id.find_friends_toolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Find Friends");
-
     }
 
     @Override

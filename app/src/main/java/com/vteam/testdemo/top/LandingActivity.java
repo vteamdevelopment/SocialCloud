@@ -52,9 +52,9 @@ public class LandingActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         RootRef = FirebaseDatabase.getInstance().getReference();
 
-//        mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
-//        setSupportActionBar(mToolbar);
-//        getSupportActionBar().setTitle("WhatsApp");
+        mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("WhatsApp");
 
         myViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
         myTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
