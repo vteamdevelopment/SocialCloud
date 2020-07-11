@@ -175,7 +175,7 @@ public class SettingsActivity extends AppCompatActivity {
         loadingBar = new ProgressDialog(this);
 
         SettingsToolBar = (Toolbar) findViewById(R.id.settings_toolbar);
-        setSupportActionBar(SettingsToolBar);
+       // setSupportActionBar(SettingsToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setTitle("Account Settings");
