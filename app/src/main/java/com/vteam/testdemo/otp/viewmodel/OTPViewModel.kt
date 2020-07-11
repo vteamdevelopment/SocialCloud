@@ -106,7 +106,7 @@ class OTPViewModel : ViewModel() {
     fun verifyOtp(activity: Activity,code : String){
         Log.d(TAG, "code:$code  ")
 
-        mCredential = storedVerificationId?.let { PhoneAuthProvider.getCredential(it, "111111") }
+        mCredential = storedVerificationId?.let { PhoneAuthProvider.getCredential(it, code) }
         signInWithPhoneAuthCredential(activity)
     }
 

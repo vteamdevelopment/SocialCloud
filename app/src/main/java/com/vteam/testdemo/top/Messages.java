@@ -3,8 +3,7 @@ package com.vteam.testdemo.top;
 public class Messages {
     private String from, message, type, to, messageID, time, date, name;
 
-    public Messages()
-    {
+    public Messages() {
 
     }
 

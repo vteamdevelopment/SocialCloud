@@ -44,8 +44,7 @@ public class LandingActivity extends AppCompatActivity {
     private String currentUserID;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_top);
 
@@ -53,7 +52,7 @@ public class LandingActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         RootRef = FirebaseDatabase.getInstance().getReference();
 
-        mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
+//        mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
 //        setSupportActionBar(mToolbar);
 //        getSupportActionBar().setTitle("WhatsApp");
 
@@ -66,39 +65,30 @@ public class LandingActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
-        if (currentUser == null)
-        {
+        if (currentUser == null) {
             SendUserToLoginActivity();
-        }
-        else
-        {
+        } else {
             VerifyUserExistence();
         }
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
 
-        if (currentUser != null)
-        {
+        if (currentUser != null) {
             updateUserStatus("offline");
         }
     }
 
 
-
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
 
-        if (currentUser != null)
-        {
+        if (currentUser != null) {
             updateUserStatus("offline");
         }
     }
@@ -108,12 +98,9 @@ public class LandingActivity extends AppCompatActivity {
         RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if((dataSnapshot.child("name").exists()))
-                {
+                if ((dataSnapshot.child("name").exists())) {
                     Toast.makeText(LandingActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     SendUserToSettingsActivity();
                 }
             }
@@ -129,84 +116,71 @@ public class LandingActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.options_menu,menu);
+        getMenuInflater().inflate(R.menu.options_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-         super.onOptionsItemSelected(item);
+        super.onOptionsItemSelected(item);
 
-         if(item.getItemId() == R.id.main_create_group_option)
-         {
-             RequestNewGroup();
-         }
+        if (item.getItemId() == R.id.main_create_group_option) {
+            RequestNewGroup();
+        }
 
-        if(item.getItemId() == R.id.main_settings_option)
-        {
+        if (item.getItemId() == R.id.main_settings_option) {
             SendUserToSettingsActivity();
         }
 
-        if(item.getItemId() == R.id.main_logout_option)
-        {
+        if (item.getItemId() == R.id.main_logout_option) {
             updateUserStatus("offline");
-           mAuth.signOut();
-           SendUserToLoginActivity();
+            mAuth.signOut();
+            SendUserToLoginActivity();
         }
-        if (item.getItemId() == R.id.main_find_friends_option)
-        {
+        if (item.getItemId() == R.id.main_find_friends_option) {
             SendUserToFindFriendsActivity();
         }
-         return true;
+        return true;
     }
 
-    private void RequestNewGroup()
-    {
-       AlertDialog.Builder builder = new AlertDialog.Builder(LandingActivity.this,R.style.AlertDialog);
-       builder.setTitle("Create Group");
-       final EditText groupNameField = new EditText(LandingActivity.this);
-       groupNameField.setHint("Eg. ThunderBuddies");
-       builder.setView(groupNameField);
+    private void RequestNewGroup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(LandingActivity.this, R.style.AlertDialog);
+        builder.setTitle("Create Group");
+        final EditText groupNameField = new EditText(LandingActivity.this);
+        groupNameField.setHint("Eg. ThunderBuddies");
+        builder.setView(groupNameField);
 
-       builder.setPositiveButton("Create", new DialogInterface.OnClickListener()
-       {
-           @Override
-           public void onClick(DialogInterface dialogInterface, int i)
-           {
-              String groupName = groupNameField.getText().toString();
+        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String groupName = groupNameField.getText().toString();
 
-               if (TextUtils.isEmpty(groupName))
-               {
-                   Toast.makeText(LandingActivity.this, "Please write Group Name...", Toast.LENGTH_SHORT).show();
-               }
-               else
-               {
-                   CreateNewGroup(groupName);
-               }
+                if (TextUtils.isEmpty(groupName)) {
+                    Toast.makeText(LandingActivity.this, "Please write Group Name...", Toast.LENGTH_SHORT).show();
+                } else {
+                    CreateNewGroup(groupName);
+                }
 
-           }
-       });
-       builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-       {
-           @Override
-           public void onClick(DialogInterface dialogInterface, int i) {
-              dialogInterface.cancel();
-           }
-       });
-       builder.show();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.show();
     }
 
-    private void CreateNewGroup(final String groupName)
-    {
-      RootRef.child("Groups").child(groupName).setValue("").addOnCompleteListener(new OnCompleteListener<Void>() {
-          @Override
-          public void onComplete(@NonNull Task<Void> task) {
-              if (task.isSuccessful())
-              {
-                  Toast.makeText(LandingActivity.this, groupName + " group is Created Successfully...", Toast.LENGTH_SHORT).show();
-              }
-          }
-      });
+    private void CreateNewGroup(final String groupName) {
+        RootRef.child("Groups").child(groupName).setValue("").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(LandingActivity.this, groupName + " group is Created Successfully...", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void SendUserToLoginActivity() {
@@ -219,13 +193,13 @@ public class LandingActivity extends AppCompatActivity {
         Intent settingsIntent = new Intent(LandingActivity.this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
-    private void SendUserToFindFriendsActivity()
-    {
+
+    private void SendUserToFindFriendsActivity() {
         Intent findFriendsIntent = new Intent(LandingActivity.this, FindFriendsActivity.class);
         startActivity(findFriendsIntent);
     }
-    private void updateUserStatus(String state)
-    {
+
+    private void updateUserStatus(String state) {
         String saveCurrentTime, saveCurrentDate;
 
         Calendar calendar = Calendar.getInstance();

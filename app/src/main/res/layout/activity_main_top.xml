@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccent"
-    tools:context="com.vteam.testdemo.MainActivity">
+    tools:context=".top.LandingActivity">
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -15,11 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include
-            android:id="@+id/main_page_toolbar"
-            layout="@layout/app_bar_layout"
-            >
-        </include>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/main_tabs"

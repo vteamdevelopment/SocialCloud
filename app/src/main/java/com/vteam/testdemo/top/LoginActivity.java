@@ -34,8 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -62,8 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
         PhoneLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 Intent phoneLoginIntent = new Intent(LoginActivity.this, PhoneLoginActivity.class);
                 startActivity(phoneLoginIntent);
             }
@@ -82,35 +80,29 @@ public class LoginActivity extends AppCompatActivity {
     private void AllowUserToLogin() {
         String email = UserEmail.getText().toString();
         String password = UserPassword.getText().toString();
-        if(TextUtils.isEmpty(email))
-        {
-            Toast.makeText(this,"Please enter email",Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
         }
-        if(TextUtils.isEmpty(password))
-        {
-            Toast.makeText(this,"Please enter password",Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+        } else {
 
-            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful())
-                    {
+                    if (task.isSuccessful()) {
                         String currentUserId = mAuth.getCurrentUser().getUid();
                         String deviceToken = FirebaseInstanceId.getInstance().getInstanceId().toString();
                         UsersRef.child(currentUserId).child("device_Token").setValue(deviceToken).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()) {
+                                if (task.isSuccessful()) {
                                     SendUserToMainActivity();
                                     Toast.makeText(LoginActivity.this, "Logged in Successful...", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-                    }
-                    else {
+                    } else {
                         String message = task.getException().toString();
                         Toast.makeText(LoginActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();
                     }
@@ -131,12 +123,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void SendUserToMainActivity() {
         Intent mainIntent = new Intent(LoginActivity.this, LandingActivity.class);
-       mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainIntent);
         finish();
     }
+
     private void SendUserToRegisterActivity() {
-        Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);
+        Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(registerIntent);
     }
 }

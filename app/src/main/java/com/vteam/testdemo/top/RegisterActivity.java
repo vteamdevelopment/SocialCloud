@@ -24,7 +24,7 @@ import com.vteam.testdemo.R;
 public class RegisterActivity extends AppCompatActivity {
 
     private Button CreateAccountButton;
-    private EditText UserEmail,UserPassword;
+    private EditText UserEmail, UserPassword;
     private TextView AlreadyHaveAccountLink;
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
@@ -66,35 +66,29 @@ public class RegisterActivity extends AppCompatActivity {
         String email = UserEmail.getText().toString();
         String password = UserPassword.getText().toString();
 
-        if(TextUtils.isEmpty(email))
-        {
-            Toast.makeText(this,"Please enter Email",Toast.LENGTH_SHORT).show();;
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please enter Email", Toast.LENGTH_SHORT).show();
+            ;
         }
-        if(TextUtils.isEmpty(password))
-        {
-            Toast.makeText(this,"Please Enter Password",Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-           mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-               @Override
-               public void onComplete(@NonNull Task<AuthResult> task) {
-                   if(task.isSuccessful())
-                   {
-                       String deviceToken = FirebaseInstanceId.getInstance().getId();
-                       String currentUserID = mAuth.getCurrentUser().getUid();
-                       RootRef.child("Users").child(currentUserID).setValue("");
-                       RootRef.child("Users").child(currentUserID).child("device_token").setValue(deviceToken);
-                       SendUserToMainActivity();
-                       Toast.makeText(RegisterActivity.this, "Account Created Successfully...", Toast.LENGTH_SHORT).show();
-                   }
-                   else
-                   {
-                       String message = task.getException().toString();
-                       Toast.makeText(RegisterActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();
-                   }
-               }
-           })  ;
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please Enter Password", Toast.LENGTH_SHORT).show();
+        } else {
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        String deviceToken = FirebaseInstanceId.getInstance().getId();
+                        String currentUserID = mAuth.getCurrentUser().getUid();
+                        RootRef.child("Users").child(currentUserID).setValue("");
+                        RootRef.child("Users").child(currentUserID).child("device_token").setValue(deviceToken);
+                        SendUserToMainActivity();
+                        Toast.makeText(RegisterActivity.this, "Account Created Successfully...", Toast.LENGTH_SHORT).show();
+                    } else {
+                        String message = task.getException().toString();
+                        Toast.makeText(RegisterActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 

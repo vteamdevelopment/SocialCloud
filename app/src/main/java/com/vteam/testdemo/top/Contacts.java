@@ -1,15 +1,13 @@
 package com.vteam.testdemo.top;
 
 public class Contacts {
-    public String name,image,status;
+    public String name, image, status;
 
-    public Contacts()
-    {
+    public Contacts() {
 
     }
 
-    public void setStatus(String name,String status,String image)
-    {
+    public void setStatus(String name, String status, String image) {
         this.status = status;
         this.image = image;
         this.status = status;

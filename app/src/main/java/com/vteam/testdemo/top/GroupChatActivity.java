@@ -35,13 +35,12 @@ public class GroupChatActivity extends AppCompatActivity {
     private ScrollView mScrollView;
     private TextView displayTextMessages;
     private FirebaseAuth mAuth;
-    private DatabaseReference UsersRef,GroupNameRef,GroupMessageKeyRef;
-    private String currentGroupName,currentUserID,currentUserName,currentDate,currentTime;
+    private DatabaseReference UsersRef, GroupNameRef, GroupMessageKeyRef;
+    private String currentGroupName, currentUserID, currentUserName, currentDate, currentTime;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
 
@@ -72,16 +71,14 @@ public class GroupChatActivity extends AppCompatActivity {
         GroupNameRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists())
-                {
+                if (dataSnapshot.exists()) {
                     DisplayMessages(dataSnapshot);
                 }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists())
-                {
+                if (dataSnapshot.exists()) {
                     DisplayMessages(dataSnapshot);
                 }
             }
@@ -105,24 +102,21 @@ public class GroupChatActivity extends AppCompatActivity {
 
     private void DisplayMessages(DataSnapshot dataSnapshot) {
         Iterator iterator = dataSnapshot.getChildren().iterator();
-        while (iterator.hasNext())
-        {
-            String chatDate = (String) ((DataSnapshot)iterator.next()).getValue();
-            String chatMessage = (String) ((DataSnapshot)iterator.next()).getValue();
-            String chatName = (String) ((DataSnapshot)iterator.next()).getValue();
-            String chatTime = (String) ((DataSnapshot)iterator.next()).getValue();
+        while (iterator.hasNext()) {
+            String chatDate = (String) ((DataSnapshot) iterator.next()).getValue();
+            String chatMessage = (String) ((DataSnapshot) iterator.next()).getValue();
+            String chatName = (String) ((DataSnapshot) iterator.next()).getValue();
+            String chatTime = (String) ((DataSnapshot) iterator.next()).getValue();
             displayTextMessages.append(chatName + " :\n" + chatMessage + "\n" + chatTime + "     " + chatDate + "\n\n\n");
 
             mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }
     }
 
-    private void SaveMessageInfoToDatabase()
-    {
-       String message = userMessageInput.getText().toString();
-       String messageKEY = GroupNameRef.push().getKey();
-        if (TextUtils.isEmpty(message))
-        {
+    private void SaveMessageInfoToDatabase() {
+        String message = userMessageInput.getText().toString();
+        String messageKEY = GroupNameRef.push().getKey();
+        if (TextUtils.isEmpty(message)) {
             Toast.makeText(this, "Please write message first...", Toast.LENGTH_SHORT).show();
         }
         Calendar calForDate = Calendar.getInstance();
@@ -146,13 +140,11 @@ public class GroupChatActivity extends AppCompatActivity {
         GroupMessageKeyRef.updateChildren(messageInfoMap);
     }
 
-    private void GetUserInfo()
-    {
+    private void GetUserInfo() {
         UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists())
-                {
+                if (dataSnapshot.exists()) {
                     currentUserName = dataSnapshot.child("name").getValue().toString();
                 }
             }
@@ -164,8 +156,7 @@ public class GroupChatActivity extends AppCompatActivity {
         });
     }
 
-    private void InitializeFields()
-    {
+    private void InitializeFields() {
         mToolbar = (Toolbar) findViewById(R.id.group_chat_bar_layout);
 //        setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(currentGroupName);
