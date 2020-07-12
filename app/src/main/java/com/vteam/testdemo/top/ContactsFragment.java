@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,8 +49,11 @@ public class ContactsFragment extends Fragment {
 
 
         myContactsList = (RecyclerView) ContactsView.findViewById(R.id.contact_list);
-        myContactsList.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        myContactsList.setLayoutManager(layoutManager);
+        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(myContactsList.getContext(),
+                layoutManager.getOrientation());
+        myContactsList.addItemDecoration(mDividerItemDecoration);
 
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();

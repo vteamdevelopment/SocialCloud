@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,8 +59,12 @@ public class RequestsFragment extends Fragment {
 
 
         myRequestsList = (RecyclerView) RequestsFragmentView.findViewById(R.id.chat_requests_list);
-        myRequestsList.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        myRequestsList.setLayoutManager(layoutManager);
 
+        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(myRequestsList.getContext(),
+                layoutManager.getOrientation());
+        myRequestsList.addItemDecoration(mDividerItemDecoration);
 
         return RequestsFragmentView;
     }

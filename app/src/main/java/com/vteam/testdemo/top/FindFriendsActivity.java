@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,7 +43,11 @@ public class FindFriendsActivity extends AppCompatActivity {
         query = UsersRef.limitToLast(50);
 
         FindFriendsRecyclerList = (RecyclerView) findViewById(R.id.find_friends_recycler_list);
-        FindFriendsRecyclerList.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        FindFriendsRecyclerList.setLayoutManager(layoutManager);
+        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(FindFriendsRecyclerList.getContext(),
+                layoutManager.getOrientation());
+        FindFriendsRecyclerList.addItemDecoration(mDividerItemDecoration);
 
 
     }

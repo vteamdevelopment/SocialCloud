@@ -15,10 +15,7 @@
         <activity android:name="com.vteam.testdemo.top.ChatActivity" />
         <activity android:name="com.vteam.testdemo.top.ProfileActivity" />
         <activity android:name="com.vteam.testdemo.top.GroupChatActivity" />
-        <activity android:name="com.vteam.testdemo.top.PhoneLoginActivity" />
         <activity android:name="com.vteam.testdemo.top.SettingsActivity" />
-        <activity android:name="com.vteam.testdemo.top.RegisterActivity" />
-        <activity android:name="com.vteam.testdemo.top.LoginActivity" />
         <activity android:name="com.vteam.testdemo.top.LandingActivity">
         </activity>
         <activity

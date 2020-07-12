@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vteam.testdemo.R;
+import com.vteam.testdemo.SplashActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -54,7 +55,7 @@ public class LandingActivity extends AppCompatActivity {
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("WhatsApp");
+        getSupportActionBar().setTitle("Social Cloud");
 
         myViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
         myTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
@@ -128,7 +129,7 @@ public class LandingActivity extends AppCompatActivity {
             RequestNewGroup();
         }
 
-        if (item.getItemId() == R.id.main_settings_option) {
+        if (item.getItemId() == R.id.main_profile_option) {
             SendUserToSettingsActivity();
         }
 
@@ -184,7 +185,7 @@ public class LandingActivity extends AppCompatActivity {
     }
 
     private void SendUserToLoginActivity() {
-        Intent loginIntent = new Intent(LandingActivity.this, LoginActivity.class);
+        Intent loginIntent = new Intent(LandingActivity.this, SplashActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
     }
