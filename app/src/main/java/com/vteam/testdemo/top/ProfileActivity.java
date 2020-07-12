@@ -1,6 +1,7 @@
 package com.vteam.testdemo.top;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -67,10 +68,12 @@ public class ProfileActivity extends AppCompatActivity {
                     String userName = dataSnapshot.child("name").getValue().toString();
                     String userstatus = dataSnapshot.child("status").getValue().toString();
 
-                    Picasso.get().load(userImage).placeholder(R.drawable.profile_image).into(userProfileImage);
+                    if(!TextUtils.isEmpty(userImage)) {
+                        Picasso.get().load(userImage).placeholder(R.drawable.profile_image).into(userProfileImage);
+                    }
                     userProfileName.setText(userName);
                     userProfileStatus.setText(userstatus);
-                    ManageChatRequests();
+                    manageChatRequests();
                 } else {
                     String userName = dataSnapshot.child("name").getValue().toString();
                     String userstatus = dataSnapshot.child("status").getValue().toString();
@@ -78,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
                     userProfileName.setText(userName);
                     userProfileStatus.setText(userstatus);
 
-                    ManageChatRequests();
+                    manageChatRequests();
                 }
 
             }
@@ -90,7 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void ManageChatRequests() {
+    private void manageChatRequests() {
         ChatRequestRef.child(senderUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

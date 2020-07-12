@@ -87,9 +87,12 @@ public class ChatActivity extends AppCompatActivity {
         RootRef = FirebaseDatabase.getInstance().getReference();
 
 
-        messageReceiverID = getIntent().getExtras().get("visit_user_id").toString();
-        messageReceiverName = getIntent().getExtras().get("visit_user_name").toString();
-        messageReceiverImage = getIntent().getExtras().get("visit_image").toString();
+        Bundle extras = getIntent().getExtras();
+        messageReceiverID = extras.get("visit_user_id").toString();
+        messageReceiverName = extras.get("visit_user_name").toString();
+        if(extras.containsKey("visit_image") && extras.get("visit_image")!=null) {
+            messageReceiverImage = extras.get("visit_image").toString();
+        }
 
 
         IntializeControllers();
@@ -100,22 +103,23 @@ public class ChatActivity extends AppCompatActivity {
 
         StorageReference reference = FirebaseStorage.getInstance().getReference();
 
-        reference.child(messageReceiverImage).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Got the download URL for 'users/me/profile.png'
-                Log.d("URL", "" + uri);
-                Glide.with(getApplicationContext())
-                        .load(uri)
-                        .into(userImage);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-
+        if (!TextUtils.isEmpty(messageReceiverImage)) {
+            reference.child(messageReceiverImage).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    // Got the download URL for 'users/me/profile.png'
+                    Log.d("URL", "" + uri);
+                    Glide.with(getApplicationContext())
+                            .load(uri)
+                            .into(userImage);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        }
 //        Picasso.get().load(messageReceiverImage).placeholder(R.drawable.profile_image).into(userImage);
 
         SendMessageButton.setOnClickListener(new View.OnClickListener() {

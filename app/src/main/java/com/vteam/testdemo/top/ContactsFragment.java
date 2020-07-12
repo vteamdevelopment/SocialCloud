@@ -2,8 +2,10 @@ package com.vteam.testdemo.top;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,29 +22,39 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.vteam.testdemo.R;
 
+import java.util.HashMap;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ContactsFragment extends Fragment {
-    private View ContactsView;
-    private RecyclerView myContactsList;
+    private View mContactsView;
+    private RecyclerView mContactsList;
 
-    private DatabaseReference ContacsRef, UsersRef;
+    private DatabaseReference mContacsRef, mUsersRef;
     private FirebaseAuth mAuth;
-    private String currentUserID;
+    private String mCurrentUserID;
+    private DatabaseReference mChatRequestRef;
+    private DatabaseReference mNotificationRef;
+    private String senderUserID;
+    private FirebaseRecyclerAdapter<Contacts, ContactsViewHolder> adapter;
+    private Query query;
 
 
     public ContactsFragment() {
@@ -53,121 +65,118 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ContactsView = inflater.inflate(R.layout.fragment_contacts, container, false);
+        mContactsView = inflater.inflate(R.layout.fragment_contacts, container, false);
 
 
-        myContactsList = (RecyclerView) ContactsView.findViewById(R.id.contact_list);
+        mContactsList = (RecyclerView) mContactsView.findViewById(R.id.contact_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        myContactsList.setLayoutManager(layoutManager);
-        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(myContactsList.getContext(),
+        mContactsList.setLayoutManager(layoutManager);
+        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(mContactsList.getContext(),
                 layoutManager.getOrientation());
-        myContactsList.addItemDecoration(mDividerItemDecoration);
+        mContactsList.addItemDecoration(mDividerItemDecoration);
 
         mAuth = FirebaseAuth.getInstance();
-        currentUserID = mAuth.getCurrentUser().getUid();
+        mCurrentUserID = mAuth.getCurrentUser().getUid();
 
 
-        ContacsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID);
-        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        mContacsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(mCurrentUserID);
+        mUsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        query = mUsersRef.limitToLast(50);
+        mChatRequestRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
+        mNotificationRef = FirebaseDatabase.getInstance().getReference().child("Notifications");
+        senderUserID = mAuth.getCurrentUser().getUid();
 
 
-        return ContactsView;
+
+        return mContactsView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        FirebaseRecyclerOptions options =
+
+        FirebaseRecyclerOptions<Contacts> options =
                 new FirebaseRecyclerOptions.Builder<Contacts>()
-                        .setQuery(ContacsRef, Contacts.class)
+                        .setQuery(query, Contacts.class)
                         .build();
-
-
-        final FirebaseRecyclerAdapter<Contacts, ContactsViewHolder> adapter
-                = new FirebaseRecyclerAdapter<Contacts, ContactsViewHolder>(options) {
+        adapter = new FirebaseRecyclerAdapter<Contacts, ContactsViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final ContactsViewHolder holder, int position, @NonNull Contacts model) {
-                final String userIDs = getRef(position).getKey();
+            protected void onBindViewHolder(@NonNull ContactsViewHolder holder, final int position, @NonNull Contacts model) {
+               final String visitorUserId = getRef(position).getKey();
+               final String name = model.getName();
+               final String profileImage = model.getImage();
+                holder.userName.setText(name);
+                holder.userStatus.setText(model.getStatus());
 
-                UsersRef.child(userIDs).addValueEventListener(new ValueEventListener() {
+                if(!TextUtils.isEmpty(profileImage)) {
+                    Picasso.get().load(profileImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
+                }
+
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            if (dataSnapshot.child("userState").hasChild("state")) {
-                                String state = dataSnapshot.child("userState").child("state").getValue().toString();
-                                String date = dataSnapshot.child("userState").child("date").getValue().toString();
-                                String time = dataSnapshot.child("userState").child("time").getValue().toString();
-
-                                if (state.equals("online")) {
-                                    holder.onlineIcon.setVisibility(View.VISIBLE);
-                                } else if (state.equals("offline")) {
-                                    holder.onlineIcon.setVisibility(View.INVISIBLE);
-                                }
-                            } else {
-                                holder.onlineIcon.setVisibility(View.INVISIBLE);
-                            }
-
-
-                            if (dataSnapshot.hasChild("image")) {
-                                String userImage = dataSnapshot.child("image").getValue().toString();
-                                String profileName = dataSnapshot.child("name").getValue().toString();
-                                String profileStatus = dataSnapshot.child("status").getValue().toString();
-
-                                holder.userName.setText(profileName);
-                                holder.userStatus.setText(profileStatus);
-                                StorageReference reference = FirebaseStorage.getInstance().getReference();
-
-                                reference.child(userImage).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        // Got the download URL for 'users/me/profile.png'
-                                        Log.d("URL", "" + uri);
-                                        Activity activity= getActivity();
-                                        if (activity!=null) {
-                                            Glide.with(activity)
-                                                    .load(uri)
-                                                    .into(holder.profileImage);
-                                        }
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle any errors
-                                    }
-                                });
-
-//                                Picasso.get().load(userImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
-                            } else {
-                                String profileName = dataSnapshot.child("name").getValue().toString();
-                                String profileStatus = dataSnapshot.child("status").getValue().toString();
-
-                                holder.userName.setText(profileName);
-                                holder.userStatus.setText(profileStatus);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
+                    public void onClick(View view) {
+                        SendChatRequest(visitorUserId,name,profileImage);
                     }
                 });
+
+
             }
 
             @NonNull
             @Override
-            public ContactsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            public ContactsViewHolder  onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                 View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout, viewGroup, false);
-                ContactsViewHolder viewHolder = new ContactsViewHolder(view);
+                ContactsViewHolder viewHolder = new ContactsViewHolder (view);
                 return viewHolder;
             }
         };
-
-        myContactsList.setAdapter(adapter);
+        mContactsList.setAdapter(adapter);
         adapter.startListening();
     }
 
+
+
+
+    private void SendChatRequest(final String receiverUserID,final String refName,final String imageUrl) {
+        mChatRequestRef.child(senderUserID).child(receiverUserID)
+                .child("request_type").setValue("sent")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            mChatRequestRef.child(receiverUserID).child(senderUserID)
+                                    .child("request_type").setValue("received")
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                HashMap<String, String> chatNotificationMap = new HashMap<>();
+                                                chatNotificationMap.put("from", senderUserID);
+                                                chatNotificationMap.put("type", "request");
+
+                                                mNotificationRef.child(receiverUserID).push()
+                                                        .setValue(chatNotificationMap)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                                                    chatIntent.putExtra("visit_user_id", receiverUserID);
+                                                                    chatIntent.putExtra("visit_user_name", refName);
+                                                                    chatIntent.putExtra("visit_image", imageUrl);
+                                                                    startActivity(chatIntent);
+                                                                }
+                                                            }
+                                                        });
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
+    }
 
     public static class ContactsViewHolder extends RecyclerView.ViewHolder {
         TextView userName, userStatus;

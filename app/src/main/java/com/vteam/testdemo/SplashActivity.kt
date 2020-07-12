@@ -35,6 +35,7 @@ class SplashActivity : AppCompatActivity() {
 
             val intent = Intent(this, LandingActivity::class.java)
             startActivity(intent)
+            finish()
         } else
             if (savedInstanceState == null) {
                 addFragment(

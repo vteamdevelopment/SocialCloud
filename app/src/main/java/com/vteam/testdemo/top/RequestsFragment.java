@@ -212,7 +212,7 @@ public class RequestsFragment extends Fragment {
                                                 if (dataSnapshot.hasChild("image")) {
                                                     final String requestProfileImage = dataSnapshot.child("image").getValue().toString();
 
-                                                    Picasso.get().load(requestProfileImage).into(holder.profileImage);
+//                                                    Picasso.get().load(requestProfileImage).into(holder.profileImage);
                                                 }
 
                                                 final String requestUserName = dataSnapshot.child("name").getValue().toString();

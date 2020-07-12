@@ -3,6 +3,7 @@ package com.vteam.testdemo.top;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +43,7 @@ import androidx.navigation.ui.NavigationUI;
 
 public class LandingActivity extends AppCompatActivity {
 
+    private static int PICK_CONTACT= 100;
     private Toolbar mToolbar;
 //    private ViewPager myViewPager;
 //    private TabLayout myTabLayout;
@@ -63,7 +65,7 @@ public class LandingActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_chat, R.id.navigation_group, R.id.navigation_contact,R.id.navigation_request)
+                R.id.navigation_chat, R.id.navigation_group, R.id.navigation_contact)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -140,20 +142,19 @@ public class LandingActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.main_create_group_option) {
             RequestNewGroup();
-        }
-
-        if (item.getItemId() == R.id.main_profile_option) {
+        }else if (item.getItemId() == R.id.main_profile_option) {
             SendUserToSettingsActivity();
-        }
-
-        if (item.getItemId() == R.id.main_logout_option) {
+        }else if (item.getItemId() == R.id.main_logout_option) {
             updateUserStatus("offline");
             mAuth.signOut();
             SendUserToLoginActivity();
-        }
-        if (item.getItemId() == R.id.main_find_friends_option) {
+        }else if(item.getItemId() == R.id.main_invite) {
+            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+            startActivityForResult(intent, PICK_CONTACT);
+        }/*else if (item.getItemId() == R.id.main_find_friends_option) {
             SendUserToFindFriendsActivity();
-        }
+
+        }*/
         return true;
     }
 

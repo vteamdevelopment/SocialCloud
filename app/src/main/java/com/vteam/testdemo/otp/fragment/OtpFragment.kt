@@ -58,6 +58,7 @@ class OtpFragment : Fragment() {
                 OTPViewModel.UiMode.STATE_SIGNIN_SUCCESS -> {
                     val intent = Intent(context, LandingActivity::class.java)
                     startActivity(intent)
+                    activity?.finish()
                 }
             }
         })
