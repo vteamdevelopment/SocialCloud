@@ -24,7 +24,6 @@ class OnBoardingFragment : Fragment() {
     private lateinit var viewModel: OnBoardingViewModel
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,7 +36,7 @@ class OnBoardingFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(OnBoardingViewModel::class.java)
 
         viewModel.getUiModel().observe(viewLifecycleOwner, Observer {
-            when(it){
+            when (it) {
                 OnBoardingViewModel.UiMode.VERIFY_NUMBER -> {
                     addOtpScreen()
                 }
@@ -54,17 +53,20 @@ class OnBoardingFragment : Fragment() {
     }
 
 
-
     private fun addOtpScreen() {
         val mobileNumber = mobile_number.text.toString()
         val countryCode = country_code.text.toString()
-        if (mobileNumber.length==10){
+        if (mobileNumber.length == 10) {
 
-            if(activity is SplashActivity){
+            if (activity is SplashActivity) {
                 OtpFragment::class.simpleName?.let {
-                    (activity as SplashActivity).addFragment(OtpFragment.newInstance(),
-                        SplashActivity.TransactionType.REPLACE, it,R.id.container,
-                        bundle = bundleOf(Constants.KEY.MOBILE_NUMBER to mobileNumber,Constants.KEY.COUNTRY_CODE to countryCode)
+                    (activity as SplashActivity).addFragment(
+                        OtpFragment.newInstance(),
+                        SplashActivity.TransactionType.REPLACE, it, R.id.container,
+                        bundle = bundleOf(
+                            Constants.KEY.MOBILE_NUMBER to mobileNumber,
+                            Constants.KEY.COUNTRY_CODE to countryCode
+                        )
                     )
                 }
             }

@@ -21,8 +21,8 @@ class OtpFragment : Fragment() {
         fun newInstance() = OtpFragment()
     }
 
-    private var mCountryCode: String?= null
-    private var mMobileNumber: String?= null
+    private var mCountryCode: String? = null
+    private var mMobileNumber: String? = null
     private lateinit var viewModel: OTPViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,24 +45,25 @@ class OtpFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(OTPViewModel::class.java)
         mMobileNumber?.let {
             activity?.let { act ->
-                mCountryCode?.let {countryCode ->
-                    viewModel.verifyPhoneNumber(act,countryCode+it) }
+                mCountryCode?.let { countryCode ->
+                    viewModel.verifyPhoneNumber(act, countryCode + it)
                 }
+            }
         }
         viewModel.getUiModel().observe(viewLifecycleOwner, Observer {
-            when(it){
+            when (it) {
                 OTPViewModel.UiMode.CREDENTIAL_RECEIVED -> {
                     activity?.let { activity -> viewModel.signInWithPhoneAuthCredential(activity) }
                 }
                 OTPViewModel.UiMode.STATE_SIGNIN_SUCCESS -> {
-                   val intent= Intent(context,LandingActivity::class.java)
+                    val intent = Intent(context, LandingActivity::class.java)
                     startActivity(intent)
                 }
             }
         })
 
         sign_up.setOnClickListener(View.OnClickListener {
-            activity?.let { activity -> viewModel.verifyOtp(activity,otp.text.toString()) }
+            activity?.let { activity -> viewModel.verifyOtp(activity, otp.text.toString()) }
         })
 
     }
