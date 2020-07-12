@@ -55,7 +55,7 @@ public class LandingActivity extends AppCompatActivity {
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Social Cloud");
+        getSupportActionBar().setTitle(getString(R.string.app_name));
 
         myViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
         myTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
