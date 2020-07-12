@@ -132,7 +132,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
                             // Got the download URL for 'users/me/profile.png'
                             Log.d("URL",""+uri);
-                            Glide.with(ProfileUpdateActivity.this)
+                            Glide.with(getApplicationContext())
                             .load(uri)
                             .into(userProfileImage);
                         }
