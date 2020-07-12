@@ -14,11 +14,6 @@ class OnBoardingViewModel(application: Application) : AndroidViewModel(applicati
         return uiModel
     }
 
-    object Constant{
-        const val TAG = "OnBoardingViewModel"
-    }
-
-
 
     fun verifyPhoneNumber(){
         uiModel.value= VERIFY_NUMBER

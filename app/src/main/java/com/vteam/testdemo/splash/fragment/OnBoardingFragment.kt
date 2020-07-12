@@ -47,7 +47,7 @@ class OnBoardingFragment : Fragment() {
             }
         })
 
-        sign_up.setOnClickListener(View.OnClickListener {
+        sign_up.setOnClickListener({
             viewModel.verifyPhoneNumber()
         })
 

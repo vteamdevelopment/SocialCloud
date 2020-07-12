@@ -191,7 +191,7 @@ public class LandingActivity extends AppCompatActivity {
     }
 
     private void SendUserToSettingsActivity() {
-        Intent settingsIntent = new Intent(LandingActivity.this, SettingsActivity.class);
+        Intent settingsIntent = new Intent(LandingActivity.this, ProfileUpdateActivity.class);
         startActivity(settingsIntent);
     }
 
