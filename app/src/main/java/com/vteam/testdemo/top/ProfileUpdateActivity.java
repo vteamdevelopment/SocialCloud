@@ -40,7 +40,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileUpdateActivity extends AppCompatActivity {
 
-    private static final int GalleryPick = 1;
+    private static final int GALLERY_PICK = 1;
     private DatabaseReference RootRef;
     private FirebaseAuth mAuth;
     private String currentUserID;
@@ -76,10 +76,14 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         userProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent galleryIntent = new Intent();
-                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-                galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent, GalleryPick);
+//                Intent galleryIntent = new Intent();
+//                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+//                galleryIntent.setType("image/*");
+//                startActivityForResult(galleryIntent, GALLERY_PICK);
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setAspectRatio(1, 1)
+                        .start(ProfileUpdateActivity.this);
             }
         });
     }
@@ -131,10 +135,10 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             // Got the download URL for 'users/me/profile.png'
-                            Log.d("URL",""+uri);
+                            Log.d("URL", "" + uri);
                             Glide.with(getApplicationContext())
-                            .load(uri)
-                            .into(userProfileImage);
+                                    .load(uri)
+                                    .into(userProfileImage);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -142,12 +146,6 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                             // Handle any errors
                         }
                     });
-//                    StorageReference httpsReference = reference .getReferenceFromUrl(retrieveProfilePhoto);
-//
-//                    Glide.with(ProfileUpdateActivity.this)
-//                            .load(httpsReference)
-//                            .into(userProfileImage);
-//                    Picasso.get().load(.).into(userProfileImage);
                 } else if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name"))) {
                     String retrieveUserName = dataSnapshot.child("name").getValue().toString();
                     String retrievesStatus = dataSnapshot.child("status").getValue().toString();
@@ -197,16 +195,16 @@ public class ProfileUpdateActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GalleryPick && resultCode == RESULT_OK && data != null) {
-            Uri ImageUri = data.getData();
+        if (requestCode == GALLERY_PICK) {
+            if (resultCode == RESULT_OK && data != null) {
+                Uri ImageUri = data.getData();
 
-            CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(1, 1)
-                    .start(this);
-        }
-
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setAspectRatio(1, 1)
+                        .start(this);
+            }
+        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
             if (resultCode == RESULT_OK) {
@@ -252,6 +250,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
                 });
             }
         }
-
     }
+
+
 }
