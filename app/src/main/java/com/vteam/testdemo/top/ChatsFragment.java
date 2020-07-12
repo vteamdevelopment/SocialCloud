@@ -2,7 +2,9 @@ package com.vteam.testdemo.top;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +16,19 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.vteam.testdemo.R;
 
@@ -86,7 +93,26 @@ public class ChatsFragment extends Fragment {
                                 if (dataSnapshot.exists()) {
                                     if (dataSnapshot.hasChild("image")) {
                                         retImage[0] = dataSnapshot.child("image").getValue().toString();
-                                        Picasso.get().load(retImage[0]).into(holder.profileImage);
+
+                                        StorageReference reference = FirebaseStorage.getInstance().getReference();
+
+                                        reference.child(retImage[0]).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                // Got the download URL for 'users/me/profile.png'
+                                                Log.d("URL", "" + uri);
+                                                Glide.with(getActivity())
+                                                        .load(uri)
+                                                        .into(holder.profileImage);
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                // Handle any errors
+                                            }
+                                        });
+
+//                                        Picasso.get().load(retImage[0]).into(holder.profileImage);
                                     }
 
                                     final String retName = dataSnapshot.child("name").getValue().toString();
