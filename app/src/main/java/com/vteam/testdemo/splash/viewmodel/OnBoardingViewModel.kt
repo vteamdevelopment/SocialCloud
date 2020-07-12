@@ -4,7 +4,6 @@ package com.vteam.testdemo.splash.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.vteam.testdemo.splash.viewmodel.OnBoardingViewModel.UiMode.VERIFY_NUMBER
 
 class OnBoardingViewModel(application: Application) : AndroidViewModel(application) {

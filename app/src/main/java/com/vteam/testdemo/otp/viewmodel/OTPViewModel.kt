@@ -1,7 +1,6 @@
 package com.vteam.testdemo.otp.viewmodel
 
 import android.app.Activity
-import android.icu.util.TimeUnit
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

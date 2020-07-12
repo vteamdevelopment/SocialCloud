@@ -13,7 +13,6 @@ import com.vteam.testdemo.SplashActivity.TransactionType.Companion.REPLACE
 import com.vteam.testdemo.SplashActivity.TransactionType.Companion.REPLACE_WITH_BACKSTACK
 import com.vteam.testdemo.splash.fragment.OnBoardingFragment
 import com.vteam.testdemo.top.LandingActivity
-import kotlinx.android.synthetic.main.item_list_content.*
 
 
 class SplashActivity : AppCompatActivity() {
