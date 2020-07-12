@@ -5,4 +5,8 @@
     <string name="tab_text_3">Call</string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
+    <string name="menu_chat">Chat</string>
+    <string name="menu_group">Group</string>
+    <string name="menu_contact">Contact</string>
+    <string name="menu_request">Request</string>
 </resources>

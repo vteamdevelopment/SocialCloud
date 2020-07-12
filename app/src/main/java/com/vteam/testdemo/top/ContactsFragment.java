@@ -1,6 +1,7 @@
 package com.vteam.testdemo.top;
 
 
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -122,9 +123,12 @@ public class ContactsFragment extends Fragment {
                                     public void onSuccess(Uri uri) {
                                         // Got the download URL for 'users/me/profile.png'
                                         Log.d("URL", "" + uri);
-                                        Glide.with(getActivity())
-                                                .load(uri)
-                                                .into(holder.profileImage);
+                                        Activity activity= getActivity();
+                                        if (activity!=null) {
+                                            Glide.with(activity)
+                                                    .load(uri)
+                                                    .into(holder.profileImage);
+                                        }
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override

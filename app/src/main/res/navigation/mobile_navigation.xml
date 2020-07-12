@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_chat">
+
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="com.vteam.testdemo.top.ChatsFragment"
+        android:label="@string/menu_chat"
+        tools:layout="@layout/fragment_chats" />
+
+    <fragment
+        android:id="@+id/navigation_group"
+        android:name="com.vteam.testdemo.top.GroupsFragment"
+        android:label="@string/menu_group"
+        tools:layout="@layout/fragment_groups" />
+
+    <fragment
+        android:id="@+id/navigation_contact"
+        android:name="com.vteam.testdemo.top.ContactsFragment"
+        android:label="@string/menu_contact"
+        tools:layout="@layout/fragment_contacts" />
+    <fragment
+        android:id="@+id/navigation_request"
+        android:name="com.vteam.testdemo.top.RequestsFragment"
+        android:label="@string/menu_request"
+        tools:layout="@layout/fragment_requests" />
+</navigation>
