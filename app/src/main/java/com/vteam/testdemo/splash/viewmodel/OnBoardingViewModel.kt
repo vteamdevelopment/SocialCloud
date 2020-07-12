@@ -8,20 +8,20 @@ import com.vteam.testdemo.splash.viewmodel.OnBoardingViewModel.UiMode.VERIFY_NUM
 
 class OnBoardingViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var uiModel= MutableLiveData<Int>()
+    private var uiModel = MutableLiveData<Int>()
 
     fun getUiModel(): MutableLiveData<Int> {
         return uiModel
     }
 
 
-    fun verifyPhoneNumber(){
-        uiModel.value= VERIFY_NUMBER
+    fun verifyPhoneNumber() {
+        uiModel.value = VERIFY_NUMBER
 
     }
 
-    object UiMode{
-        const val VERIFY_NUMBER =1
+    object UiMode {
+        const val VERIFY_NUMBER = 1
     }
 
 }
