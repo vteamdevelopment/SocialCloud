@@ -131,13 +131,13 @@ public class ChatsFragment extends Fragment {
                                         String date = dataSnapshot.child("userState").child("date").getValue().toString();
                                         String time = dataSnapshot.child("userState").child("time").getValue().toString();
 
-                                        if (state.equals("online")) {
-                                            holder.userStatus.setText("online");
-                                        } else if (state.equals("offline")) {
-                                            holder.userStatus.setText("Last Seen: " + date + " " + time);
-                                        }
+//                                        if (state.equals("online")) {
+//                                            holder.userStatus.setText("online");
+//                                        } else if (state.equals("offline")) {
+//                                            holder.userStatus.setText("Last Seen: " + date + " " + time);
+//                                        }
                                     } else {
-                                        holder.userStatus.setText("offline");
+//                                        holder.userStatus.setText("offline");
                                     }
 
                                     holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -175,14 +175,16 @@ public class ChatsFragment extends Fragment {
 
     public static class ChatsViewHolder extends RecyclerView.ViewHolder {
         CircleImageView profileImage;
-        TextView userStatus, userName;
+        TextView userStatus, userName,lastSeenMessage,lastSeenTime;
 
         public ChatsViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            profileImage = itemView.findViewById(R.id.users_profile_image);
-            userStatus = itemView.findViewById(R.id.user_status);
             userName = itemView.findViewById(R.id.user_profile_name);
+            lastSeenMessage = itemView.findViewById(R.id.text_last_message);
+            lastSeenTime = itemView.findViewById(R.id.text_last_message_date);
+//            userStatus = itemView.findViewById(R.id.user_status);
+            profileImage = itemView.findViewById(R.id.users_profile_image);
+//            onlineIcon = (ImageView) itemView.findViewById(R.id.user_online_status);
         }
     }
 }

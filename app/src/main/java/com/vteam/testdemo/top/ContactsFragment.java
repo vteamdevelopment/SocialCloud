@@ -107,7 +107,7 @@ public class ContactsFragment extends Fragment {
                final String name = model.getName();
                final String profileImage = model.getImage();
                 holder.userName.setText(name);
-                holder.userStatus.setText(model.getStatus());
+//                holder.userStatus.setText(model.getStatus());
 
                 if(!TextUtils.isEmpty(profileImage)) {
                     Picasso.get().load(profileImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
@@ -179,7 +179,7 @@ public class ContactsFragment extends Fragment {
     }
 
     public static class ContactsViewHolder extends RecyclerView.ViewHolder {
-        TextView userName, userStatus;
+        TextView userName, /*userStatus,*/lastSeenMessage,lastSeenTime;
         CircleImageView profileImage;
         ImageView onlineIcon;
 
@@ -188,9 +188,11 @@ public class ContactsFragment extends Fragment {
             super(itemView);
 
             userName = itemView.findViewById(R.id.user_profile_name);
-            userStatus = itemView.findViewById(R.id.user_status);
+            lastSeenMessage = itemView.findViewById(R.id.text_last_message);
+            lastSeenTime = itemView.findViewById(R.id.text_last_message_date);
+//            userStatus = itemView.findViewById(R.id.user_status);
             profileImage = itemView.findViewById(R.id.users_profile_image);
-            onlineIcon = (ImageView) itemView.findViewById(R.id.user_online_status);
+//            onlineIcon = (ImageView) itemView.findViewById(R.id.user_online_status);
         }
     }
 }
