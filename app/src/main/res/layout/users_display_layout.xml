@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/ic_profile"/>
     <TextView
         android:id="@+id/user_profile_name"
-        android:text="Chat Title"
+        android:text="@string/chat_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/users_profile_image"
@@ -32,11 +32,11 @@
         android:layout_marginStart="16dp"
         app:layout_constraintVertical_bias="0.13999999"
         android:textColor="@android:color/black"
-        android:textFontWeight="700"
+
         android:textSize="18sp"/>
     <TextView
         android:id="@+id/text_last_message"
-        android:text="Last message"
+        android:text="@string/last_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/users_profile_image"
@@ -47,11 +47,11 @@
         app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginStart="16dp"
         app:layout_constraintVertical_bias="0.98"
-        android:textFontWeight="700"
+
         android:textSize="16sp" android:singleLine="true"/>
     <TextView
         android:id="@+id/text_last_message_date"
-        android:text="5:33 PM"
+        android:text="@string/_5_33_pm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

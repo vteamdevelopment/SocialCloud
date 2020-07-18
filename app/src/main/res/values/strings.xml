@@ -4,4 +4,7 @@
     <string name="menu_group">Group</string>
     <string name="menu_contact">Contact</string>
     <string name="menu_request">Request</string>
+    <string name="chat_title">Chat Title</string>
+    <string name="last_message">Last message</string>
+    <string name="_5_33_pm">5:33 PM</string>
 </resources>

@@ -34,7 +34,8 @@
             android:layout_height="50dp"
             android:layout_alignParentStart="true"
             android:backgroundTint="@android:color/white"
-            android:src="@drawable/ic_baseline_attach_file_24" />
+            android:src="@drawable/ic_baseline_attach_file_24"
+            tools:ignore="ContentDescription" />
 
 
         <EditText
@@ -54,7 +55,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:backgroundTint="@android:color/white"
-            android:src="@drawable/send_message" />
+            android:src="@drawable/send_message"
+            tools:ignore="ContentDescription" />
     </RelativeLayout>
 
 </RelativeLayout>

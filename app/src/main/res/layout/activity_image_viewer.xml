@@ -12,5 +12,5 @@
         android:layout_width = "match_parent"
         android:layout_height = "match_parent"
         android:src = "@drawable/crop_image_menu_flip"
-        />
+        tools:ignore="ContentDescription" />
 </RelativeLayout>
