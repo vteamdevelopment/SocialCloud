@@ -23,9 +23,6 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
-        <activity
-            android:name="com.vteam.testdemo.top.FindFriendsActivity"
-            android:parentActivityName="com.vteam.testdemo.landing.LandingActivity" />
 
         <activity
             android:name=".SplashActivity"

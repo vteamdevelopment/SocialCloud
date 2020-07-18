@@ -28,7 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.vteam.testdemo.R;
 import com.vteam.testdemo.SplashActivity;
 import com.vteam.testdemo.profile.ProfileUpdateActivity;
-import com.vteam.testdemo.top.FindFriendsActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -150,10 +149,7 @@ public class LandingActivity extends AppCompatActivity {
         }else if(item.getItemId() == R.id.main_invite) {
             Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
             startActivityForResult(intent, PICK_CONTACT);
-        }/*else if (item.getItemId() == R.id.main_find_friends_option) {
-            SendUserToFindFriendsActivity();
-
-        }*/
+        }
         return true;
     }
 
@@ -208,10 +204,6 @@ public class LandingActivity extends AppCompatActivity {
         startActivity(settingsIntent);
     }
 
-    private void SendUserToFindFriendsActivity() {
-        Intent findFriendsIntent = new Intent(LandingActivity.this, FindFriendsActivity.class);
-        startActivity(findFriendsIntent);
-    }
 
     private void updateUserStatus(String state) {
         String saveCurrentTime, saveCurrentDate;
