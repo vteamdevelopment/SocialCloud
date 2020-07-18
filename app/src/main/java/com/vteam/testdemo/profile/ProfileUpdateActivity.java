@@ -51,6 +51,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
     private StorageReference UserProfileImagesRef;
     private ProgressDialog loadingBar;
     private Toolbar SettingsToolBar;
+    private CircleImageView userProfileImageEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
 
         RetrieveUserInfo();
 
-        userProfileImage.setOnClickListener(new View.OnClickListener() {
+        userProfileImageEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                Intent galleryIntent = new Intent();
@@ -178,7 +179,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         userName = (EditText) findViewById(R.id.set_user_name);
         userStatus = (EditText) findViewById(R.id.set_profile_status);
         userProfileImage = (CircleImageView) findViewById(R.id.set_profile_image);
-
+        userProfileImageEdit = findViewById(R.id.profile_image_edit);
         loadingBar = new ProgressDialog(this);
 
 
@@ -189,7 +190,7 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         setSupportActionBar(SettingsToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setTitle("Account Settings");
+        getSupportActionBar().setTitle("Profile Update");
     }
 
     @Override

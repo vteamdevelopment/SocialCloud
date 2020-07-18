@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,75 +7,118 @@
     tools:context="com.vteam.testdemo.profile.ProfileUpdateActivity">
 
     <include
-        layout="@layout/app_bar_layout"
+
         android:id="@+id/settings_toolbar"
-        >
-    </include>
+        layout="@layout/app_bar_layout"></include>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/set_profile_image"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp"
         android:src="@drawable/profile_image"
-        app:civ_border_width="5dp"
-        app:civ_border_color="@color/colorPrimary"/>
+        app:civ_border_color="@color/colorPrimary"
+        app:civ_border_width="2dp"
+
+        android:layout_marginTop="@dimen/dp_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image_edit"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="174dp"
+        app:layout_constraintHorizontal_bias="0.65"
+        android:src="@drawable/ic_baseline_photo_camera_24"
+        app:civ_border_color="@color/colorPrimary"
+
+        app:civ_border_width="1dp"
+        app:civ_circle_background_color="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar" />
 
     <EditText
         android:id="@+id/set_user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/set_profile_image"
-        android:inputType="textMultiLine"
-        android:hint="username"
-        android:textAlignment="center"
-        android:drawableStart="@drawable/edit_profile"
-        android:textColor="@color/colorPrimaryDark"
-        android:textStyle="bold"
-        android:background="@drawable/inputs"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:padding="6dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
-        />
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/inputs"
+        android:drawableStart="@drawable/ic_baseline_person_24"
+        android:hint="username"
+        android:inputType="textMultiLine"
+        android:padding="12dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_profile_image"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/set_profile_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/set_user_name"
-        android:inputType="textMultiLine"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/inputs"
+        android:drawableStart="@drawable/ic_baseline_update_24"
         android:hint="hey, i am available now."
+        android:inputType="textMultiLine"
+        android:padding="12dp"
         android:textAlignment="center"
-        android:drawableStart="@drawable/edit_status"
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
-        android:background="@drawable/inputs"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:padding="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_user_name"/>
+
+    <EditText
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
-        />
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/inputs"
+        android:drawableStart="@drawable/ic_baseline_add_location_24"
+        android:hint="Location"
+        android:inputType="textMultiLine"
+        android:padding="12dp"
+        app:layout_constraintVertical_bias="0.0"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_profile_status"
+        app:layout_constraintBottom_toBottomOf="@+id/update_settings_button"/>
 
     <Button
         android:id="@+id/update_settings_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/set_profile_status"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="@dimen/dp_24"
+        android:background="@drawable/buttons"
         android:inputType="textMultiLine"
+        android:padding="6dp"
         android:text="Update"
         android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:textStyle="bold"
-        android:background="@drawable/buttons"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:padding="6dp"
-        android:layout_marginTop="10dp"
         android:textAllCaps="false"
+        android:textColor="@android:color/background_light"
         android:textSize="20sp"
-        />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
