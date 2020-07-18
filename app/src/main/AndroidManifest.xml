@@ -14,18 +14,18 @@
 
 
         <activity android:name="com.vteam.testdemo.top.ImageViewerActivity"></activity>
-        <activity android:name="com.vteam.testdemo.top.ChatActivity" />
-        <activity android:name="com.vteam.testdemo.top.ProfileActivity" />
+        <activity android:name="com.vteam.testdemo.chat.ChatActivity" />
+        <activity android:name="com.vteam.testdemo.profile.ProfileActivity" />
         <activity android:name="com.vteam.testdemo.top.GroupChatActivity" />
-        <activity android:name="com.vteam.testdemo.top.ProfileUpdateActivity" />
-        <activity android:name="com.vteam.testdemo.top.LandingActivity">
+        <activity android:name="com.vteam.testdemo.profile.ProfileUpdateActivity" />
+        <activity android:name="com.vteam.testdemo.landing.LandingActivity">
         </activity>
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
         <activity
             android:name="com.vteam.testdemo.top.FindFriendsActivity"
-            android:parentActivityName="com.vteam.testdemo.top.LandingActivity" />
+            android:parentActivityName="com.vteam.testdemo.landing.LandingActivity" />
 
         <activity
             android:name=".SplashActivity"

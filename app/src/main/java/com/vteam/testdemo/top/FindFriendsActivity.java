@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 import com.vteam.testdemo.R;
+import com.vteam.testdemo.profile.ProfileActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

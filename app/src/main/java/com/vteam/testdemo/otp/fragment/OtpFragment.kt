@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.vteam.testdemo.R
 import com.vteam.testdemo.common.Constants
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel
-import com.vteam.testdemo.top.LandingActivity
+import com.vteam.testdemo.landing.LandingActivity
 import kotlinx.android.synthetic.main.on_boarding_fragment.sign_up
 import kotlinx.android.synthetic.main.otp_fragment.*
 

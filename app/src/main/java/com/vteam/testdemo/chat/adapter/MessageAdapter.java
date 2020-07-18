@@ -1,4 +1,4 @@
-package com.vteam.testdemo.top;
+package com.vteam.testdemo.chat.adapter;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -25,6 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.vteam.testdemo.R;
+import com.vteam.testdemo.landing.LandingActivity;
+import com.vteam.testdemo.top.ImageViewerActivity;
+import com.vteam.testdemo.top.Messages;
 
 import java.util.List;
 

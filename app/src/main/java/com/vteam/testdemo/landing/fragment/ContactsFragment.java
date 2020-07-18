@@ -1,4 +1,4 @@
-package com.vteam.testdemo.top;
+package com.vteam.testdemo.landing.fragment;
 
 
 import android.app.Activity;
@@ -27,16 +27,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 import com.vteam.testdemo.R;
+import com.vteam.testdemo.chat.ChatActivity;
+import com.vteam.testdemo.top.Contacts;
 
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package com.vteam.testdemo.top;
+package com.vteam.testdemo.landing.fragment;
 
 
 import android.app.Activity;
@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,8 +30,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 import com.vteam.testdemo.R;
+import com.vteam.testdemo.chat.ChatActivity;
+import com.vteam.testdemo.top.Contacts;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

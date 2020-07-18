@@ -1,4 +1,4 @@
-package com.vteam.testdemo.top;
+package com.vteam.testdemo.chat;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -42,8 +42,9 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 import com.vteam.testdemo.R;
+import com.vteam.testdemo.chat.adapter.MessageAdapter;
+import com.vteam.testdemo.top.Messages;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

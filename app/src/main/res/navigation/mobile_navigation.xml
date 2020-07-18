@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_chat"
-        android:name="com.vteam.testdemo.top.ChatsFragment"
+        android:name="com.vteam.testdemo.landing.fragment.ChatsFragment"
         android:label="@string/menu_chat"
         tools:layout="@layout/fragment_chats" />
 
     <fragment
         android:id="@+id/navigation_group"
-        android:name="com.vteam.testdemo.top.GroupsFragment"
+        android:name="com.vteam.testdemo.landing.fragment.GroupsFragment"
         android:label="@string/menu_group"
         tools:layout="@layout/fragment_groups" />
 
     <fragment
         android:id="@+id/navigation_contact"
-        android:name="com.vteam.testdemo.top.ContactsFragment"
+        android:name="com.vteam.testdemo.landing.fragment.ContactsFragment"
         android:label="@string/menu_contact"
         tools:layout="@layout/fragment_contacts" />
 

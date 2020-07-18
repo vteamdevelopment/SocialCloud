@@ -12,7 +12,7 @@ import com.vteam.testdemo.SplashActivity.TransactionType.Companion.ADD_WITH_BACK
 import com.vteam.testdemo.SplashActivity.TransactionType.Companion.REPLACE
 import com.vteam.testdemo.SplashActivity.TransactionType.Companion.REPLACE_WITH_BACKSTACK
 import com.vteam.testdemo.splash.fragment.OnBoardingFragment
-import com.vteam.testdemo.top.LandingActivity
+import com.vteam.testdemo.landing.LandingActivity
 
 
 class SplashActivity : AppCompatActivity() {
