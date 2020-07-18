@@ -118,8 +118,6 @@ public class ChatsFragment extends Fragment {
                                                 }
                                             });
                                         }
-
-//                                        Picasso.get().load(retImage[0]).into(holder.profileImage);
                                     }
 
                                     final String retName = dataSnapshot.child("name").getValue().toString();

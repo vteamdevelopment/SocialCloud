@@ -121,7 +121,6 @@ public class ChatActivity extends AppCompatActivity {
                 }
             });
         }
-//        Picasso.get().load(messageReceiverImage).placeholder(R.drawable.profile_image).into(userImage);
 
         SendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override

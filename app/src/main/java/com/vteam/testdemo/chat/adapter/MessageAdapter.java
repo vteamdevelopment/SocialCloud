@@ -75,7 +75,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 if (dataSnapshot.hasChild("image")) {
                     String receiverImage = dataSnapshot.child("image").getValue().toString();
 
-//                    Picasso.get().load(receiverImage).placeholder(R.drawable.profile_image).into(messageViewHolder.receiverProfileImage);
                     if (!receiverImage.isEmpty()) {
                         StorageReference reference = FirebaseStorage.getInstance().getReference();
                         reference.child(receiverImage).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -131,7 +130,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         } else if (fromMessageType.equals("image")) {
             if (fromUserID.equals(messageSenderId)) {
                 messageViewHolder.messageSenderPicture.setVisibility(View.VISIBLE);
-//                Picasso.get().load(messages.getMessage()).into(messageViewHolder.messageSenderPicture);
 
                 if (!messages.getMessage().isEmpty()) {
                     StorageReference reference = FirebaseStorage.getInstance().getReference();
@@ -157,7 +155,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             } else {
                 messageViewHolder.receiverProfileImage.setVisibility(View.VISIBLE);
                 messageViewHolder.messageReceiverPicture.setVisibility(View.VISIBLE);
-//                Picasso.get().load(messages.getMessage()).into(messageViewHolder.messageReceiverPicture);
                 if (!messages.getMessage().isEmpty()) {
                     StorageReference reference = FirebaseStorage.getInstance().getReference();
                     reference.child(messages.getMessage()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

@@ -28,7 +28,6 @@ public class ImageViewerActivity extends AppCompatActivity {
         imageView = findViewById(R.id.image_viewer);
         imageUrl = getIntent().getStringExtra("url");
 
-//        Picasso.get().load(imageUrl).into(imageView);
 
         if (!imageUrl.isEmpty()) {
             StorageReference reference = FirebaseStorage.getInstance().getReference();

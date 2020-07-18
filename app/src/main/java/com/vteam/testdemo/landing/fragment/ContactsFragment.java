@@ -48,8 +48,8 @@ public class ContactsFragment extends Fragment {
     private DatabaseReference mContacsRef, mUsersRef;
     private FirebaseAuth mAuth;
     private String mCurrentUserID;
-    private DatabaseReference mChatRequestRef;
-    private DatabaseReference mNotificationRef;
+//    private DatabaseReference mChatRequestRef;
+//    private DatabaseReference mNotificationRef;
     private String senderUserID;
     private FirebaseRecyclerAdapter<Contacts, ContactsViewHolder> adapter;
     private Query query;
@@ -80,8 +80,8 @@ public class ContactsFragment extends Fragment {
         mContacsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(mCurrentUserID);
         mUsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         query = mUsersRef.limitToLast(50);
-        mChatRequestRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
-        mNotificationRef = FirebaseDatabase.getInstance().getReference().child("Notifications");
+//        mChatRequestRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
+//        mNotificationRef = FirebaseDatabase.getInstance().getReference().child("Notifications");
         senderUserID = mAuth.getCurrentUser().getUid();
 
 
@@ -135,7 +135,6 @@ public class ContactsFragment extends Fragment {
                     Glide.with(getActivity())
                             .load(profileImage)
                             .into(holder.profileImage);
-//                    Picasso.get().load(profileImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
                 }
 
 
@@ -165,42 +164,42 @@ public class ContactsFragment extends Fragment {
 
 
     private void SendChatRequest(final String receiverUserID,final String refName,final String imageUrl) {
-        mChatRequestRef.child(senderUserID).child(receiverUserID)
-                .child("request_type").setValue("sent")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            mChatRequestRef.child(receiverUserID).child(senderUserID)
-                                    .child("request_type").setValue("received")
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                HashMap<String, String> chatNotificationMap = new HashMap<>();
-                                                chatNotificationMap.put("from", senderUserID);
-                                                chatNotificationMap.put("type", "request");
-
-                                                mNotificationRef.child(receiverUserID).push()
-                                                        .setValue(chatNotificationMap)
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                if (task.isSuccessful()) {
-                                                                    Intent chatIntent = new Intent(getContext(), ChatActivity.class);
-                                                                    chatIntent.putExtra("visit_user_id", receiverUserID);
-                                                                    chatIntent.putExtra("visit_user_name", refName);
-                                                                    chatIntent.putExtra("visit_image", imageUrl);
-                                                                    startActivity(chatIntent);
-                                                                }
-                                                            }
-                                                        });
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                });
+//        mChatRequestRef.child(senderUserID).child(receiverUserID)
+//                .child("request_type").setValue("sent")
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()) {
+//                            mChatRequestRef.child(receiverUserID).child(senderUserID)
+//                                    .child("request_type").setValue("received")
+//                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                        @Override
+//                                        public void onComplete(@NonNull Task<Void> task) {
+//                                            if (task.isSuccessful()) {
+//                                                HashMap<String, String> chatNotificationMap = new HashMap<>();
+//                                                chatNotificationMap.put("from", senderUserID);
+//                                                chatNotificationMap.put("type", "request");
+//
+//                                                mNotificationRef.child(receiverUserID).push()
+//                                                        .setValue(chatNotificationMap)
+//                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                                            @Override
+//                                                            public void onComplete(@NonNull Task<Void> task) {
+//                                                                if (task.isSuccessful()) {
+//                                                                    Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+//                                                                    chatIntent.putExtra("visit_user_id", receiverUserID);
+//                                                                    chatIntent.putExtra("visit_user_name", refName);
+//                                                                    chatIntent.putExtra("visit_image", imageUrl);
+//                                                                    startActivity(chatIntent);
+//                                                                }
+//                                                            }
+//                                                        });
+//                                            }
+//                                        }
+//                                    });
+//                        }
+//                    }
+//                });
     }
 
     public static class ContactsViewHolder extends RecyclerView.ViewHolder {
