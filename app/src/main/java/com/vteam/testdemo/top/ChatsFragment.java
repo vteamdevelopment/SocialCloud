@@ -98,24 +98,26 @@ public class ChatsFragment extends Fragment {
 
                                         StorageReference reference = FirebaseStorage.getInstance().getReference();
 
-                                        reference.child(retImage[0]).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri) {
-                                                // Got the download URL for 'users/me/profile.png'
-                                                Log.d("URL", "" + uri);
-                                                Activity activity = getActivity();
-                                                if (activity!=null) {
-                                                    Glide.with(activity)
-                                                            .load(uri)
-                                                            .into(holder.profileImage);
+                                        if (!retImage[0].isEmpty()) {
+                                            reference.child(retImage[0]).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    // Got the download URL for 'users/me/profile.png'
+                                                    Log.d("URL", "" + uri);
+                                                    Activity activity = getActivity();
+                                                    if (activity != null) {
+                                                        Glide.with(activity)
+                                                                .load(uri)
+                                                                .into(holder.profileImage);
+                                                    }
                                                 }
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception exception) {
-                                                // Handle any errors
-                                            }
-                                        });
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception exception) {
+                                                    // Handle any errors
+                                                }
+                                            });
+                                        }
 
 //                                        Picasso.get().load(retImage[0]).into(holder.profileImage);
                                     }

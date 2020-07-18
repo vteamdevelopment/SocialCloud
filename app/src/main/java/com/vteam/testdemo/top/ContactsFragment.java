@@ -102,15 +102,42 @@ public class ContactsFragment extends Fragment {
                         .build();
         adapter = new FirebaseRecyclerAdapter<Contacts, ContactsViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull ContactsViewHolder holder, final int position, @NonNull Contacts model) {
+            protected void onBindViewHolder(@NonNull final ContactsViewHolder holder, final int position, @NonNull Contacts model) {
                final String visitorUserId = getRef(position).getKey();
                final String name = model.getName();
                final String profileImage = model.getImage();
                 holder.userName.setText(name);
 //                holder.userStatus.setText(model.getStatus());
 
+                if (profileImage!=null && !profileImage.isEmpty()) {
+                    StorageReference reference = FirebaseStorage.getInstance().getReference();
+
+                    reference.child(profileImage).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            // Got the download URL for 'users/me/profile.png'
+                            Log.d("URL", "" + uri);
+                            Activity activity = getActivity();
+                            if (activity != null) {
+                                Glide.with(activity)
+                                        .load(uri)
+                                        .into(holder.profileImage);
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                        }
+                    });
+                }
+
+
                 if(!TextUtils.isEmpty(profileImage)) {
-                    Picasso.get().load(profileImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
+                    Glide.with(getActivity())
+                            .load(profileImage)
+                            .into(holder.profileImage);
+//                    Picasso.get().load(profileImage).placeholder(R.drawable.profile_image).into(holder.profileImage);
                 }
 
 

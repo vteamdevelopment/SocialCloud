@@ -230,36 +230,36 @@ public class RequestsFragment extends Fragment {
                                                                         "Cancel Chat Request"
                                                                 };
 
-                                                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                                        builder.setTitle("Already Sent Request");
-
-                                                        builder.setItems(options, new DialogInterface.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                                if (i == 0) {
-                                                                    ChatRequestsRef.child(currentUserID).child(list_user_id)
-                                                                            .removeValue()
-                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                @Override
-                                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                                    if (task.isSuccessful()) {
-                                                                                        ChatRequestsRef.child(list_user_id).child(currentUserID)
-                                                                                                .removeValue()
-                                                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                                    @Override
-                                                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                                                        if (task.isSuccessful()) {
-                                                                                                            Toast.makeText(getContext(), "you have cancelled the chat request.", Toast.LENGTH_SHORT).show();
-                                                                                                        }
-                                                                                                    }
-                                                                                                });
-                                                                                    }
-                                                                                }
-                                                                            });
-                                                                }
-                                                            }
-                                                        });
-                                                        builder.show();
+//                                                        AlertDialog.Builder builder = new AlertDialog.Builder(getcontext());
+//                                                        builder.setTitle("Already Sent Request");
+//
+//                                                        builder.setItems(options, new DialogInterface.OnClickListener() {
+//                                                            @Override
+//                                                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                                                if (i == 0) {
+//                                                                    ChatRequestsRef.child(currentUserID).child(list_user_id)
+//                                                                            .removeValue()
+//                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                                                                @Override
+//                                                                                public void onComplete(@NonNull Task<Void> task) {
+//                                                                                    if (task.isSuccessful()) {
+//                                                                                        ChatRequestsRef.child(list_user_id).child(currentUserID)
+//                                                                                                .removeValue()
+//                                                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                                                                                    @Override
+//                                                                                                    public void onComplete(@NonNull Task<Void> task) {
+//                                                                                                        if (task.isSuccessful()) {
+//                                                                                                            Toast.makeText(getContext(), "you have cancelled the chat request.", Toast.LENGTH_SHORT).show();
+//                                                                                                        }
+//                                                                                                    }
+//                                                                                                });
+//                                                                                    }
+//                                                                                }
+//                                                                            });
+//                                                                }
+//                                                            }
+//                                                        });
+//                                                        builder.show();
                                                     }
                                                 });
 
