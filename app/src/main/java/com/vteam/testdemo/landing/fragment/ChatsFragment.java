@@ -32,8 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.vteam.testdemo.R;
 import com.vteam.testdemo.chat.ChatActivity;
-import com.vteam.testdemo.landing.ChatModel;
-import com.vteam.testdemo.top.Contacts;
+import com.vteam.testdemo.landing.model.ChatModel;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

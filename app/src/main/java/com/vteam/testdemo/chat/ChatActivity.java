@@ -45,7 +45,7 @@ import com.google.firebase.storage.UploadTask;
 import com.vteam.testdemo.R;
 import com.vteam.testdemo.chat.adapter.MessageAdapter;
 import com.vteam.testdemo.common.Utils;
-import com.vteam.testdemo.landing.ChatModel;
+import com.vteam.testdemo.landing.model.ChatModel;
 import com.vteam.testdemo.top.Messages;
 
 import java.text.SimpleDateFormat;

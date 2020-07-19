@@ -1,4 +1,4 @@
-package com.vteam.testdemo.landing
+package com.vteam.testdemo.landing.model
 
 data class ChatModel (
      var fromUid: String? = null,
