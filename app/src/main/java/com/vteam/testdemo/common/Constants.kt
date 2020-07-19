@@ -18,5 +18,12 @@ class Constants {
       const val PATTERN_hh_mm_a = "hh:mm a"
     }
 
+    object NODES{
+        const val USER_NODE = "Users"
+        const val CHAT_NODE = "ChatNode"
+        const val MESSAGES_NODE = "MESSAGES_NODE"
+
+    }
+
 
 }

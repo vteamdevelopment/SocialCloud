@@ -32,6 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.vteam.testdemo.R;
 import com.vteam.testdemo.chat.ChatActivity;
+import com.vteam.testdemo.common.Constants;
 import com.vteam.testdemo.landing.model.ChatModel;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -126,25 +127,22 @@ public class ChatsFragment extends Fragment {
 
                                     final String retName = dataSnapshot.child("name").getValue().toString();
                                     final String retStatus = dataSnapshot.child("status").getValue().toString();
-//                                    final String lastMessage = dataSnapshot.child("lastMessage").getValue().toString();
+                                     String userStatus="";
+                                    if(dataSnapshot.child("userStatus").child("status")!=null & dataSnapshot.child("userStatus").child("status").getValue()!=null ) {
+                                       userStatus = dataSnapshot.child("userStatus").child("status").getValue().toString();
+                                    }
 //                                    Log.d("Vikash", "Last message " + lastMessage);
                                     holder.userName.setText(retName);
-//                                    holder.lastSeenMessage.setText(lastMessage);
 
-//
-//                                    if (dataSnapshot.child("userState").hasChild("state")) {
-//                                        String state = dataSnapshot.child("userState").child("state").getValue().toString();
-//                                        String date = dataSnapshot.child("userState").child("date").getValue().toString();
-//                                        String time = dataSnapshot.child("userState").child("time").getValue().toString();
-//
-////                                        if (state.equals("online")) {
-////                                            holder.userStatus.setText("online");
-////                                        } else if (state.equals("offline")) {
-////                                            holder.userStatus.setText("Last Seen: " + date + " " + time);
-////                                        }
-//                                    } else {
-////                                        holder.userStatus.setText("offline");
-//                                    }
+
+                                    if(userStatus!=null ){
+                                        if ( userStatus.equals(Constants.USER_STATE.OFFLINE)){
+                                            holder.onlineIcon.setBackground(getContext().getDrawable(R.drawable.live_icon_grey));
+                                        }else if (userStatus.equals(Constants.USER_STATE.ONLINE)){
+                                            holder.onlineIcon.setBackground(getContext().getDrawable(R.drawable.live_icon_green));
+                                        }
+                                    }
+
 
                                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -169,7 +167,7 @@ public class ChatsFragment extends Fragment {
                     @NonNull
                     @Override
                     public ChatsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout, viewGroup, false);
+                        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.chat_item_layout, viewGroup, false);
                         return new ChatsViewHolder(view);
                     }
                 };
@@ -180,17 +178,18 @@ public class ChatsFragment extends Fragment {
 
 
     public static class ChatsViewHolder extends RecyclerView.ViewHolder {
+        final CircleImageView onlineIcon;
         CircleImageView profileImage;
         TextView userStatus, userName,lastSeenMessage,lastSeenTime;
 
         public ChatsViewHolder(@NonNull View itemView) {
             super(itemView);
             userName = itemView.findViewById(R.id.user_profile_name);
-            lastSeenMessage = itemView.findViewById(R.id.text_last_message);
+            lastSeenMessage = itemView.findViewById(R.id.text_status);
             lastSeenTime = itemView.findViewById(R.id.text_last_message_date);
 //            userStatus = itemView.findViewById(R.id.user_status);
             profileImage = itemView.findViewById(R.id.users_profile_image);
-//            onlineIcon = (ImageView) itemView.findViewById(R.id.user_online_status);
+            onlineIcon = (CircleImageView) itemView.findViewById(R.id.users_status_icon);
         }
     }
 }
