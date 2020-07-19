@@ -12,5 +12,11 @@ class Constants {
         const val ONLINE = "Online"
     }
 
+    object PATTERN{
+
+    const val PATTERN_MMM_DD_yyyy = "MMM dd, yyyy"
+      const val PATTERN_hh_mm_a = "hh:mm a"
+    }
+
 
 }

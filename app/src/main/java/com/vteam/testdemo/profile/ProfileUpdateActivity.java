@@ -115,10 +115,10 @@ public class ProfileUpdateActivity extends AppCompatActivity {
 
             Calendar calendar = Calendar.getInstance();
 
-            SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+            SimpleDateFormat currentDate = new SimpleDateFormat(Constants.PATTERN.PATTERN_MMM_DD_yyyy);
             saveCurrentDate = currentDate.format(calendar.getTime());
 
-            SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+            SimpleDateFormat currentTime = new SimpleDateFormat(Constants.PATTERN.PATTERN_hh_mm_a);
             saveCurrentTime = currentTime.format(calendar.getTime());
 
             UserStatus userStatus = new UserStatus();

@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vteam.testdemo.R;
 import com.vteam.testdemo.SplashActivity;
+import com.vteam.testdemo.common.Constants;
 import com.vteam.testdemo.landing.model.UserStatus;
 import com.vteam.testdemo.profile.ProfileUpdateActivity;
 
@@ -215,10 +216,10 @@ public class LandingActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
 
-        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat currentDate = new SimpleDateFormat(Constants.PATTERN.PATTERN_MMM_DD_yyyy);
         saveCurrentDate = currentDate.format(calendar.getTime());
 
-        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        SimpleDateFormat currentTime = new SimpleDateFormat(Constants.PATTERN.PATTERN_hh_mm_a);
         saveCurrentTime = currentTime.format(calendar.getTime());
 
 

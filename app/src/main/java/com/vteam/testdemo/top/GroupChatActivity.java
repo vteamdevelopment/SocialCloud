@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vteam.testdemo.R;
+import com.vteam.testdemo.common.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -120,11 +121,11 @@ public class GroupChatActivity extends AppCompatActivity {
             Toast.makeText(this, "Please write message first...", Toast.LENGTH_SHORT).show();
         }
         Calendar calForDate = Calendar.getInstance();
-        SimpleDateFormat currentDateFormat = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat currentDateFormat = new SimpleDateFormat(Constants.PATTERN.PATTERN_MMM_DD_yyyy);
         currentDate = currentDateFormat.format(calForDate.getTime());
 
         Calendar calForTime = Calendar.getInstance();
-        SimpleDateFormat currentTimeFormat = new SimpleDateFormat("hh:mm a");
+        SimpleDateFormat currentTimeFormat = new SimpleDateFormat(Constants.PATTERN.PATTERN_hh_mm_a);
         currentTime = currentTimeFormat.format(calForTime.getTime());
 
         HashMap<String, Object> groupMessageKey = new HashMap<>();
