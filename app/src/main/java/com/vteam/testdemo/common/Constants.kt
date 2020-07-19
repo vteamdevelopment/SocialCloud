@@ -7,4 +7,10 @@ class Constants {
     }
 
 
+    object USER_STATE{
+        const val OFFLINE = "Offline"
+        const val ONLINE = "Online"
+    }
+
+
 }

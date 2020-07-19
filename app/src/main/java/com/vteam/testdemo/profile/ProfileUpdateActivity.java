@@ -33,9 +33,15 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.vteam.testdemo.R;
+import com.vteam.testdemo.common.Constants;
 import com.vteam.testdemo.landing.LandingActivity;
+import com.vteam.testdemo.landing.model.UserStatus;
+import com.vteam.testdemo.landing.model.Users;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -100,12 +106,31 @@ public class ProfileUpdateActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(setStatus)) {
             Toast.makeText(this, "Please write your status....", Toast.LENGTH_SHORT).show();
         } else {
-            HashMap<String, Object> profileMap = new HashMap<>();
-            profileMap.put("uid", currentUserID);
-            profileMap.put("name", setUserName);
-            profileMap.put("status", setStatus);
 
-            RootRef.child("Users").child(currentUserID).updateChildren(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            Users users = new Users(currentUserID);
+            users.setName(setUserName);
+            users.setStatus(setStatus);
+
+            String saveCurrentTime, saveCurrentDate;
+
+            Calendar calendar = Calendar.getInstance();
+
+            SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+            saveCurrentDate = currentDate.format(calendar.getTime());
+
+            SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+            saveCurrentTime = currentTime.format(calendar.getTime());
+
+            UserStatus userStatus = new UserStatus();
+            userStatus.setDate(saveCurrentDate);
+            userStatus.setTime(saveCurrentTime);
+            userStatus.setStatus(Constants.USER_STATE.ONLINE);
+
+            users.setUserStatus(userStatus);
+            Map<String, Object> userMap = new HashMap<>();
+            userMap.put(currentUserID,users);
+
+            RootRef.child("Users").updateChildren(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {

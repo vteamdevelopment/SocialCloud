@@ -33,11 +33,15 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.vteam.testdemo.R;
+import com.vteam.testdemo.common.Constants;
 import com.vteam.testdemo.landing.LandingActivity;
+import com.vteam.testdemo.landing.model.UserStatus;
+import com.vteam.testdemo.landing.model.Users;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -117,18 +121,22 @@ public class CreateProfileActivity extends AppCompatActivity {
 
 
     private void UpdateSettings() {
-        String setUserName = userName.getText().toString();
-        String setStatus = userStatus.getText().toString();
-        if (TextUtils.isEmpty(setUserName)) {
+        String userName = this.userName.getText().toString();
+        String status = userStatus.getText().toString();
+        if (TextUtils.isEmpty(userName)) {
             Toast.makeText(this, "Please write your user name first....", Toast.LENGTH_SHORT).show();
         }
-        if (TextUtils.isEmpty(setStatus)) {
+        if (TextUtils.isEmpty(status)) {
             Toast.makeText(this, "Please write your status....", Toast.LENGTH_SHORT).show();
         } else {
-            HashMap<String, Object> profileMap = new HashMap<>();
-            profileMap.put("uid", currentUserID);
-            profileMap.put("name", setUserName);
-            profileMap.put("status", setStatus);
+
+            Users users = new Users(currentUserID);
+            users.setName(userName);
+            users.setStatus(status);
+//            HashMap<String, Object> profileMap = new HashMap<>();
+//            profileMap.put("uid", currentUserID);
+//            profileMap.put("name", userName);
+//            profileMap.put("status", status);
 
 
 
@@ -142,13 +150,17 @@ public class CreateProfileActivity extends AppCompatActivity {
             SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
             saveCurrentTime = currentTime.format(calendar.getTime());
 
-            final HashMap<String, Object> onlineStateMap = new HashMap<>();
-            onlineStateMap.put("time", saveCurrentTime);
-            onlineStateMap.put("date", saveCurrentDate);
-           // onlineStateMap.put("state", state);
+            UserStatus userStatus = new UserStatus();
+            userStatus.setDate(saveCurrentDate);
+            userStatus.setTime(saveCurrentTime);
+            userStatus.setStatus(Constants.USER_STATE.ONLINE);
+
+            users.setUserStatus(userStatus);
+            Map<String, Object> userMap = new HashMap<>();
+            userMap.put(currentUserID,users);
 
 
-            RootRef.child("Users").child(currentUserID).updateChildren(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            RootRef.child("Users").updateChildren(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {

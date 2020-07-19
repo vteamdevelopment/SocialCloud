@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vteam.testdemo.R;
 import com.vteam.testdemo.SplashActivity;
+import com.vteam.testdemo.landing.model.UserStatus;
 import com.vteam.testdemo.profile.ProfileUpdateActivity;
 
 import java.text.SimpleDateFormat;
@@ -220,10 +221,11 @@ public class LandingActivity extends AppCompatActivity {
         SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
         saveCurrentTime = currentTime.format(calendar.getTime());
 
-        final HashMap<String, Object> onlineStateMap = new HashMap<>();
-        onlineStateMap.put("time", saveCurrentTime);
-        onlineStateMap.put("date", saveCurrentDate);
-        onlineStateMap.put("state", state);
+
+        UserStatus userStatus = new UserStatus();
+        userStatus.setDate(saveCurrentDate);
+        userStatus.setTime(saveCurrentTime);
+        userStatus.setStatus(state);
 
 //
 //        RootRef.child("Users").child(currentUserID).child("userState")
