@@ -48,11 +48,10 @@ public class ContactsFragment extends Fragment {
     private DatabaseReference mContacsRef, mUsersRef;
     private FirebaseAuth mAuth;
     private String mCurrentUserID;
-//    private DatabaseReference mChatRequestRef;
-//    private DatabaseReference mNotificationRef;
     private String senderUserID;
     private FirebaseRecyclerAdapter<Contacts, ContactsViewHolder> adapter;
     private Query query;
+    private DatabaseReference mChatRef;
 
 
     public ContactsFragment() {
@@ -79,6 +78,8 @@ public class ContactsFragment extends Fragment {
 
         mContacsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(mCurrentUserID);
         mUsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        mChatRef = FirebaseDatabase.getInstance().getReference().child("Chat");
+
         query = mUsersRef.limitToLast(50);
 //        mChatRequestRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
 //        mNotificationRef = FirebaseDatabase.getInstance().getReference().child("Notifications");
@@ -87,6 +88,18 @@ public class ContactsFragment extends Fragment {
 
 
         return mContactsView;
+    }
+
+    /**Function setsup endpoint for one to one chat**/
+    private String setOneToOneChat(String uid1, String uid2)
+    {
+        if(uid1.compareTo(uid2)<0){
+            return uid1+uid2;
+        }
+        else{
+            return uid2+uid1;
+        }
+
     }
 
     @Override
@@ -164,8 +177,19 @@ public class ContactsFragment extends Fragment {
 
 
     private void SendChatRequest(final String receiverUserID,final String refName,final String imageUrl) {
-//        mChatRequestRef.child(senderUserID).child(receiverUserID)
-//                .child("request_type").setValue("sent")
+        String oneTwoOneChatId = setOneToOneChat(senderUserID,receiverUserID);
+
+        Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+        chatIntent.putExtra("visit_user_id", receiverUserID);
+        chatIntent.putExtra("visit_user_name", refName);
+        chatIntent.putExtra("visit_image", imageUrl);
+        startActivity(chatIntent);
+
+
+
+
+
+
 //                .addOnCompleteListener(new OnCompleteListener<Void>() {
 //                    @Override
 //                    public void onComplete(@NonNull Task<Void> task) {

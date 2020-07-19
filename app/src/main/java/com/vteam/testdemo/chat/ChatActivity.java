@@ -44,6 +44,8 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.vteam.testdemo.R;
 import com.vteam.testdemo.chat.adapter.MessageAdapter;
+import com.vteam.testdemo.common.Utils;
+import com.vteam.testdemo.landing.ChatModel;
 import com.vteam.testdemo.top.Messages;
 
 import java.text.SimpleDateFormat;
@@ -176,12 +178,12 @@ public class ChatActivity extends AppCompatActivity {
 
         loadingBar = new ProgressDialog(this);
 
-        userName = (TextView) findViewById(R.id.custom_profile_name);
-        userImage = (CircleImageView) findViewById(R.id.custom_profile_image);
-        userLastSeen = (TextView) findViewById(R.id.custom_user_last_seen);
+        userName = findViewById(R.id.custom_profile_name);
+        userImage = findViewById(R.id.custom_profile_image);
+        userLastSeen = findViewById(R.id.custom_user_last_seen);
 
-        SendMessageButton = (ImageButton) findViewById(R.id.send_message_btn);
-        SendFilesButton = (ImageButton) findViewById(R.id.send_files_btn);
+        SendMessageButton = findViewById(R.id.send_message_btn);
+        SendFilesButton = findViewById(R.id.send_files_btn);
         MessageInputText = (EditText) findViewById(R.id.input_message);
 
         messageAdapter = new MessageAdapter(messagesList);
@@ -205,7 +207,7 @@ public class ChatActivity extends AppCompatActivity {
         setSupportActionBar(ChatToolBar);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+//        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
 
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -302,6 +304,18 @@ public class ChatActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Uri> task) {
                         Uri downloadUrl = task.getResult();
                         myUrl = downloadUrl.toString();
+                        String messageSenderRef = "ChatNode/" + messageSenderID + "/" + messageReceiverID;
+                        String messageReceiverRef = "ChatNode/" + messageReceiverID + "/" + messageSenderID;
+                        String messageRef = "MessagesNode/" + Utils.setOneToOneChat(messageSenderID,messageReceiverID);
+
+
+                        ChatModel chatModel = new ChatModel();
+                        chatModel.setFromUid(messageSenderID);
+                        chatModel.setFromUid(messageReceiverID);
+                        chatModel.setDate(saveCurrentDate);
+                        chatModel.setTime(saveCurrentTime);
+                        chatModel.setLastMessage(myUrl);
+                        chatModel.setType(checker);
 
                         Map messageTextBody = new HashMap();
                         messageTextBody.put("message", myUrl);
@@ -314,8 +328,10 @@ public class ChatActivity extends AppCompatActivity {
                         messageTextBody.put("date", saveCurrentDate);
 
                         Map messageBodyDetails = new HashMap();
-                        messageBodyDetails.put(messageSenderRef + "/" + messagePushID, messageTextBody);
-                        messageBodyDetails.put(messageReceiverRef + "/" + messagePushID, messageTextBody);
+                        messageBodyDetails.put(messageSenderRef + "/" , chatModel);
+                        messageBodyDetails.put(messageReceiverRef + "/" + messagePushID, chatModel);
+                        messageBodyDetails.put(messageRef + "/" + messagePushID, messageTextBody);
+
 
                         RootRef.updateChildren(messageBodyDetails).addOnCompleteListener(new OnCompleteListener() {
                             @Override
@@ -370,7 +386,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        RootRef.child("Messages").child(messageSenderID).child(messageReceiverID)
+        RootRef.child("MessagesNode").child(Utils.setOneToOneChat(messageSenderID,messageReceiverID))
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -408,28 +424,44 @@ public class ChatActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(messageText)) {
             Toast.makeText(this, "first write your message...", Toast.LENGTH_SHORT).show();
         } else {
-            String messageSenderRef = "Messages/" + messageSenderID + "/" + messageReceiverID;
-            String messageReceiverRef = "Messages/" + messageReceiverID + "/" + messageSenderID;
 
-            DatabaseReference userMessageKeyRef = RootRef.child("Messages")
-                    .child(messageSenderID).child(messageReceiverID).push();
+            DatabaseReference userMessageKeyRef = RootRef.child("MessagesNode")
+                    .child(Utils.setOneToOneChat(messageSenderID,messageReceiverID)).push();
+            DatabaseReference userChatNodeKeyRef = RootRef.child("ChatNode");
 
+
+            String type = "text";
             String messagePushID = userMessageKeyRef.getKey();
+            String messageSenderRef = messageSenderID + "/" + messageReceiverID;
+            String messageReceiverRef = messageReceiverID + "/" + messageSenderID;
+//            String messageRef = "MessagesNode/" + Utils.setOneToOneChat(messageSenderID,messageReceiverID);
+
+            ChatModel chatModel = new ChatModel();
+            chatModel.setFromUid(messageSenderID);
+            chatModel.setToUid(messageReceiverID);
+            chatModel.setDate(saveCurrentDate);
+            chatModel.setTime(saveCurrentTime);
+            chatModel.setLastMessage(messageText);
+            chatModel.setType(type);
 
             Map messageTextBody = new HashMap();
             messageTextBody.put("message", messageText);
-            messageTextBody.put("type", "text");
+            messageTextBody.put("type", type);
             messageTextBody.put("from", messageSenderID);
             messageTextBody.put("to", messageReceiverID);
             messageTextBody.put("messageID", messagePushID);
             messageTextBody.put("time", saveCurrentTime);
             messageTextBody.put("date", saveCurrentDate);
 
-            Map messageBodyDetails = new HashMap();
-            messageBodyDetails.put(messageSenderRef + "/" + messagePushID, messageTextBody);
-            messageBodyDetails.put(messageReceiverRef + "/" + messagePushID, messageTextBody);
+//            Map messageBodyDetails = new HashMap();
+//            messageBodyDetails.put(messageRef + "/" + messagePushID, messageTextBody);
 
-            RootRef.updateChildren(messageBodyDetails).addOnCompleteListener(new OnCompleteListener() {
+            Map ChatBodyDetails = new HashMap();
+            ChatBodyDetails.put(messageSenderRef + "/" , chatModel);
+            ChatBodyDetails.put(messageReceiverRef + "/", chatModel);
+
+
+            userMessageKeyRef.updateChildren(messageTextBody).addOnCompleteListener(new OnCompleteListener() {
                 @Override
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()) {
@@ -440,6 +472,18 @@ public class ChatActivity extends AppCompatActivity {
                     MessageInputText.setText("");
                 }
             });
+
+            userChatNodeKeyRef.updateChildren(ChatBodyDetails).addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(ChatActivity.this, "Chat Sent Successfully...", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
         }
     }
 }

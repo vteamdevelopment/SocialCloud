@@ -12,6 +12,7 @@ import com.vteam.testdemo.R
 import com.vteam.testdemo.common.Constants
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel
 import com.vteam.testdemo.landing.LandingActivity
+import com.vteam.testdemo.profile.CreateProfileActivity
 import kotlinx.android.synthetic.main.on_boarding_fragment.sign_up
 import kotlinx.android.synthetic.main.otp_fragment.*
 
@@ -56,9 +57,23 @@ class OtpFragment : Fragment() {
                     activity?.let { activity -> viewModel.signInWithPhoneAuthCredential(activity) }
                 }
                 OTPViewModel.UiMode.STATE_SIGNIN_SUCCESS -> {
-                    val intent = Intent(context, LandingActivity::class.java)
-                    startActivity(intent)
-                    activity?.finish()
+
+
+                    viewModel.verifyUserExistOrNot()
+
+                }
+                OTPViewModel.UiMode.STATE_LANDING_PAGE -> {
+                    if(viewModel.existingUser) {
+                        val intent = Intent(context, LandingActivity::class.java)
+                        intent.putExtra("UserExist", viewModel.existingUser)
+                        startActivity(intent)
+                        activity?.finish()
+                    }else{
+                        val intent = Intent(context, CreateProfileActivity::class.java)
+                        intent.putExtra("UserExist", viewModel.existingUser)
+                        startActivity(intent)
+                        activity?.finish()
+                    }
                 }
             }
         })

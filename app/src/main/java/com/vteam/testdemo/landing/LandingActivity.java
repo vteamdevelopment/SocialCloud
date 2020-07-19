@@ -50,11 +50,14 @@ public class LandingActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
     private String currentUserID;
+    private boolean existingUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
+
+
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.app_name));
@@ -75,6 +78,7 @@ public class LandingActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         RootRef = FirebaseDatabase.getInstance().getReference();
 
+
     }
 
 
@@ -84,7 +88,7 @@ public class LandingActivity extends AppCompatActivity {
         if (currentUser == null) {
             SendUserToLoginActivity();
         } else {
-            VerifyUserExistence();
+//            VerifyUserExistence();
         }
     }
 
@@ -115,7 +119,7 @@ public class LandingActivity extends AppCompatActivity {
                 if ((dataSnapshot.child("name").exists())) {
                     Toast.makeText(LandingActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
                 } else {
-                    SendUserToSettingsActivity();
+                    SendUserToProfileUpdateActivity();
                 }
             }
 
@@ -141,7 +145,7 @@ public class LandingActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.main_create_group_option) {
             RequestNewGroup();
         }else if (item.getItemId() == R.id.main_profile_option) {
-            SendUserToSettingsActivity();
+            SendUserToProfileUpdateActivity();
         }else if (item.getItemId() == R.id.main_logout_option) {
             updateUserStatus("offline");
             mAuth.signOut();
@@ -199,7 +203,7 @@ public class LandingActivity extends AppCompatActivity {
         startActivity(loginIntent);
     }
 
-    private void SendUserToSettingsActivity() {
+    private void SendUserToProfileUpdateActivity() {
         Intent settingsIntent = new Intent(LandingActivity.this, ProfileUpdateActivity.class);
         startActivity(settingsIntent);
     }
@@ -216,13 +220,15 @@ public class LandingActivity extends AppCompatActivity {
         SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
         saveCurrentTime = currentTime.format(calendar.getTime());
 
-        HashMap<String, Object> onlineStateMap = new HashMap<>();
+        final HashMap<String, Object> onlineStateMap = new HashMap<>();
         onlineStateMap.put("time", saveCurrentTime);
         onlineStateMap.put("date", saveCurrentDate);
         onlineStateMap.put("state", state);
 
-        RootRef.child("Users").child(currentUserID).child("userState")
-                .updateChildren(onlineStateMap);
+//
+//        RootRef.child("Users").child(currentUserID).child("userState")
+//                            .updateChildren(onlineStateMap);
+
 
     }
 }

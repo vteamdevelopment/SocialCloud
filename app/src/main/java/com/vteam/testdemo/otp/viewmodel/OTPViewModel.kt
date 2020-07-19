@@ -10,8 +10,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel.Constant.TAG
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel.UiMode.CREDENTIAL_RECEIVED
+import com.vteam.testdemo.otp.viewmodel.OTPViewModel.UiMode.STATE_LANDING_PAGE
+import com.vteam.testdemo.otp.viewmodel.OTPViewModel.UiMode.STATE_PROFILE_PAGE
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel.UiMode.STATE_SIGNIN_FAILED
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel.UiMode.STATE_SIGNIN_SUCCESS
 
@@ -27,6 +33,8 @@ class OTPViewModel : ViewModel() {
     private var mCredential: PhoneAuthCredential? = null
 
     private var auth: FirebaseAuth
+
+    var existingUser : Boolean = false
 
     private var uiModel = MutableLiveData<Int>()
 
@@ -104,6 +112,26 @@ class OTPViewModel : ViewModel() {
 
     }
 
+    fun verifyUserExistOrNot(){
+        var rootRef = FirebaseDatabase.getInstance().reference
+        var currentUserID = auth.getCurrentUser()?.getUid()
+        currentUserID?.let {
+            rootRef.child("Users").child(it)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.child("name").exists()) {
+                            existingUser = true
+                        } else {
+                            existingUser = false
+                        }
+                        uiModel.value = STATE_LANDING_PAGE
+
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
+        }
+    }
     fun verifyOtp(activity: Activity, code: String) {
         Log.d(TAG, "code:$code  ")
 
@@ -146,6 +174,8 @@ class OTPViewModel : ViewModel() {
         const val CREDENTIAL_RECEIVED = 1
         const val STATE_SIGNIN_SUCCESS = 2
         const val STATE_SIGNIN_FAILED = 3
+        const val STATE_LANDING_PAGE = 4
+        const val STATE_PROFILE_PAGE = 5
 
     }
 

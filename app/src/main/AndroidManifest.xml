@@ -15,6 +15,7 @@
 
         <activity android:name="com.vteam.testdemo.top.ImageViewerActivity"></activity>
         <activity android:name="com.vteam.testdemo.chat.ChatActivity" />
+        <activity android:name=".profile.CreateProfileActivity"/>
         <activity android:name="com.vteam.testdemo.top.GroupChatActivity" />
         <activity android:name="com.vteam.testdemo.profile.ProfileUpdateActivity" />
         <activity android:name="com.vteam.testdemo.landing.LandingActivity">

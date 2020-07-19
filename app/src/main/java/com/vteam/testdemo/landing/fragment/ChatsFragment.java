@@ -32,6 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.vteam.testdemo.R;
 import com.vteam.testdemo.chat.ChatActivity;
+import com.vteam.testdemo.landing.ChatModel;
 import com.vteam.testdemo.top.Contacts;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -57,7 +58,7 @@ public class ChatsFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
-        ChatsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID);
+        ChatsRef = FirebaseDatabase.getInstance().getReference().child("ChatNode").child(currentUserID);
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         chatsList = (RecyclerView) PrivateChatsView.findViewById(R.id.chats_list);
@@ -76,19 +77,23 @@ public class ChatsFragment extends Fragment {
         super.onStart();
 
 
-        FirebaseRecyclerOptions<Contacts> options =
-                new FirebaseRecyclerOptions.Builder<Contacts>()
-                        .setQuery(ChatsRef, Contacts.class)
+        FirebaseRecyclerOptions<ChatModel> options =
+                new FirebaseRecyclerOptions.Builder<ChatModel>()
+                        .setQuery(ChatsRef, ChatModel.class)
                         .build();
 
 
-        FirebaseRecyclerAdapter<Contacts, ChatsViewHolder> adapter =
-                new FirebaseRecyclerAdapter<Contacts, ChatsViewHolder>(options) {
+        FirebaseRecyclerAdapter<ChatModel, ChatsViewHolder> adapter =
+                new FirebaseRecyclerAdapter<ChatModel, ChatsViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull final ChatsViewHolder holder, int position, @NonNull Contacts model) {
+                    protected void onBindViewHolder(@NonNull final ChatsViewHolder holder, int position, @NonNull ChatModel model) {
                         final String usersIDs = getRef(position).getKey();
                         final String[] retImage = {"default_image"};
-
+                        final String lastMessage = model.getLastMessage();
+                        final String lastSeenTime = model.getTime();
+                        Log.d("Vikash", "Last message " + lastMessage);
+                        holder.lastSeenMessage.setText(lastMessage);
+                        holder.lastSeenTime.setText(lastSeenTime);
                         UsersRef.child(usersIDs).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -122,23 +127,25 @@ public class ChatsFragment extends Fragment {
 
                                     final String retName = dataSnapshot.child("name").getValue().toString();
                                     final String retStatus = dataSnapshot.child("status").getValue().toString();
-
+//                                    final String lastMessage = dataSnapshot.child("lastMessage").getValue().toString();
+//                                    Log.d("Vikash", "Last message " + lastMessage);
                                     holder.userName.setText(retName);
+//                                    holder.lastSeenMessage.setText(lastMessage);
 
-
-                                    if (dataSnapshot.child("userState").hasChild("state")) {
-                                        String state = dataSnapshot.child("userState").child("state").getValue().toString();
-                                        String date = dataSnapshot.child("userState").child("date").getValue().toString();
-                                        String time = dataSnapshot.child("userState").child("time").getValue().toString();
-
-//                                        if (state.equals("online")) {
-//                                            holder.userStatus.setText("online");
-//                                        } else if (state.equals("offline")) {
-//                                            holder.userStatus.setText("Last Seen: " + date + " " + time);
-//                                        }
-                                    } else {
-//                                        holder.userStatus.setText("offline");
-                                    }
+//
+//                                    if (dataSnapshot.child("userState").hasChild("state")) {
+//                                        String state = dataSnapshot.child("userState").child("state").getValue().toString();
+//                                        String date = dataSnapshot.child("userState").child("date").getValue().toString();
+//                                        String time = dataSnapshot.child("userState").child("time").getValue().toString();
+//
+////                                        if (state.equals("online")) {
+////                                            holder.userStatus.setText("online");
+////                                        } else if (state.equals("offline")) {
+////                                            holder.userStatus.setText("Last Seen: " + date + " " + time);
+////                                        }
+//                                    } else {
+////                                        holder.userStatus.setText("offline");
+//                                    }
 
                                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                                         @Override
