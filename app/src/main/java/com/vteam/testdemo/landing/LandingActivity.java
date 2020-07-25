@@ -17,7 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,29 +30,27 @@ import com.vteam.testdemo.SplashActivity;
 import com.vteam.testdemo.common.Constants;
 import com.vteam.testdemo.landing.model.UserStatus;
 import com.vteam.testdemo.profile.ProfileUpdateActivity;
+import com.vteam.testdemo.top.TabsAccessorAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import androidx.viewpager.widget.ViewPager;
 
 
 public class LandingActivity extends AppCompatActivity {
 
     private static int PICK_CONTACT= 100;
     private Toolbar mToolbar;
-//    private ViewPager myViewPager;
-//    private TabLayout myTabLayout;
-//    private TabsAccessorAdapter myTabsAccessorAdapter;
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
     private String currentUserID;
     private boolean existingUser;
+    private ViewPager myViewPager;
+    private TabsAccessorAdapter myTabsAccessorAdapter;
+    private TabLayout myTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,22 +62,16 @@ public class LandingActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.app_name));
 
-        BottomNavigationView navView = findViewById(R.id.navigation);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_chat, R.id.navigation_group, R.id.navigation_contact)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
-
-
-
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         RootRef = FirebaseDatabase.getInstance().getReference();
 
+        myViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
+        myTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
+        myViewPager.setAdapter(myTabsAccessorAdapter);
+
+        myTabLayout = (TabLayout) findViewById(R.id.main_tabs);
+        myTabLayout.setupWithViewPager(myViewPager);
 
     }
 
@@ -145,7 +137,7 @@ public class LandingActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
 
         if (item.getItemId() == R.id.main_create_group_option) {
-            RequestNewGroup();
+            requestNewGroupCreation();
         }else if (item.getItemId() == R.id.main_profile_option) {
             SendUserToProfileUpdateActivity();
         }else if (item.getItemId() == R.id.main_logout_option) {
@@ -157,6 +149,18 @@ public class LandingActivity extends AppCompatActivity {
             startActivityForResult(intent, PICK_CONTACT);
         }
         return true;
+    }
+
+    private void requestNewGroupCreation() {
+
+//        Bundle bundle = new Bundle();
+//        NavigationUtils.INSTANCE.addFragment(ContactSelectionFragment.newInstance(),
+//                NavigationUtils.TransactionType.REPLACE,
+//                LandingActivity.class.getSimpleName(),
+//                R.id.,
+//                bundle,
+//                getSupportFragmentManager()
+//                );
     }
 
     private void RequestNewGroup() {

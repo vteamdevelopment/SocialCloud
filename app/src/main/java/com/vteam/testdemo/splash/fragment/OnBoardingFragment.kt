@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.vteam.testdemo.R
 import com.vteam.testdemo.SplashActivity
 import com.vteam.testdemo.common.Constants
+import com.vteam.testdemo.common.NavigationUtils
+import com.vteam.testdemo.common.NavigationUtils.TransactionType.Companion.REPLACE
 import com.vteam.testdemo.otp.fragment.OtpFragment
 import com.vteam.testdemo.splash.viewmodel.OnBoardingViewModel
 import kotlinx.android.synthetic.main.on_boarding_fragment.*
@@ -58,18 +60,21 @@ class OnBoardingFragment : Fragment() {
         val countryCode = country_code.text.toString()
         if (mobileNumber.length == 10) {
 
-            if (activity is SplashActivity) {
-                OtpFragment::class.simpleName?.let {
-                    (activity as SplashActivity).addFragment(
+
+            OtpFragment::class.simpleName?.let {
+                activity?.supportFragmentManager?.let { fragmentManager ->
+                    NavigationUtils.addFragment(
                         OtpFragment.newInstance(),
-                        SplashActivity.TransactionType.REPLACE, it, R.id.container,
+                        REPLACE, it, R.id.container,
                         bundle = bundleOf(
                             Constants.KEY.MOBILE_NUMBER to mobileNumber,
                             Constants.KEY.COUNTRY_CODE to countryCode
-                        )
+                        ),
+                        supportFragmentManager = fragmentManager
                     )
                 }
             }
+
         }
     }
 }
