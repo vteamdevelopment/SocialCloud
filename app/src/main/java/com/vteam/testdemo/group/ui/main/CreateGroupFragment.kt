@@ -5,9 +5,9 @@ import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -46,12 +46,20 @@ class CreateGroupFragment : Fragment() {
 
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true);
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.create_group_fragment, container, false)
+        (activity as AppCompatActivity?)?.setSupportActionBar(binding.toolbar as Toolbar?)
+        (binding.toolbar as Toolbar?)?.title = getString(R.string.create_group)
+
         return binding.root
     }
 
@@ -159,6 +167,13 @@ class CreateGroupFragment : Fragment() {
         super.onStop()
     }
 
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.create_group_menu, menu)
+    }
 
     class ContactsViewHolder(val binding: CreateGroupItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
