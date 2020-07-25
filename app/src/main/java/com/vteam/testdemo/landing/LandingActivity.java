@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.vteam.testdemo.R;
 import com.vteam.testdemo.SplashActivity;
 import com.vteam.testdemo.common.Constants;
+import com.vteam.testdemo.group.CreateGroupActivity;
 import com.vteam.testdemo.landing.model.UserStatus;
 import com.vteam.testdemo.profile.ProfileUpdateActivity;
 import com.vteam.testdemo.top.TabsAccessorAdapter;
@@ -152,15 +153,8 @@ public class LandingActivity extends AppCompatActivity {
     }
 
     private void requestNewGroupCreation() {
-
-//        Bundle bundle = new Bundle();
-//        NavigationUtils.INSTANCE.addFragment(ContactSelectionFragment.newInstance(),
-//                NavigationUtils.TransactionType.REPLACE,
-//                LandingActivity.class.getSimpleName(),
-//                R.id.,
-//                bundle,
-//                getSupportFragmentManager()
-//                );
+        Intent intent = new Intent(this, CreateGroupActivity.class);
+        startActivity(intent);
     }
 
     private void RequestNewGroup() {

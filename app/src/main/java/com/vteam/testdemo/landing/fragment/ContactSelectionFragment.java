@@ -63,7 +63,7 @@ public class ContactSelectionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mContactsView = inflater.inflate(R.layout.fragment_contacts, container, false);
-        mContactsList = (RecyclerView) mContactsView.findViewById(R.id.contact_list);
+        mContactsList = (RecyclerView) mContactsView.findViewById(R.id.group_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mContactsList.setLayoutManager(layoutManager);
         DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(mContactsList.getContext(),

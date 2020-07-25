@@ -3,7 +3,6 @@ package com.vteam.testdemo.landing.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -38,8 +37,6 @@ import com.vteam.testdemo.landing.model.Users;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.vteam.testdemo.R.color.color_000000;
-
 
 public class ContactsFragment extends Fragment {
     private View mContactsView;
@@ -62,7 +59,7 @@ public class ContactsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mContactsView = inflater.inflate(R.layout.fragment_contacts, container, false);
-        mContactsList = (RecyclerView) mContactsView.findViewById(R.id.contact_list);
+        mContactsList = (RecyclerView) mContactsView.findViewById(R.id.group_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mContactsList.setLayoutManager(layoutManager);
         DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(mContactsList.getContext(),

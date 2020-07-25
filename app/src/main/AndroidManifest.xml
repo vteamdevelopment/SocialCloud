@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vteam.testdemo">
 
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -11,19 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-        <activity android:name="com.vteam.testdemo.top.ImageViewerActivity"></activity>
-        <activity android:name="com.vteam.testdemo.chat.ChatActivity" />
-        <activity android:name=".profile.CreateProfileActivity"/>
-        <activity android:name="com.vteam.testdemo.top.GroupChatActivity" />
-        <activity android:name="com.vteam.testdemo.profile.ProfileUpdateActivity" />
-        <activity android:name="com.vteam.testdemo.landing.LandingActivity">
-        </activity>
+        <activity android:name=".group.CreateGroupActivity"></activity>
+        <activity android:name=".top.ImageViewerActivity" />
+        <activity android:name=".chat.ChatActivity" />
+        <activity android:name=".profile.CreateProfileActivity" />
+        <activity android:name=".top.GroupChatActivity" />
+        <activity android:name=".profile.ProfileUpdateActivity" />
+        <activity android:name=".landing.LandingActivity"></activity>
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
-
+            android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -33,7 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
