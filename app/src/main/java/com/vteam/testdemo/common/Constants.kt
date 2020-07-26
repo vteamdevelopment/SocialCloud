@@ -27,5 +27,10 @@ class Constants {
 
     }
 
+    object CHILD_NODES{
+        const val GROUPS = "Groups"
+
+    }
+
 
 }

@@ -26,6 +26,7 @@ import com.vteam.testdemo.chat.adapter.SelectedUserAdapter
 import com.vteam.testdemo.chat.model.GroupDetails
 import com.vteam.testdemo.common.Constants
 import com.vteam.testdemo.common.Constants.NODES.GROUP_DETAILS
+import com.vteam.testdemo.common.Constants.NODES.USER_NODE
 import com.vteam.testdemo.databinding.CreateGroupFragmentBinding
 import com.vteam.testdemo.landing.model.Users
 import com.vteam.testdemo.profile.CreateProfileActivity
@@ -42,7 +43,6 @@ class CreateGroupFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: CreateGroupFragmentBinding
     private lateinit var viewModel: CreateGroupViewModel2
-    private lateinit var groupProfileImagesRef: StorageReference
     private lateinit var userProfileImagesRef: StorageReference
     private lateinit var rootRef: DatabaseReference
     private lateinit var currentUserID: String
@@ -60,8 +60,6 @@ class CreateGroupFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         currentUserID = auth.currentUser!!.uid
         rootRef = FirebaseDatabase.getInstance().reference
-        userProfileImagesRef = FirebaseStorage.getInstance().reference.child("Profile Images")
-        groupProfileImagesRef = FirebaseStorage.getInstance().reference.child("Profile Images")
 
     }
 
@@ -109,13 +107,15 @@ class CreateGroupFragment : Fragment() {
                     groupDetails.createdAt = currentDate
                     groupDetails.memebers = selectedUserList.map { it.uId }
                     groupDetails.name = binding.groupName.text.toString()
-                    map.put(mId,groupDetails)
+                    map.put(GROUP_DETAILS + "/" + mId, groupDetails)
+                    selectedUserList.forEach(){    map.put(USER_NODE+"/"+it.uId+"/Groups/"+mId,true)}
 
                 }
 
 
 
-                groupDetailsRef.updateChildren(map)
+
+                rootRef.updateChildren(map)
                     .addOnCompleteListener(object : OnCompleteListener<Void> {
                         override fun onComplete(p0: Task<Void>) {
                             if (p0.isSuccessful()) {
@@ -124,6 +124,7 @@ class CreateGroupFragment : Fragment() {
                                     "Group created Successfully...",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                activity?.finish()
                             } else {
                                 Toast.makeText(context, "Error", Toast.LENGTH_SHORT)
                                     .show()
