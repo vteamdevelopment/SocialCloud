@@ -1,7 +1,7 @@
 package com.vteam.testdemo.chat.model
 
 data class GroupDetails(
-    var id: String,
+    var id: String?= null,
     var adminId: String?=null,
     var adminName: String?=null,
     var createdAt: String?=null,

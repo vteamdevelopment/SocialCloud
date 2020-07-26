@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,8 +20,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vteam.testdemo.R;
 import com.vteam.testdemo.chat.adapter.GroupAdapter;
+import com.vteam.testdemo.chat.model.GroupDetails;
 import com.vteam.testdemo.common.Constants;
+import com.vteam.testdemo.group.OnGroupItemClick;
 import com.vteam.testdemo.top.GroupChatActivity;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,12 +36,11 @@ import java.util.Set;
 public class GroupsFragment extends Fragment {
     private View mGroupFragmentView;
     private RecyclerView mRecyclerView;
-    private GroupAdapter mArrayAdapter;
-    private ArrayList<String> mListOfGroups = new ArrayList<>();
-    private DatabaseReference mGroupRef;
+    private GroupAdapter mGroupAdapter;
+    private ArrayList<String> mGroupList = new ArrayList<>();
     private DatabaseReference mUserGroupsRef;
-    private FirebaseAuth auth;
-    private String currentUserID;
+    private FirebaseAuth mAuth;
+    private String mCurrentUserID;
 
 
     public GroupsFragment() {
@@ -49,13 +51,12 @@ public class GroupsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mGroupFragmentView = inflater.inflate(R.layout.fragment_groups, container, false);
-        auth = FirebaseAuth.getInstance();
-        currentUserID = auth.getCurrentUser().getUid();
+        mAuth = FirebaseAuth.getInstance();
+        mCurrentUserID = mAuth.getCurrentUser().getUid();
 
-        mGroupRef = FirebaseDatabase.getInstance().getReference().child("Groups");
-        mUserGroupsRef = FirebaseDatabase.getInstance().getReference().child(Constants.NODES.USER_NODE).child(currentUserID).child(Constants.CHILD_NODES.GROUPS);
+        mUserGroupsRef = FirebaseDatabase.getInstance().getReference().child(Constants.NODES.USER_NODE).child(mCurrentUserID).child(Constants.CHILD_NODES.GROUPS);
 
-        InitializeFields();
+        initializeFields();
 
         retrieveAndDisplayGroups();
 
@@ -82,11 +83,11 @@ public class GroupsFragment extends Fragment {
                 while (iterator.hasNext()) {
                     set.add(((DataSnapshot) iterator.next()).getKey());
                 }
-
-                mListOfGroups.clear();
-                mListOfGroups.addAll(set);
-                mArrayAdapter = new GroupAdapter(mListOfGroups);
-                mRecyclerView.setAdapter(mArrayAdapter);
+                mGroupList.clear();
+                mGroupList.addAll(set);
+                mGroupAdapter.notifyDataSetChanged();
+//                mGroupAdapter = new GroupAdapter(mGroupList);
+//                mRecyclerView.setAdapter(mGroupAdapter);
             }
 
             @Override
@@ -96,13 +97,27 @@ public class GroupsFragment extends Fragment {
         });
     }
 
-    private void InitializeFields() {
+    private void initializeFields() {
         mRecyclerView = (RecyclerView) mGroupFragmentView.findViewById(R.id.list_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-        mArrayAdapter = new GroupAdapter(mListOfGroups);
-        mRecyclerView.setAdapter(mArrayAdapter);
+        mGroupAdapter = new GroupAdapter(mGroupList);
+
+        mRecyclerView.setAdapter(mGroupAdapter);
+        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                layoutManager.getOrientation());
+        mRecyclerView.addItemDecoration(mDividerItemDecoration);
+
+        mGroupAdapter.setOnItemClickListener(new OnGroupItemClick() {
+            @Override
+            public void onItemClicked(int position, @NotNull String groupId) {
+                Intent intent = new Intent(getContext(), GroupChatActivity.class);
+                intent.putExtra(Constants.KEY.GROUP_ID,groupId);
+                getActivity().startActivity(intent);
+            }
+        });
+
     }
 
 }

@@ -2,6 +2,8 @@ package com.vteam.testdemo.common
 
 class Constants {
     object KEY {
+
+        const val GROUP_ID ="GROUP_ID"
         const val MOBILE_NUMBER = "MOBILE_NUMBER"
         const val COUNTRY_CODE = "COUNTRY_CODE"
         const val SELECTED_USER = "SELECTED_USER"
@@ -24,6 +26,7 @@ class Constants {
         const val CHAT_NODE = "ChatNode"
         const val MESSAGES_NODE = "MessagesNode"
         const val GROUP_DETAILS = "GroupDetails"
+        const val GROUP_MESSAGES = "GroupMessages"
 
     }
 
