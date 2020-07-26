@@ -84,28 +84,35 @@ class CreateGroupFragment : Fragment() {
         binding.next.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
-                val groupDetails: GroupDetails = GroupDetails("adsdfsd");
-                groupDetails.adminId = currentUserID
-                groupDetails.adminName = "Name of admin"
-                val calForDate = Calendar.getInstance()
-                val currentDateFormat =
-                    SimpleDateFormat(Constants.PATTERN.PATTERN_MMM_DD_yyyy)
-                var currentDate = currentDateFormat.format(calForDate.time)
 
-
-                groupDetails.createdAt = currentDate
-                groupDetails.memebers = selectedUserList.map { it.uId }
-                groupDetails.name = "User Name"
 
                 val groupDetailsRef = rootRef.child(GROUP_DETAILS)
                 val groupDetailsKeyRef: DatabaseReference = groupDetailsRef.push()
-
-
                 val messagePushID = groupDetailsKeyRef.key
+
+
 
                 var map = HashMap<String,Any?>();
 
-                messagePushID?.let { map.put(it,groupDetails) }
+                messagePushID?.let { mId ->
+
+
+                    val groupDetails: GroupDetails = GroupDetails(mId);
+                    groupDetails.adminId = currentUserID
+                    groupDetails.adminName = "Name of admin"
+                    val calForDate = Calendar.getInstance()
+                    val currentDateFormat =
+                        SimpleDateFormat(Constants.PATTERN.PATTERN_MMM_DD_yyyy)
+                    var currentDate = currentDateFormat.format(calForDate.time)
+
+
+                    groupDetails.createdAt = currentDate
+                    groupDetails.memebers = selectedUserList.map { it.uId }
+                    groupDetails.name = binding.groupName.text.toString()
+                    map.put(mId,groupDetails)
+
+                }
+
 
 
                 groupDetailsRef.updateChildren(map)
