@@ -53,12 +53,6 @@ class GroupAdapter(private val userSelectedList: List<String>) :
         mUserGroupsRef?.child(groupId)?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val groupDetails: GroupDetails? = dataSnapshot.getValue(GroupDetails::class.java)
-//                val set: MutableSet<String?> =
-//                    HashSet()
-//                val iterator: MutableIterator<DataSnapshot> = dataSnapshot.children.iterator()
-//                while (iterator.hasNext()) {
-//                    set.add((iterator.next()).key)
-//                }
                 holder.binding.groupName.text = groupDetails?.name
             }
 

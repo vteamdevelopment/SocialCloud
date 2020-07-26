@@ -48,8 +48,6 @@ public class GroupChatActivity extends AppCompatActivity {
 
         mGroupId= getIntent().getStringExtra(Constants.KEY.GROUP_ID);
 
-//        currentGroupName = getIntent().getExtras().get("groupName").toString();
-
         mAuth = FirebaseAuth.getInstance();
         mCurrentUserID = mAuth.getCurrentUser().getUid();
         mUsersRef = FirebaseDatabase.getInstance().getReference().child(Constants.NODES.USER_NODE);
