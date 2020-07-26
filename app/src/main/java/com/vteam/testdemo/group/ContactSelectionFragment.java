@@ -1,4 +1,4 @@
-package com.vteam.testdemo.landing.fragment;
+package com.vteam.testdemo.group;
 
 
 import android.app.Activity;

@@ -31,11 +31,9 @@ import com.vteam.testdemo.common.Constants;
 import com.vteam.testdemo.group.CreateGroupActivity;
 import com.vteam.testdemo.landing.model.UserStatus;
 import com.vteam.testdemo.profile.ProfileUpdateActivity;
-import com.vteam.testdemo.top.TabsAccessorAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 
 import androidx.viewpager.widget.ViewPager;
 
