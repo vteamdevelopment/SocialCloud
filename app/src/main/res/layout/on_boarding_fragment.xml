@@ -12,13 +12,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
+        android:fontFamily="@font/aclonica"
         android:text="Welcome to Indian Social Cloud"
+        android:textColor="@color/colorbtn_Background"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/color_000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ImgLogo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:padding="15dp"
+        android:layout_marginTop="16dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message"/>
 
     <TextView
         android:id="@+id/sec_msg"
@@ -26,9 +38,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Atma Nirbhar Bharat"
+        android:textColor="@color/color_000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message" />
+        app:layout_constraintTop_toBottomOf="@+id/ImgLogo" />
 
     <TextView
         android:id="@+id/third_msg"
@@ -37,6 +50,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:text="Please enter you mobile details"
+        android:textColor="@color/color_000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sec_msg" />
@@ -51,18 +65,17 @@
         android:maxLines="1"
         android:maxLength="4"
         android:inputType="phone"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintTop_toBottomOf="@+id/third_msg" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Mobileno_Layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="70dp"
         android:layout_marginTop="10dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/country_code"
         app:layout_constraintTop_toBottomOf="@+id/third_msg">
@@ -79,10 +92,28 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
-
-
-
+    <CheckBox
+        android:id="@+id/CheckAgree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/sign_up"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/sign_up"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="I Agree to terms and conditions"
+        android:textColor="@color/color_000000"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/CheckAgree"
+        app:layout_constraintBottom_toBottomOf="@id/CheckAgree"
+        app:layout_constraintStart_toEndOf="@id/CheckAgree"
+        />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sign_up"
@@ -92,7 +123,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/btn_rounded"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
