@@ -37,6 +37,8 @@ import com.vteam.testdemo.landing.model.ChatModel;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.vteam.testdemo.common.Constants.NODES.CHAT_NODE;
+
 
 public class ChatsFragment extends Fragment {
     private View PrivateChatsView;
@@ -58,8 +60,8 @@ public class ChatsFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
-        ChatsRef = FirebaseDatabase.getInstance().getReference().child("ChatNode").child(currentUserID);
-        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        ChatsRef = FirebaseDatabase.getInstance().getReference().child(CHAT_NODE).child(currentUserID);
+        UsersRef = FirebaseDatabase.getInstance().getReference().child(Constants.NODES.USER_NODE);
 
         chatsList = (RecyclerView) PrivateChatsView.findViewById(R.id.chats_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

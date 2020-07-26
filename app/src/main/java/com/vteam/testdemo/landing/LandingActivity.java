@@ -108,7 +108,7 @@ public class LandingActivity extends AppCompatActivity {
 
     private void VerifyUserExistence() {
         currentUserID = mAuth.getCurrentUser().getUid();
-        RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
+        RootRef.child(Constants.NODES.USER_NODE).child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if ((dataSnapshot.child("name").exists())) {
@@ -227,7 +227,7 @@ public class LandingActivity extends AppCompatActivity {
         userStatus.setStatus(state);
 
 //
-//        RootRef.child("Users").child(currentUserID).child("userState")
+//        RootRef.child(com.vteam.testdemo.common.Constants.NODES.USER_NODE).child(currentUserID).child("userState")
 //                            .updateChildren(onlineStateMap);
 
 

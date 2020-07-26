@@ -44,6 +44,7 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.vteam.testdemo.R;
 import com.vteam.testdemo.chat.adapter.MessageAdapter;
+import com.vteam.testdemo.common.Constants;
 import com.vteam.testdemo.common.Utils;
 import com.vteam.testdemo.landing.model.ChatModel;
 import com.vteam.testdemo.top.Messages;
@@ -56,6 +57,9 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.vteam.testdemo.common.Constants.NODES.CHAT_NODE;
+import static com.vteam.testdemo.common.Constants.NODES.MESSAGES_NODE;
 
 public class ChatActivity extends AppCompatActivity {
     private final List<Messages> messagesList = new ArrayList<>();
@@ -356,7 +360,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void DisplayLastSeen() {
-        RootRef.child("Users").child(messageReceiverID)
+        RootRef.child(Constants.NODES.USER_NODE).child(messageReceiverID)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -386,7 +390,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        RootRef.child("MessagesNode").child(Utils.setOneToOneChat(messageSenderID,messageReceiverID))
+        RootRef.child(MESSAGES_NODE).child(Utils.setOneToOneChat(messageSenderID,messageReceiverID))
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -425,9 +429,9 @@ public class ChatActivity extends AppCompatActivity {
             Toast.makeText(this, "first write your message...", Toast.LENGTH_SHORT).show();
         } else {
 
-            DatabaseReference userMessageKeyRef = RootRef.child("MessagesNode")
+            DatabaseReference userMessageKeyRef = RootRef.child(MESSAGES_NODE)
                     .child(Utils.setOneToOneChat(messageSenderID,messageReceiverID)).push();
-            DatabaseReference userChatNodeKeyRef = RootRef.child("ChatNode");
+            DatabaseReference userChatNodeKeyRef = RootRef.child(CHAT_NODE);
 
 
             String type = "text";

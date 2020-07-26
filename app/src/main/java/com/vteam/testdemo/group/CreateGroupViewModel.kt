@@ -1,4 +1,4 @@
-package com.vteam.testdemo.group.ui.main
+package com.vteam.testdemo.group
 
 import androidx.lifecycle.ViewModel
 

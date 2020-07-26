@@ -17,7 +17,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_profile" />
+            android:src="@drawable/ic_profile" />
 
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -54,22 +54,24 @@
             android:text="@string/status"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/users_profile_image"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/users_select_icon"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/users_profile_image"
 
             app:layout_constraintTop_toTopOf="@+id/users_profile_image"
             app:layout_constraintVertical_bias="0.98" />
 
-        <TextView
-            android:id="@+id/text_last_message_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/users_select_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:visibility="invisible"
             android:layout_marginEnd="12dp"
-            android:text="@string/_5_33_pm"
-            app:layout_constraintBottom_toBottomOf="@+id/user_profile_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/user_profile_name" />
+            android:src="@drawable/ic_baseline_done_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

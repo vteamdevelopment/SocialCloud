@@ -3,7 +3,6 @@ package com.vteam.testdemo.group
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.vteam.testdemo.R
-import com.vteam.testdemo.group.ui.main.CreateGroupFragment
 
 class CreateGroupActivity : AppCompatActivity() {
 
@@ -12,7 +11,7 @@ class CreateGroupActivity : AppCompatActivity() {
         setContentView(R.layout.create_group_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, CreateGroupFragment.newInstance())
+                .replace(R.id.container, SelectUserForGroupFragment.newInstance())
                 .commitNow()
         }
     }

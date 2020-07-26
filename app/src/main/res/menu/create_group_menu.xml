@@ -6,7 +6,8 @@
     <item
         android:title="Search"
         android:id="@+id/create_search_group"
-        app:showAsAction="never"> </item>
+        android:icon="@drawable/ic_baseline_search_24"
+        app:showAsAction="always"> </item>
 
 
 </menu>

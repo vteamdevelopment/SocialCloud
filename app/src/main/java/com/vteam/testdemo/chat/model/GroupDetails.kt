@@ -1,12 +1,16 @@
 package com.vteam.testdemo.chat.model
 
 data class GroupDetails(
-    val id: String,
-    val adminId: String,
-    val adminName: String,
-    val createdAt: String,
-    val groupIcon: String,
-    val memebers: List<String>,
-    val name: String,
-    val recentMessage: GroupRecentMessage
-)
+    var id: String,
+    var adminId: String?=null,
+    var adminName: String?=null,
+    var createdAt: String?=null,
+    var groupIcon: String?=null,
+    var memebers: List<String?>?=null,
+    var name: String?=null,
+    var recentMessage: GroupRecentMessage?=null
+){
+    constructor(uid: String) : this(id=uid) {
+        this.id =uid
+    }
+}

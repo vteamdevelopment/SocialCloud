@@ -4,6 +4,7 @@ class Constants {
     object KEY {
         const val MOBILE_NUMBER = "MOBILE_NUMBER"
         const val COUNTRY_CODE = "COUNTRY_CODE"
+        const val SELECTED_USER = "SELECTED_USER"
     }
 
 
@@ -21,7 +22,8 @@ class Constants {
     object NODES{
         const val USER_NODE = "Users"
         const val CHAT_NODE = "ChatNode"
-        const val MESSAGES_NODE = "MESSAGES_NODE"
+        const val MESSAGES_NODE = "MessagesNode"
+        const val GROUP_DETAILS = "GroupDetails"
 
     }
 

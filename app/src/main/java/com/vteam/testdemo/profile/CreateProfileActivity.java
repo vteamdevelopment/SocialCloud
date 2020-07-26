@@ -48,7 +48,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CreateProfileActivity extends AppCompatActivity {
 
 
-    private static final int GALLERY_PICK = 1;
+    public static final int GALLERY_PICK = 1;
     private DatabaseReference RootRef;
     private FirebaseAuth mAuth;
     private String currentUserID;
@@ -163,7 +163,7 @@ public class CreateProfileActivity extends AppCompatActivity {
             userMap.put(currentUserID,users);
 
 
-            RootRef.child("Users").updateChildren(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            RootRef.child(Constants.NODES.USER_NODE).updateChildren(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
@@ -179,7 +179,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     }
 
     private void RetrieveUserInfo() {
-        RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
+        RootRef.child(Constants.NODES.USER_NODE).child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name") && (dataSnapshot.hasChild("image")))) {
@@ -286,7 +286,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
                             final String downloaedUrl = task.getResult().getMetadata().getPath();
 
-                            RootRef.child("Users").child(currentUserID).child("image")
+                            RootRef.child(Constants.NODES.USER_NODE).child(currentUserID).child("image")
                                     .setValue(downloaedUrl)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

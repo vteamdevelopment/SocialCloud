@@ -116,7 +116,7 @@ class OTPViewModel : ViewModel() {
         var rootRef = FirebaseDatabase.getInstance().reference
         var currentUserID = auth.getCurrentUser()?.getUid()
         currentUserID?.let {
-            rootRef.child("Users").child(it)
+            rootRef.child(com.vteam.testdemo.common.Constants.NODES.USER_NODE).child(it)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.child("name").exists()) {
