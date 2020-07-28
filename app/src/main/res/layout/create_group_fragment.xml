@@ -34,6 +34,7 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:layout_constraintBottom_toBottomOf="@+id/group_icon"
             android:layout_width="0dp"
+            android:hint="@string/name_of_the_group"
             android:layout_margin="@dimen/dp_12"
             android:layout_height="wrap_content" />
 
@@ -42,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_12"
-            android:text="Selected Users"
+            android:text="@string/selected_users"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/group_icon"

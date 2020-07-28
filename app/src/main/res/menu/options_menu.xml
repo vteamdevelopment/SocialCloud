@@ -4,22 +4,22 @@
 
 
     <item
-        android:title="Create Group"
+        android:title="@string/create_group"
         android:id="@+id/main_create_group_option"
         app:showAsAction="never"> </item>
 
     <item
-        android:title="Profile"
+        android:title="@string/profile"
         android:id="@+id/main_profile_option"
         app:showAsAction="never"> </item>
 
     <item
-        android:title="Invite"
+        android:title="@string/invite"
         android:id="@+id/main_invite"
         app:showAsAction="never"> </item>
 
     <item
-        android:title="Logout"
+        android:title="@string/logout"
         android:id="@+id/main_logout_option"
         app:showAsAction="never"> </item>
 </menu>

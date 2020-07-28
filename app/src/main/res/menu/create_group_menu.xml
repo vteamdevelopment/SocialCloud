@@ -4,7 +4,7 @@
 
 
     <item
-        android:title="Search"
+        android:title="@string/search"
         android:id="@+id/create_search_group"
         android:icon="@drawable/ic_baseline_search_24"
         app:showAsAction="always"> </item>

@@ -9,4 +9,32 @@
     <string name="status">Hi, I am here on SocialCloud.</string>
     <string name="name">Name</string>
     <string name="create_group">Create Group</string>
+    <string name="name_of_the_group">Enter group name</string>
+    <string name="type_message_here">type message here...</string>
+    <string name="write_your_message_here">write your message here...</string>
+    <string name="username">username</string>
+    <string name="hey_i_am_available_now">hey, i am available now.</string>
+    <string name="location">Location</string>
+    <string name="update">Update</string>
+    <string name="selected_users">Selected Users</string>
+    <string name="search">Search</string>
+    <string name="display_username">Display UserName</string>
+    <string name="last_seen">Last Seen</string>
+    <string name="receiver_messages_here">receiver messages here</string>
+    <string name="sender_messages">sender messages</string>
+    <string name="user_name">User name</string>
+    <string name="welcome_to_indian_social_cloud">Welcome to Indian Social Cloud</string>
+    <string name="atma_nirbhar_bharat">Atma Nirbhar Bharat</string>
+    <string name="please_enter_you_mobile_details">Please enter you mobile details</string>
+    <string name="_91">+91</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="i_agree_to_terms_and_conditions">I Agree to terms and conditions</string>
+    <string name="next">Next</string>
+    <string name="profile">Profile</string>
+    <string name="invite">Invite</string>
+    <string name="logout">Logout</string>
+
+    <string name="please_enter_the_otp_received">Please enter the OTP received</string>
+    <string name="enter_otp">Enter OTP</string>
+
 </resources>
