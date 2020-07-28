@@ -6,7 +6,7 @@
     android:background = "@color/colorPrimary">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/custom_profile_image"
+        android:id="@+id/profile_image"
         android:layout_width="47dp"
         android:layout_height="47dp"
         android:layout_alignParentEnd="true"
@@ -16,7 +16,7 @@
         android:layout_marginRight="10dp" />
 
     <TextView
-        android:id="@+id/custom_profile_name"
+        android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -27,10 +27,10 @@
         android:textSize="18sp"
         />
     <TextView
-        android:id="@+id/custom_user_last_seen"
+        android:id="@+id/user_last_seen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/custom_profile_name"
+        android:layout_below="@+id/user_name"
         android:layout_alignParentStart="true"
         android:layout_marginTop="3dp"
         android:text="Last Seen"
