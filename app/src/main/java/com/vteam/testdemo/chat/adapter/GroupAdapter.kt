@@ -1,7 +1,6 @@
 package com.vteam.testdemo.chat.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -17,25 +16,25 @@ class GroupAdapter(private val userSelectedList: List<String>) :
     RecyclerView.Adapter<GroupAdapter.GroupItemViewHolder>() {
 
     private var onGroupItemClick : OnGroupItemClick? = null
-    private var mCurrentUserID: String?= null
+    private var currentUserID: String?= null
 
-    private lateinit var mAuth: FirebaseAuth
-    private var mUserGroupsRef: DatabaseReference? = null
+    private lateinit var auth: FirebaseAuth
+    private var userGroupsRef: DatabaseReference? = null
 
 
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupItemViewHolder {
-        var binding: GroupItemLayoutBinding = DataBindingUtil.inflate(
+        val binding: GroupItemLayoutBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.group_item_layout,
             parent,
             false
         )
 
-        mAuth = FirebaseAuth.getInstance()
-        mCurrentUserID =mAuth.currentUser?.uid
-        mUserGroupsRef = mCurrentUserID?.let {
+        auth = FirebaseAuth.getInstance()
+        currentUserID =auth.currentUser?.uid
+        userGroupsRef = currentUserID?.let {
             FirebaseDatabase.getInstance().reference
                 .child(Constants.NODES.GROUP_DETAILS)
         }
@@ -50,7 +49,7 @@ class GroupAdapter(private val userSelectedList: List<String>) :
     override fun onBindViewHolder(holder: GroupItemViewHolder, position: Int) {
         val groupId: String = userSelectedList[position]
 
-        mUserGroupsRef?.child(groupId)?.addValueEventListener(object : ValueEventListener {
+        userGroupsRef?.child(groupId)?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val groupDetails: GroupDetails? = dataSnapshot.getValue(GroupDetails::class.java)
                 holder.binding.groupName.text = groupDetails?.name
@@ -60,30 +59,9 @@ class GroupAdapter(private val userSelectedList: List<String>) :
 
             }
         })
-        holder.binding.root.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                onGroupItemClick?.onItemClicked(position,groupId)
-            }
-        })
+        holder.binding.root.setOnClickListener { onGroupItemClick?.onItemClicked(position,groupId) }
 
-//
-//        if (user.image != null && !user.image!!.isEmpty()) {
-//            val reference =
-//                FirebaseStorage.getInstance().reference
-//            reference.child(user.image!!).downloadUrl
-//                .addOnSuccessListener { uri -> // Got the download URL for 'users/me/profile.png'
-//                    Log.d("URL", "" + uri)
-//                    Glide.with(holder.binding.usersProfileImage.context)
-//                        .load(uri)
-//                        .placeholder(R.drawable.ic_profile)
-//                        .error(R.drawable.ic_profile)
-//                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                        .into(holder.binding.usersProfileImage)
-//
-//                }.addOnFailureListener {
-//                    // Handle any errors
-//                }
-//        }
+
     }
 
 
@@ -93,8 +71,6 @@ class GroupAdapter(private val userSelectedList: List<String>) :
     }
 
     inner class GroupItemViewHolder(val binding: GroupItemLayoutBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-    }
+        RecyclerView.ViewHolder(binding.root)
 
 }
