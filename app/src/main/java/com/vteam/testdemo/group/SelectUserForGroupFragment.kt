@@ -1,13 +1,10 @@
 package com.vteam.testdemo.group
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
@@ -21,15 +18,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import com.vteam.testdemo.R
 import com.vteam.testdemo.chat.adapter.SelectedUserAdapter
 import com.vteam.testdemo.common.Constants
@@ -37,7 +30,6 @@ import com.vteam.testdemo.common.NavigationUtils
 import com.vteam.testdemo.databinding.CreateGroupItemLayoutBinding
 import com.vteam.testdemo.databinding.SelectUserForGroupFragmentBinding
 import com.vteam.testdemo.landing.model.Users
-import com.vteam.testdemo.profile.CreateProfileActivity
 
 class SelectUserForGroupFragment : Fragment() {
 
@@ -54,7 +46,7 @@ class SelectUserForGroupFragment : Fragment() {
     private lateinit var mUsersRef: DatabaseReference
     private lateinit var auth: FirebaseAuth
     lateinit var binding: SelectUserForGroupFragmentBinding
-    private lateinit var viewModel: CreateGroupViewModel
+    private lateinit var viewModel: SelectUserForGroupViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -91,7 +83,7 @@ class SelectUserForGroupFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         val horizontalLayoutManager = LinearLayoutManager(context)
         horizontalLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        viewModel = ViewModelProvider(this).get(CreateGroupViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(SelectUserForGroupViewModel::class.java)
         binding.groupList.layoutManager = layoutManager
         binding.groupSelectedList.layoutManager = horizontalLayoutManager
         val mDividerItemDecoration = DividerItemDecoration(

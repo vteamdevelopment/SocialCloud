@@ -17,7 +17,6 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -42,7 +41,7 @@ class CreateGroupFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: CreateGroupFragmentBinding
-    private lateinit var viewModel: CreateGroupViewModel2
+    private lateinit var viewModel: CreateGroupViewModel
     private lateinit var userProfileImagesRef: StorageReference
     private lateinit var rootRef: DatabaseReference
     private lateinit var currentUserID: String
@@ -139,7 +138,7 @@ class CreateGroupFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(CreateGroupViewModel2::class.java)
+        viewModel = ViewModelProvider(this).get(CreateGroupViewModel::class.java)
         // TODO: Use the ViewModel
     }
 
