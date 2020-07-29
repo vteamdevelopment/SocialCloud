@@ -17,6 +17,8 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.vteam.testdemo.R
 import com.vteam.testdemo.chat.adapter.MessageAdapter.MessageViewHolder
+import com.vteam.testdemo.common.ConstantNodes
+import com.vteam.testdemo.common.Constants
 import com.vteam.testdemo.databinding.CustomMessagesLayoutBinding
 import com.vteam.testdemo.landing.LandingActivity
 import com.vteam.testdemo.top.ImageViewerActivity
@@ -26,6 +28,9 @@ class MessageAdapter(private val userMessagesList: List<Messages>) : RecyclerVie
 
     private var auth: FirebaseAuth? = null
     private var usersRef: DatabaseReference? = null
+
+
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): MessageViewHolder {
         val binding: CustomMessagesLayoutBinding = DataBindingUtil.inflate(
             LayoutInflater.from(viewGroup.context),
@@ -46,7 +51,9 @@ class MessageAdapter(private val userMessagesList: List<Messages>) : RecyclerVie
         val messages = userMessagesList[position]
         val fromUserID = messages.from
         val fromMessageType = messages.type
-        usersRef = FirebaseDatabase.getInstance().reference.child("Users").child(fromUserID)
+
+
+        usersRef = FirebaseDatabase.getInstance().reference.child(ConstantNodes.NODES.USER_NODE).child(fromUserID)
         usersRef!!.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.hasChild("image")) {
@@ -70,6 +77,7 @@ class MessageAdapter(private val userMessagesList: List<Messages>) : RecyclerVie
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+
         messageViewHolder.binding.receiverMessageText.visibility = View.GONE
         messageViewHolder.binding.messageReceiverImageView.visibility = View.GONE
         messageViewHolder.binding.senderMessageText.visibility = View.GONE

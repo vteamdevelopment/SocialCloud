@@ -21,19 +21,10 @@ class Constants {
       const val PATTERN_hh_mm_a = "hh:mm a"
     }
 
-    object NODES{
-        const val USER_NODE = "Users"
-        const val CHAT_NODE = "ChatNode"
-        const val MESSAGES_NODE = "MessagesNode"
-        const val GROUP_DETAILS = "GroupDetails"
-        const val GROUP_MESSAGES = "GroupMessages"
-
+    object FILE_TYPE{
+        const val PDF = "pfd"
+        const val DOCX = "docx"
+        const val IMAGE = "image"
     }
-
-    object CHILD_NODES{
-        const val GROUPS = "Groups"
-
-    }
-
 
 }

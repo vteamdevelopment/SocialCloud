@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vteam.testdemo.R;
+import com.vteam.testdemo.common.ConstantNodes;
 import com.vteam.testdemo.common.Constants;
 
 import java.text.SimpleDateFormat;
@@ -50,8 +51,8 @@ public class GroupChatActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mCurrentUserID = mAuth.getCurrentUser().getUid();
-        mUsersRef = FirebaseDatabase.getInstance().getReference().child(Constants.NODES.USER_NODE);
-        mGroupMessagesRef = FirebaseDatabase.getInstance().getReference().child(Constants.NODES.GROUP_MESSAGES).child(mGroupId);
+        mUsersRef = FirebaseDatabase.getInstance().getReference().child(ConstantNodes.NODES.USER_NODE);
+        mGroupMessagesRef = FirebaseDatabase.getInstance().getReference().child(ConstantNodes.NODES.GROUP_MESSAGES).child(mGroupId);
 
         initializeFields();
 

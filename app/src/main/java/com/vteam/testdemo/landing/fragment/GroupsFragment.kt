@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.vteam.testdemo.R
 import com.vteam.testdemo.chat.adapter.GroupAdapter
+import com.vteam.testdemo.common.ConstantNodes
 import com.vteam.testdemo.common.Constants
 import com.vteam.testdemo.databinding.FragmentGroupsBinding
 import com.vteam.testdemo.group.OnGroupItemClick
@@ -37,8 +38,8 @@ class GroupsFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         currentUserID = auth!!.currentUser!!.uid
         userGroupsRef = FirebaseDatabase.getInstance().reference
-            .child(Constants.NODES.USER_NODE).child(currentUserID!!)
-            .child(Constants.CHILD_NODES.GROUPS)
+            .child(ConstantNodes.NODES.USER_NODE).child(currentUserID!!)
+            .child(ConstantNodes.CHILD_NODES.GROUPS)
         initializeFields()
         retrieveAndDisplayGroups()
         return binding.root

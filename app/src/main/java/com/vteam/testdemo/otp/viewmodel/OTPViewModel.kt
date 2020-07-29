@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.vteam.testdemo.common.ConstantNodes
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel.Constant.TAG
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel.UiMode.CREDENTIAL_RECEIVED
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel.UiMode.STATE_LANDING_PAGE
@@ -115,7 +116,7 @@ class OTPViewModel : ViewModel() {
         var rootRef = FirebaseDatabase.getInstance().reference
         var currentUserID = auth.getCurrentUser()?.getUid()
         currentUserID?.let {
-            rootRef.child(com.vteam.testdemo.common.Constants.NODES.USER_NODE).child(it)
+            rootRef.child(ConstantNodes.NODES.USER_NODE).child(it)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.child("name").exists()) {

@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.vteam.testdemo.R
 import com.vteam.testdemo.chat.model.GroupDetails
+import com.vteam.testdemo.common.ConstantNodes
 import com.vteam.testdemo.common.Constants
 import com.vteam.testdemo.databinding.GroupItemLayoutBinding
 import com.vteam.testdemo.group.OnGroupItemClick
@@ -36,7 +37,7 @@ class GroupAdapter(private val userSelectedList: List<String>) :
         currentUserID =auth.currentUser?.uid
         userGroupsRef = currentUserID?.let {
             FirebaseDatabase.getInstance().reference
-                .child(Constants.NODES.GROUP_DETAILS)
+                .child(ConstantNodes.NODES.GROUP_DETAILS)
         }
 
         return GroupItemViewHolder(binding)

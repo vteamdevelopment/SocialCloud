@@ -20,6 +20,7 @@ import com.google.firebase.storage.StorageReference
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.vteam.testdemo.R
+import com.vteam.testdemo.common.ConstantNodes
 import com.vteam.testdemo.common.Constants
 import com.vteam.testdemo.landing.LandingActivity
 import com.vteam.testdemo.landing.model.UserStatus
@@ -93,7 +94,7 @@ class ProfileUpdateActivity : AppCompatActivity() {
             val userMap: MutableMap<String?, Any> =
                 HashMap()
             userMap[currentUserID] = users
-            rootRef!!.child(Constants.NODES.USER_NODE)
+            rootRef!!.child(ConstantNodes.NODES.USER_NODE)
                 .updateChildren(userMap)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -116,7 +117,7 @@ class ProfileUpdateActivity : AppCompatActivity() {
     }
 
     private fun RetrieveUserInfo() {
-        rootRef!!.child(Constants.NODES.USER_NODE).child(currentUserID!!)
+        rootRef!!.child(ConstantNodes.NODES.USER_NODE).child(currentUserID!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists() && dataSnapshot.hasChild("name") && dataSnapshot.hasChild(
@@ -223,7 +224,7 @@ class ProfileUpdateActivity : AppCompatActivity() {
                         ).show()
                         val downloaedUrl =
                             task.result.metadata!!.path
-                        rootRef!!.child(Constants.NODES.USER_NODE)
+                        rootRef!!.child(ConstantNodes.NODES.USER_NODE)
                             .child(currentUserID!!).child("image")
                             .setValue(downloaedUrl)
                             .addOnCompleteListener { task ->

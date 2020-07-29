@@ -23,9 +23,10 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import com.vteam.testdemo.R
 import com.vteam.testdemo.chat.adapter.SelectedUserAdapter
 import com.vteam.testdemo.chat.model.GroupDetails
+import com.vteam.testdemo.common.ConstantNodes
 import com.vteam.testdemo.common.Constants
-import com.vteam.testdemo.common.Constants.NODES.GROUP_DETAILS
-import com.vteam.testdemo.common.Constants.NODES.USER_NODE
+import com.vteam.testdemo.common.ConstantNodes.NODES.GROUP_DETAILS
+import com.vteam.testdemo.common.ConstantNodes.NODES.USER_NODE
 import com.vteam.testdemo.databinding.CreateGroupFragmentBinding
 import com.vteam.testdemo.landing.model.Users
 import com.vteam.testdemo.profile.CreateProfileActivity
@@ -174,7 +175,7 @@ class CreateGroupFragment : Fragment() {
                         ).show()
                         val downloaedUrl =
                             task.result.metadata!!.path
-                        rootRef.child(com.vteam.testdemo.common.Constants.NODES.USER_NODE)
+                        rootRef.child(ConstantNodes.NODES.USER_NODE)
                             .child(currentUserID).child("image")
                             .setValue(downloaedUrl)
                             .addOnCompleteListener(OnCompleteListener<Void?> { task ->

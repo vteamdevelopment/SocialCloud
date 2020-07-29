@@ -21,8 +21,9 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.vteam.testdemo.R
 import com.vteam.testdemo.chat.ChatActivity
+import com.vteam.testdemo.common.ConstantNodes
 import com.vteam.testdemo.common.Constants
-import com.vteam.testdemo.common.Constants.NODES.CHAT_NODE
+import com.vteam.testdemo.common.ConstantNodes.NODES.CHAT_NODE
 import com.vteam.testdemo.databinding.ChatItemLayoutBinding
 import com.vteam.testdemo.databinding.FragmentChatsBinding
 import com.vteam.testdemo.landing.model.ChatModel
@@ -30,8 +31,6 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class ChatsFragment : Fragment() {
     private  lateinit var binding: FragmentChatsBinding
-//    private var chatsView: View? = null
-//    private var chatsList: RecyclerView? = null
     private var chatsRef: DatabaseReference? = null
     private var usersRef: DatabaseReference? = null
     private var auth: FirebaseAuth? = null
@@ -41,14 +40,12 @@ class ChatsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_chats,container,false)
-//        chatsView = inflater.inflate(R.layout.fragment_chats, container, false)
         auth = FirebaseAuth.getInstance()
         currentUserID = auth!!.currentUser!!.uid
         chatsRef =
             FirebaseDatabase.getInstance().reference.child(CHAT_NODE).child(currentUserID)
         usersRef = FirebaseDatabase.getInstance().reference
-            .child(Constants.NODES.USER_NODE)
-//        chatsList = chatsView?.findViewById<View>(R.id.chats_list) as RecyclerView
+            .child(ConstantNodes.NODES.USER_NODE)
         val layoutManager = LinearLayoutManager(context)
         binding.chatsList.layoutManager = layoutManager
         val mDividerItemDecoration = DividerItemDecoration(
@@ -77,7 +74,6 @@ class ChatsFragment : Fragment() {
                         arrayOf("default_image")
                     val lastMessage = model.lastMessage
                     val lastSeenTime = model.time
-                    Log.d("Vikash", "Last message $lastMessage")
                     holder.binding.textLastMessageDate.text = lastMessage
                     holder.binding.textLastMessageDate.text = lastSeenTime
                     usersRef!!.child(usersIDs!!).addValueEventListener(object : ValueEventListener {

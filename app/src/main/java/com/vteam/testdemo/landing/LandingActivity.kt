@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.vteam.testdemo.R
 import com.vteam.testdemo.SplashActivity
+import com.vteam.testdemo.common.ConstantNodes
 import com.vteam.testdemo.common.Constants
 import com.vteam.testdemo.group.CreateGroupActivity
 import com.vteam.testdemo.landing.model.UserStatus
@@ -78,7 +79,7 @@ class LandingActivity : AppCompatActivity() {
 
     private fun VerifyUserExistence() {
         currentUserID = auth!!.currentUser!!.uid
-        rootRef!!.child(Constants.NODES.USER_NODE).child(currentUserID!!)
+        rootRef!!.child(ConstantNodes.NODES.USER_NODE).child(currentUserID!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.child("name").exists()) {

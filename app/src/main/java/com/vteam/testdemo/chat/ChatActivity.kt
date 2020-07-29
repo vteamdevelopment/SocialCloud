@@ -16,18 +16,18 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.gms.tasks.Continuation
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.vteam.testdemo.R
+import com.vteam.testdemo.chat.adapter.ChatMessageAdapter
 import com.vteam.testdemo.chat.adapter.MessageAdapter
+import com.vteam.testdemo.common.ConstantExtra
+import com.vteam.testdemo.common.ConstantNodes
 import com.vteam.testdemo.common.Constants
-import com.vteam.testdemo.common.Constants.NODES.CHAT_NODE
-import com.vteam.testdemo.common.Constants.NODES.MESSAGES_NODE
+import com.vteam.testdemo.common.ConstantNodes.NODES.CHAT_NODE
+import com.vteam.testdemo.common.ConstantNodes.NODES.MESSAGES_NODE
 import com.vteam.testdemo.common.Utils.setOneToOneChat
 import com.vteam.testdemo.databinding.ActivityChatBinding
 import com.vteam.testdemo.landing.model.ChatModel
@@ -49,7 +49,7 @@ class ChatActivity : AppCompatActivity() {
     private var rootRef: DatabaseReference? = null
 
     private var linearLayoutManager: LinearLayoutManager? = null
-    private var messageAdapter: MessageAdapter? = null
+    private var messageAdapter: ChatMessageAdapter? = null
 //    private var userMessagesList: RecyclerView? = null
     private var loadingBar: ProgressDialog? = null
     private var saveCurrentTime: String? = null
@@ -62,18 +62,19 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
         binding= DataBindingUtil.setContentView(this,R.layout.activity_chat)
 
         setActionBar()
+
         auth = FirebaseAuth.getInstance()
         messageSenderID = auth!!.currentUser!!.uid
         rootRef = FirebaseDatabase.getInstance().reference
         val extras = intent.extras
-        messageReceiverID = extras!!["visit_user_id"].toString()
-        messageReceiverName = extras["visit_user_name"].toString()
-        if (extras.containsKey("visit_image") && extras["visit_image"] != null) {
-            messageReceiverImage = extras["visit_image"].toString()
+        messageReceiverID = extras!![ConstantExtra.EXTRA_KEY.VISIT_USER_ID].toString()
+        messageReceiverName = extras[ConstantExtra.EXTRA_KEY.VISIT_USER_NAME].toString()
+
+        if (extras.containsKey(ConstantExtra.EXTRA_KEY.VISIT_IMAGE) && extras[ConstantExtra.EXTRA_KEY.VISIT_IMAGE] != null) {
+            messageReceiverImage = extras[ConstantExtra.EXTRA_KEY.VISIT_IMAGE].toString()
         }
         intializeControllers()
         binding.chatToolbar.user_name.text = messageReceiverName
@@ -102,7 +103,7 @@ class ChatActivity : AppCompatActivity() {
             builder.setTitle("Select the File")
             builder.setItems(options) { dialogInterface, i ->
                 if (i == 0) {
-                    checker = "image"
+                    checker = Constants.FILE_TYPE.IMAGE
                     val intent = Intent()
                     intent.action = Intent.ACTION_GET_CONTENT
                     intent.type = "image/*"
@@ -112,14 +113,14 @@ class ChatActivity : AppCompatActivity() {
                     )
                 }
                 if (i == 1) {
-                    checker = "pdf"
+                    checker = Constants.FILE_TYPE.PDF
                     val intent = Intent()
                     intent.action = Intent.ACTION_GET_CONTENT
                     intent.type = "application/pdf"
                     startActivityForResult(Intent.createChooser(intent, "Select PDF"), 443)
                 }
                 if (i == 2) {
-                    checker = "docx"
+                    checker = Constants.FILE_TYPE.DOCX
                     val intent = Intent()
                     intent.action = Intent.ACTION_GET_CONTENT
                     intent.type = "application/msword"
@@ -138,7 +139,7 @@ class ChatActivity : AppCompatActivity() {
     private fun intializeControllers() {
         loadingBar = ProgressDialog(this)
 
-        messageAdapter = MessageAdapter(messagesList)
+        messageAdapter = ChatMessageAdapter(messagesList)
 
         linearLayoutManager = LinearLayoutManager(this)
         binding.userMessagesList.layoutManager = linearLayoutManager
@@ -290,7 +291,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun displayLastSeen() {
-        rootRef!!.child(Constants.NODES.USER_NODE).child(messageReceiverID!!)
+        rootRef!!.child(ConstantNodes.NODES.USER_NODE).child(messageReceiverID!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.child("userState").hasChild("state")) {
@@ -390,8 +391,7 @@ class ChatActivity : AppCompatActivity() {
             messageTextBody["time"] = saveCurrentTime
             messageTextBody["date"] = saveCurrentDate
 
-//            Map messageBodyDetails = new HashMap();
-//            messageBodyDetails.put(messageRef + "/" + messagePushID, messageTextBody);
+
             val chatBodyDetails: MutableMap<String, Any?> =
                 HashMap()
             chatBodyDetails["$messageSenderRef/"] = chatModel

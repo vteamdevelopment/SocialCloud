@@ -25,6 +25,7 @@ import com.google.firebase.database.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.vteam.testdemo.R
 import com.vteam.testdemo.chat.ChatActivity
+import com.vteam.testdemo.common.ConstantNodes
 import com.vteam.testdemo.common.Constants
 import com.vteam.testdemo.databinding.ChatItemLayoutBinding
 import com.vteam.testdemo.databinding.ContactItemLayoutBinding
@@ -58,7 +59,7 @@ class ContactsFragment : Fragment() {
         binding.contactList!!.addItemDecoration(mDividerItemDecoration)
         auth = FirebaseAuth.getInstance()
         usersRef = FirebaseDatabase.getInstance().reference
-            .child(Constants.NODES.USER_NODE)
+            .child(ConstantNodes.NODES.USER_NODE)
         query = usersRef!!.limitToLast(50)
         return binding.root
     }
