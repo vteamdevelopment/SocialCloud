@@ -1,12 +1,15 @@
 package com.vteam.testdemo.chat.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.vteam.testdemo.R
-import com.vteam.testdemo.databinding.CustomMessagesLayoutBinding
+import com.vteam.testdemo.common.ConstantNodes
 import com.vteam.testdemo.databinding.MessagesReceiverLayoutBinding
 import com.vteam.testdemo.databinding.MessagesSenderLayoutBinding
 import com.vteam.testdemo.top.Messages
@@ -14,6 +17,7 @@ import com.vteam.testdemo.top.Messages
 class ChatMessageAdapter(private val userMessagesList: List<Messages>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private var rootRef: DatabaseReference
     private var currentUserId: String?
 
     companion object{
@@ -23,6 +27,7 @@ class ChatMessageAdapter(private val userMessagesList: List<Messages>) :
 
     init {
         currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        rootRef = FirebaseDatabase.getInstance().reference
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -63,14 +68,47 @@ class ChatMessageAdapter(private val userMessagesList: List<Messages>) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 //        TODO("Not yet implemented")
+        val messages = userMessagesList[position]
+        val fromUserID = messages.from
+        val fromMessageType = messages.type
+        val usersRef = rootRef.child(ConstantNodes.NODES.USER_NODE).child(fromUserID)
+
+        when (holder) {
+            is MessageSenderViewHolder -> {
+
+
+                if (fromMessageType == "text") {
+
+//                    holder.binding.messageProfileImage.visibility = View.VISIBLE
+                    holder.binding.receiverMessageText.visibility = View.VISIBLE
+                    holder.binding.receiverMessageText.text =
+                        messages.message
+                    holder.binding.receiverMessageTime.text = """${messages.time} - ${messages.date}"""
+
+                }
+            }
+            is MessageReceiverViewHolder -> {
+
+
+                if (fromMessageType == "text") {
+
+                    holder.binding.receiverMessageText.visibility = View.VISIBLE
+                    holder.binding.receiverMessageText.text =
+                        messages.message
+                    holder.binding.receiverMessageTime.text = """${messages.time} - ${messages.date}"""
+
+                }
+            }
+            else -> ""
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
 
-        if(userMessagesList[position].from==currentUserId){
-            return SENDER_VIEW_HOLDER
+        return if(userMessagesList[position].from==currentUserId){
+            SENDER_VIEW_HOLDER
         }else{
-            return RECEIVER_VIEW_HOLDER
+            RECEIVER_VIEW_HOLDER
         }
     }
 

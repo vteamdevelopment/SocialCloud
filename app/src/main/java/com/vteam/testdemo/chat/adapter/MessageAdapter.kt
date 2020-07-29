@@ -18,7 +18,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.vteam.testdemo.R
 import com.vteam.testdemo.chat.adapter.MessageAdapter.MessageViewHolder
 import com.vteam.testdemo.common.ConstantNodes
-import com.vteam.testdemo.common.Constants
 import com.vteam.testdemo.databinding.CustomMessagesLayoutBinding
 import com.vteam.testdemo.landing.LandingActivity
 import com.vteam.testdemo.top.ImageViewerActivity
@@ -86,7 +85,7 @@ class MessageAdapter(private val userMessagesList: List<Messages>) : RecyclerVie
         if (fromMessageType == "text") {
             if (fromUserID == messageSenderId) {
                 messageViewHolder.binding.senderMessageText.visibility = View.VISIBLE
-                messageViewHolder.binding.senderMessageText.setBackgroundResource(R.drawable.sender_messages_layout)
+                messageViewHolder.binding.senderMessageText.setBackgroundResource(R.drawable.receiver_messages_layout)
                 messageViewHolder.binding.senderMessageText.setTextColor(Color.BLACK)
                 messageViewHolder.binding.senderMessageText.text = """${messages.message}
 

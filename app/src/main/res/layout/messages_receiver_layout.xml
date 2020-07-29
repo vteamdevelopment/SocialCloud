@@ -8,37 +8,52 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent">
+        android:layout_marginEnd="@dimen/dp_48"
+        android:layout_margin="@dimen/dp_4"
+        android:layout_marginStart="@dimen/dp_8"
+        android:background="@drawable/receiver_messages_layout"
+      >
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/message_profile_image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/ic_profile"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
-            android:id="@+id/sender_message_text"
+            android:id="@+id/receiver_message_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/dp_48"
-            android:background="@drawable/sender_messages_layout"
-            android:padding="8dp"
+
+            android:paddingStart="8dp"
+            android:padding="4dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:text="@string/sender_messages"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/receiver_message_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/receiver_message_time"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="Assam"
+            android:textColor="@color/color_000000"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toEndOf="@+id/message_profile_image"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.0"
+            android:paddingStart="8dp"
+            android:padding="4dp"
+            android:paddingTop="0dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+      />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
