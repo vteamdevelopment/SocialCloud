@@ -84,13 +84,13 @@ class SelectUserForGroupFragment : Fragment() {
         val horizontalLayoutManager = LinearLayoutManager(context)
         horizontalLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         viewModel = ViewModelProvider(this).get(SelectUserForGroupViewModel::class.java)
-        binding.groupList.layoutManager = layoutManager
+        binding.contactList.layoutManager = layoutManager
         binding.groupSelectedList.layoutManager = horizontalLayoutManager
         val mDividerItemDecoration = DividerItemDecoration(
             context,
             layoutManager.orientation
         )
-        binding.groupList.addItemDecoration(mDividerItemDecoration)
+        binding.contactList.addItemDecoration(mDividerItemDecoration)
         auth = FirebaseAuth.getInstance()
         usersRef = FirebaseDatabase.getInstance().reference
             .child(Constants.NODES.USER_NODE)
@@ -180,7 +180,7 @@ class SelectUserForGroupFragment : Fragment() {
                     )
                 }
             }
-        binding.groupList.adapter = adapter
+        binding.contactList.adapter = adapter
         adapter.startListening()
 
 

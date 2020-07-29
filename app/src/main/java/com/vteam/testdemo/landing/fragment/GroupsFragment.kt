@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,13 +15,13 @@ import com.google.firebase.database.*
 import com.vteam.testdemo.R
 import com.vteam.testdemo.chat.adapter.GroupAdapter
 import com.vteam.testdemo.common.Constants
+import com.vteam.testdemo.databinding.FragmentGroupsBinding
 import com.vteam.testdemo.group.OnGroupItemClick
 import com.vteam.testdemo.top.GroupChatActivity
 import java.util.*
 
 class GroupsFragment : Fragment() {
-    private var groupView: View? = null
-    private var recyclerView: RecyclerView? = null
+    private lateinit var binding: FragmentGroupsBinding
     private var groupAdapter: GroupAdapter? = null
     private val groupList =
         ArrayList<String>()
@@ -32,7 +33,7 @@ class GroupsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        groupView = inflater.inflate(R.layout.fragment_groups, container, false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_groups,container,false)
         auth = FirebaseAuth.getInstance()
         currentUserID = auth!!.currentUser!!.uid
         userGroupsRef = FirebaseDatabase.getInstance().reference
@@ -40,17 +41,7 @@ class GroupsFragment : Fragment() {
             .child(Constants.CHILD_NODES.GROUPS)
         initializeFields()
         retrieveAndDisplayGroups()
-
-//        mRecyclerView.setOnClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                String currentGroupName = adapterView.getItemAtPosition(position).toString();
-//                Intent groupChatIntent = new Intent(getContext(), GroupChatActivity.class);
-//                groupChatIntent.putExtra("groupName", currentGroupName);
-//                startActivity(groupChatIntent);
-//            }
-//        });
-        return groupView
+        return binding.root
     }
 
     private fun retrieveAndDisplayGroups() {
@@ -65,8 +56,6 @@ class GroupsFragment : Fragment() {
                 groupList.clear()
                 groupList.addAll(set)
                 groupAdapter!!.notifyDataSetChanged()
-                //                mGroupAdapter = new GroupAdapter(mGroupList);
-//                mRecyclerView.setAdapter(mGroupAdapter);
             }
 
             override fun onCancelled(databaseError: DatabaseError) {}
@@ -74,18 +63,17 @@ class GroupsFragment : Fragment() {
     }
 
     private fun initializeFields() {
-        recyclerView =
-            groupView!!.findViewById<View>(R.id.list_view) as RecyclerView
+
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = RecyclerView.VERTICAL
-        recyclerView!!.layoutManager = layoutManager
+        binding.listView.layoutManager = layoutManager
         groupAdapter = GroupAdapter(groupList)
-        recyclerView!!.adapter = groupAdapter
+        binding.listView.adapter = groupAdapter
         val mDividerItemDecoration = DividerItemDecoration(
-            recyclerView!!.context,
+            binding.listView.context,
             layoutManager.orientation
         )
-        recyclerView!!.addItemDecoration(mDividerItemDecoration)
+        binding.listView.addItemDecoration(mDividerItemDecoration)
         groupAdapter!!.setOnItemClickListener(object : OnGroupItemClick {
             override fun onItemClicked(position: Int, groupId: String) {
                 val intent = Intent(context, GroupChatActivity::class.java)

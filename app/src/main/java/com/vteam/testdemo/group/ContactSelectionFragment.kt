@@ -43,7 +43,7 @@ class ContactSelectionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         contactsView = inflater.inflate(R.layout.fragment_contacts, container, false)
-        contactsList = contactsView?.findViewById<View>(R.id.group_list) as RecyclerView
+        contactsList = contactsView?.findViewById<View>(R.id.contact_list) as RecyclerView
         val layoutManager = LinearLayoutManager(context)
         contactsList!!.layoutManager = layoutManager
         val mDividerItemDecoration = DividerItemDecoration(

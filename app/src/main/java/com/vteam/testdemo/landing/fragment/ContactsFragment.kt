@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,12 +26,16 @@ import com.google.firebase.storage.FirebaseStorage
 import com.vteam.testdemo.R
 import com.vteam.testdemo.chat.ChatActivity
 import com.vteam.testdemo.common.Constants
+import com.vteam.testdemo.databinding.ChatItemLayoutBinding
+import com.vteam.testdemo.databinding.ContactItemLayoutBinding
+import com.vteam.testdemo.databinding.FragmentContactsBinding
 import com.vteam.testdemo.landing.model.Users
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ContactsFragment : Fragment() {
-    private var contactsView: View? = null
-    private var contactsList: RecyclerView? = null
+    private lateinit var binding: FragmentContactsBinding
+//    private var contactsView: View? = null
+//    private var contactsList: RecyclerView? = null
     private var usersRef: DatabaseReference? = null
     private var auth: FirebaseAuth? = null
     private val mCurrentUserID: String? = null
@@ -42,20 +47,20 @@ class ContactsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        contactsView = inflater.inflate(R.layout.fragment_contacts, container, false)
-        contactsList = contactsView?.findViewById<View>(R.id.group_list) as RecyclerView
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_contacts,container,false)
+
         val layoutManager = LinearLayoutManager(context)
-        contactsList!!.layoutManager = layoutManager
+        binding.contactList!!.layoutManager = layoutManager
         val mDividerItemDecoration = DividerItemDecoration(
-            contactsList!!.context,
+            binding.contactList!!.context,
             layoutManager.orientation
         )
-        contactsList!!.addItemDecoration(mDividerItemDecoration)
+        binding.contactList!!.addItemDecoration(mDividerItemDecoration)
         auth = FirebaseAuth.getInstance()
         usersRef = FirebaseDatabase.getInstance().reference
             .child(Constants.NODES.USER_NODE)
         query = usersRef!!.limitToLast(50)
-        return contactsView
+        return binding.root
     }
 
     override fun onStart() {
@@ -75,17 +80,17 @@ class ContactsFragment : Fragment() {
                 val visitorUserId = getRef(position).key
                 val name = model.name
                 val profileImage = model.image
-                holder.userName.text = name
-                holder.userStatus.text = model.status
+                holder.binding.userProfileName.text = name
+                holder.binding.textStatus.text = model.status
                 if (model.userStatus != null && model.userStatus!!.status != null) {
                     if (model.userStatus!!.status == Constants.USER_STATE.OFFLINE) {
-                        holder.onlineIcon.background =
+                        holder.binding.usersStatusIcon.background =
                             context!!.getDrawable(R.drawable.live_icon_grey)
                     } else if (model.userStatus!!.status == Constants.USER_STATE.ONLINE) {
-                        holder.onlineIcon.background =
+                        holder.binding.usersStatusIcon.background =
                             context!!.getDrawable(R.drawable.live_icon_green)
                     }
-                    holder.lastSeenTime.text = model.userStatus!!.time
+                    holder.binding.textLastMessageDate.text = model.userStatus!!.time
                 }
                 if (profileImage != null && !profileImage.isEmpty()) {
                     val reference = FirebaseStorage.getInstance().reference
@@ -96,7 +101,7 @@ class ContactsFragment : Fragment() {
                             if (activity != null) {
                                 Glide.with(activity)
                                     .load(uri)
-                                    .into(holder.profileImage)
+                                    .into(holder.binding.usersProfileImage)
                             }
                         }.addOnFailureListener {
                             // Handle any errors
@@ -105,7 +110,7 @@ class ContactsFragment : Fragment() {
                 if (!TextUtils.isEmpty(profileImage)) {
                     Glide.with(activity!!)
                         .load(profileImage)
-                        .into(holder.profileImage)
+                        .into(holder.binding.usersProfileImage)
                 }
                 holder.itemView.setOnClickListener {
                     SendChatRequest(
@@ -120,12 +125,13 @@ class ContactsFragment : Fragment() {
                 viewGroup: ViewGroup,
                 i: Int
             ): ContactsViewHolder {
-                val view = LayoutInflater.from(viewGroup.context)
-                    .inflate(R.layout.contact_item_layout, viewGroup, false)
-                return ContactsViewHolder(view)
+
+                val binding : ContactItemLayoutBinding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.context),R.layout.contact_item_layout,viewGroup,false)
+
+                return ContactsViewHolder(binding)
             }
         }
-        contactsList!!.adapter = adapter
+        binding.contactList!!.adapter = adapter
         adapter?.startListening()
     }
 
@@ -141,21 +147,6 @@ class ContactsFragment : Fragment() {
         startActivity(chatIntent)
     }
 
-    class ContactsViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-        val userName: TextView
-        val lastSeenTime: TextView
-        val profileImage: CircleImageView
-        val userStatus: TextView
-        val onlineIcon: ImageView
-
-        init {
-            userName = itemView.findViewById(R.id.user_profile_name)
-            lastSeenTime = itemView.findViewById(R.id.text_last_message_date)
-            userStatus = itemView.findViewById(R.id.text_status)
-            profileImage = itemView.findViewById(R.id.users_profile_image)
-            onlineIcon =
-                itemView.findViewById<View>(R.id.users_status_icon) as ImageView
-        }
-    }
+    class ContactsViewHolder(val binding: ContactItemLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root)
 }
