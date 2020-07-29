@@ -39,8 +39,7 @@ import java.util.*
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
     private lateinit var uploadTask: UploadTask
-    private val messagesList: MutableList<Messages> =
-        ArrayList()
+    private val messagesList: MutableList<Messages> = ArrayList()
     private var messageReceiverID: String? = null
     private var messageReceiverName: String? = null
     private var messageReceiverImage: String? = null
@@ -90,8 +89,8 @@ class ChatActivity : AppCompatActivity() {
                     // Handle any errors
                 }
         }
-        binding.sendMessageBtn.setOnClickListener { SendMessage() }
-        DisplayLastSeen()
+        binding.sendMessageBtn.setOnClickListener { sendMessage() }
+        displayLastSeen()
         binding.sendFilesBtn.setOnClickListener {
             val options = arrayOf<CharSequence>(
                 "Images",
@@ -234,15 +233,12 @@ class ChatActivity : AppCompatActivity() {
                     val filePath = storageReference.child("$messagePushID.jpg")
 
                     uploadTask = filePath.putFile(fileUri!!)
-                    uploadTask.continueWithTask(object :
-                        Continuation<UploadTask.TaskSnapshot, Task<Uri>>{
-                        override fun then(p0: Task<UploadTask.TaskSnapshot>): Task<Uri> {
-                            if (!p0.isSuccessful) {
-                                throw p0.exception!!
-                            }
-                            return filePath.downloadUrl
+                    uploadTask.continueWithTask { p0 ->
+                        if (!p0.isSuccessful) {
+                            throw p0.exception!!
                         }
-                    })
+                        filePath.downloadUrl
+                    }
                         .addOnCompleteListener { task ->
                             val downloadUrl = task.result
                             myUrl = downloadUrl.toString()
@@ -278,13 +274,10 @@ class ChatActivity : AppCompatActivity() {
                             messageBodyDetails["$messageReceiverRef/$messagePushID"] = chatModel
                             messageBodyDetails["$messageRef/$messagePushID"] = messageTextBody
                             rootRef!!.updateChildren(messageBodyDetails)
-                                .addOnCompleteListener(object : OnCompleteListener<Void> {
-
-                                    override fun onComplete(p0: Task<Void>) {
-                                        loadingBar!!.dismiss()
-                                        binding.inputMessage.setText("")
-                                    }
-                                })
+                                .addOnCompleteListener {
+                                    loadingBar!!.dismiss()
+                                    binding.inputMessage.setText("")
+                                }
                         }
 
                 }
@@ -296,7 +289,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun DisplayLastSeen() {
+    private fun displayLastSeen() {
         rootRef!!.child(Constants.NODES.USER_NODE).child(messageReceiverID!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -362,7 +355,7 @@ class ChatActivity : AppCompatActivity() {
             })
     }
 
-    private fun SendMessage() {
+    private fun sendMessage() {
         val messageText = binding.inputMessage.text.toString()
         if (TextUtils.isEmpty(messageText)) {
             Toast.makeText(this, "first write your message...", Toast.LENGTH_SHORT).show()

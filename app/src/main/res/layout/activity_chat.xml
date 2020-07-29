@@ -2,27 +2,27 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
 
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background='@android:color/darker_gray'
         tools:context="com.vteam.testdemo.chat.ChatActivity">
 
         <include
             android:id="@+id/chat_toolbar"
-            layout="@layout/app_bar_layout"/>
+            layout="@layout/app_bar_layout" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/user_messages_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/chat_linear_layout"
-            android:layout_below="@+id/chat_toolbar"
-            android:layout_marginBottom="6dp" />
+            android:layout_height="0dp"
+            android:layout_marginBottom="6dp"
+            app:layout_constraintBottom_toTopOf="@+id/chat_linear_layout"
+            app:layout_constraintTop_toBottomOf="@+id/chat_toolbar" />
 
         <RelativeLayout
             android:id="@+id/chat_linear_layout"
@@ -31,7 +31,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
             android:background="@android:color/background_light"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageButton
                 android:id="@+id/send_files_btn"
@@ -64,5 +65,5 @@
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
