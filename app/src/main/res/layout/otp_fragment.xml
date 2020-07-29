@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/on_boarding"
+    android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".splash.fragment.OnBoardingFragment">
@@ -11,11 +12,12 @@
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
+        android:fontFamily="@font/aclonica"
         android:text="@string/welcome_to_indian_social_cloud"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/color_000000"
+        android:textColor="@color/colorbtn_Background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,11 +28,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/atma_nirbhar_bharat"
+        android:textColor="@color/color_000000"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/message" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/third_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +43,7 @@
         android:text="@string/please_enter_the_otp_received"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sec_msg" />
+        app:layout_constraintTop_toBottomOf="@+id/sec_msg" />-->
 
 
 
@@ -49,10 +53,9 @@
         android:layout_marginEnd="70dp"
         android:layout_marginStart="70dp"
         android:layout_marginTop="10dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/third_msg">
+        app:layout_constraintTop_toBottomOf="@+id/sec_msg">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/otp"
@@ -81,7 +84,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/btn_rounded"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

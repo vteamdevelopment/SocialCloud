@@ -84,4 +84,11 @@ class OtpFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
 }

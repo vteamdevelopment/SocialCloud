@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -51,6 +52,22 @@ class OnBoardingFragment : Fragment() {
         sign_up.setOnClickListener({
             viewModel.verifyPhoneNumber()
         })
+
+        CheckAgree.setOnClickListener {
+            if (it is CheckBox) {
+
+
+                val checked: Boolean = it.isChecked
+
+                if (checked) {
+                    sign_up.isEnabled = true
+
+                } else {
+                    sign_up.isEnabled = false
+                }
+
+            }
+        }
 
     }
 

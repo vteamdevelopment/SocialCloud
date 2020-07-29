@@ -11,31 +11,41 @@
         android:id="@+id/settings_toolbar"
         layout="@layout/app_bar_layout"></include>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/set_profile_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/profile_image"
-        app:civ_border_color="@color/colorPrimary"
-        app:civ_border_width="2dp"
-
-        android:layout_marginTop="@dimen/dp_24"
+    <ImageView
+        android:id="@+id/coverImg"
+        android:layout_width="0dp"
+        android:layout_height="145dp"
+        android:src="@color/colorbtn_Background"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_toolbar" />
 
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/set_profile_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/ic_profile"
+        app:civ_border_color="@color/colorPrimary"
+        app:civ_border_width="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.024"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar" />
+
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image_edit"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="174dp"
-        app:layout_constraintHorizontal_bias="0.65"
+        android:layout_width="222dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="116dp"
         android:src="@drawable/ic_baseline_photo_camera_24"
         app:civ_border_color="@color/colorPrimary"
-
-        app:civ_border_width="1dp"
         app:civ_circle_background_color="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_toolbar" />
 
@@ -45,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/set_profile_image"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/inputs"
         android:drawableStart="@drawable/ic_baseline_person_24"
@@ -58,6 +68,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/set_profile_image"
         android:textStyle="bold" />
+
+
+
 
     <EditText
         android:id="@+id/set_profile_status"
@@ -87,7 +100,7 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/inputs"
         android:drawableStart="@drawable/ic_baseline_add_location_24"
-        android:hint="@string/location"
+        android:hint="Location"
         android:inputType="textMultiLine"
         android:padding="12dp"
         app:layout_constraintVertical_bias="0.0"
@@ -98,6 +111,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/set_profile_status"
         app:layout_constraintBottom_toBottomOf="@+id/update_settings_button"/>
+
 
     <Button
         android:id="@+id/update_settings_button"
@@ -111,7 +125,7 @@
         android:background="@drawable/buttons"
         android:inputType="textMultiLine"
         android:padding="6dp"
-        android:text="@string/update"
+        android:text="Update"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@android:color/background_light"

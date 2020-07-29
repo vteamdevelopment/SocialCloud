@@ -42,7 +42,7 @@ class CreateProfileActivity : AppCompatActivity() {
     private var userProfileImageEdit: CircleImageView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setContentView(R.layout.profile_update_activity)
         setActionBar()
         InitializeFields()
         auth = FirebaseAuth.getInstance()

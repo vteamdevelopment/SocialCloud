@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/on_boarding"
+    android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".splash.fragment.OnBoardingFragment">
@@ -11,7 +12,7 @@
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         android:fontFamily="@font/aclonica"
         android:text="@string/welcome_to_indian_social_cloud"
         android:textColor="@color/colorbtn_Background"
@@ -23,8 +24,8 @@
 
     <ImageView
         android:id="@+id/ImgLogo"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:padding="15dp"
         android:layout_marginTop="16dp"
         android:src="@mipmap/ic_launcher"
@@ -39,22 +40,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/atma_nirbhar_bharat"
+        android:textStyle="bold"
         android:textColor="@color/color_000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ImgLogo" />
 
-    <TextView
-        android:id="@+id/third_msg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/please_enter_you_mobile_details"
-        android:textColor="@color/color_000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sec_msg" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/country_code"
@@ -69,7 +60,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintTop_toBottomOf="@+id/third_msg" />
+        app:layout_constraintTop_toBottomOf="@+id/sec_msg" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/Mobileno_Layout"
@@ -79,7 +70,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/country_code"
-        app:layout_constraintTop_toBottomOf="@+id/third_msg">
+        app:layout_constraintTop_toBottomOf="@+id/sec_msg">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/mobile_number"
@@ -120,10 +111,11 @@
         android:id="@+id/sign_up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/next"
+        android:text="Continue"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:enabled="false"
         android:background="@drawable/btn_rounded"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
