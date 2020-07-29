@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+    </data>
+
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -19,7 +24,7 @@
         android:layout_height = "wrap_content"
         android:layout_alignParentTop = "true"
         android:layout_marginTop = "10dp"
-        android:layout_marginLeft = "3dp"
+        android:layout_marginStart = "3dp"
         android:layout_toEndOf = "@+id/message_profile_image"
         android:background = "@drawable/receiver_messages_layout"
         android:text = "@string/receiver_messages_here"
@@ -63,3 +68,5 @@
         android:textColor="@android:color/black"
         />
 </RelativeLayout>
+
+</layout>

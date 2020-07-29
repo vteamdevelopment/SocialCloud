@@ -8,9 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
@@ -18,19 +17,25 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.vteam.testdemo.R
 import com.vteam.testdemo.chat.adapter.MessageAdapter.MessageViewHolder
+import com.vteam.testdemo.databinding.CustomMessagesLayoutBinding
 import com.vteam.testdemo.landing.LandingActivity
 import com.vteam.testdemo.top.ImageViewerActivity
 import com.vteam.testdemo.top.Messages
-import de.hdodenhof.circleimageview.CircleImageView
 
 class MessageAdapter(private val userMessagesList: List<Messages>) : RecyclerView.Adapter<MessageViewHolder>() {
+
     private var auth: FirebaseAuth? = null
     private var usersRef: DatabaseReference? = null
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): MessageViewHolder {
-        val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.custom_messages_layout, viewGroup, false)
+        val binding: CustomMessagesLayoutBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(viewGroup.context),
+            R.layout.custom_messages_layout,
+            viewGroup,
+            false
+        )
+
         auth = FirebaseAuth.getInstance()
-        return MessageViewHolder(view)
+        return MessageViewHolder(binding)
     }
 
     override fun onBindViewHolder(
@@ -47,15 +52,15 @@ class MessageAdapter(private val userMessagesList: List<Messages>) : RecyclerVie
                 if (dataSnapshot.hasChild("image")) {
                     val receiverImage =
                         dataSnapshot.child("image").value.toString()
-                    if (!receiverImage.isEmpty()) {
+                    if (receiverImage.isNotEmpty()) {
                         val reference =
                             FirebaseStorage.getInstance().reference
                         reference.child(receiverImage).downloadUrl
                             .addOnSuccessListener { uri -> // Got the download URL for 'users/me/profile.png'
                                 Log.d("URL", "" + uri)
-                                Glide.with(messageViewHolder.receiverProfileImage.context)
+                                Glide.with(messageViewHolder.binding.messageReceiverImageView.context)
                                     .load(uri)
-                                    .into(messageViewHolder.receiverProfileImage)
+                                    .into(messageViewHolder.binding.messageReceiverImageView)
                             }.addOnFailureListener {
                                 // Handle any errors
                             }
@@ -65,54 +70,54 @@ class MessageAdapter(private val userMessagesList: List<Messages>) : RecyclerVie
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
-        messageViewHolder.receiverMessageText.visibility = View.GONE
-        messageViewHolder.receiverProfileImage.visibility = View.GONE
-        messageViewHolder.senderMessageText.visibility = View.GONE
-        messageViewHolder.messageSenderPicture.visibility = View.GONE
-        messageViewHolder.messageReceiverPicture.visibility = View.GONE
+        messageViewHolder.binding.receiverMessageText.visibility = View.GONE
+        messageViewHolder.binding.messageReceiverImageView.visibility = View.GONE
+        messageViewHolder.binding.senderMessageText.visibility = View.GONE
+        messageViewHolder.binding.messageSenderImageView.visibility = View.GONE
+        messageViewHolder.binding.messageReceiverImageView.visibility = View.GONE
         if (fromMessageType == "text") {
             if (fromUserID == messageSenderId) {
-                messageViewHolder.senderMessageText.visibility = View.VISIBLE
-                messageViewHolder.senderMessageText.setBackgroundResource(R.drawable.sender_messages_layout)
-                messageViewHolder.senderMessageText.setTextColor(Color.BLACK)
-                messageViewHolder.senderMessageText.text = """${messages.message}
+                messageViewHolder.binding.senderMessageText.visibility = View.VISIBLE
+                messageViewHolder.binding.senderMessageText.setBackgroundResource(R.drawable.sender_messages_layout)
+                messageViewHolder.binding.senderMessageText.setTextColor(Color.BLACK)
+                messageViewHolder.binding.senderMessageText.text = """${messages.message}
 
 ${messages.time} - ${messages.date}"""
             } else {
-                messageViewHolder.receiverProfileImage.visibility = View.VISIBLE
-                messageViewHolder.receiverMessageText.visibility = View.VISIBLE
-                messageViewHolder.receiverMessageText.setBackgroundResource(R.drawable.receiver_messages_layout)
-                messageViewHolder.receiverMessageText.setTextColor(Color.BLACK)
-                messageViewHolder.receiverMessageText.text = """${messages.message}
+                messageViewHolder.binding.messageReceiverImageView.visibility = View.VISIBLE
+                messageViewHolder.binding.receiverMessageText.visibility = View.VISIBLE
+                messageViewHolder.binding.receiverMessageText.setBackgroundResource(R.drawable.receiver_messages_layout)
+                messageViewHolder.binding.receiverMessageText.setTextColor(Color.BLACK)
+                messageViewHolder.binding.receiverMessageText.text = """${messages.message}
 
 ${messages.time} - ${messages.date}"""
             }
         } else if (fromMessageType == "image") {
             if (fromUserID == messageSenderId) {
-                messageViewHolder.messageSenderPicture.visibility = View.VISIBLE
-                if (!messages.message.isEmpty()) {
+                messageViewHolder.binding.messageSenderImageView.visibility = View.VISIBLE
+                if (messages.message.isNotEmpty()) {
                     val reference = FirebaseStorage.getInstance().reference
                     reference.child(messages.message).downloadUrl
                         .addOnSuccessListener { uri -> // Got the download URL for 'users/me/profile.png'
                             Log.d("URL", "" + uri)
-                            Glide.with(messageViewHolder.messageSenderPicture.context)
+                            Glide.with(messageViewHolder.binding.messageSenderImageView.context)
                                 .load(uri)
-                                .into(messageViewHolder.messageSenderPicture)
+                                .into(messageViewHolder.binding.messageSenderImageView)
                         }.addOnFailureListener {
                             // Handle any errors
                         }
                 }
             } else {
-                messageViewHolder.receiverProfileImage.visibility = View.VISIBLE
-                messageViewHolder.messageReceiverPicture.visibility = View.VISIBLE
-                if (!messages.message.isEmpty()) {
+                messageViewHolder.binding.messageReceiverImageView.visibility = View.VISIBLE
+                messageViewHolder.binding.messageReceiverImageView.visibility = View.VISIBLE
+                if (messages.message.isNotEmpty()) {
                     val reference = FirebaseStorage.getInstance().reference
                     reference.child(messages.message).downloadUrl
                         .addOnSuccessListener { uri -> // Got the download URL for 'users/me/profile.png'
                             Log.d("URL", "" + uri)
-                            Glide.with(messageViewHolder.messageReceiverPicture.context)
+                            Glide.with(messageViewHolder.binding.messageReceiverImageView.context)
                                 .load(uri)
-                                .into(messageViewHolder.messageReceiverPicture)
+                                .into(messageViewHolder.binding.messageReceiverImageView)
                         }.addOnFailureListener {
                             // Handle any errors
                         }
@@ -120,7 +125,7 @@ ${messages.time} - ${messages.date}"""
             }
         } else if (fromMessageType == "pdf" || fromMessageType == "docx") {
             if (fromUserID == messageSenderId) {
-                messageViewHolder.messageSenderPicture.visibility = View.VISIBLE
+                messageViewHolder.binding.messageSenderImageView.visibility = View.VISIBLE
                 //                messageViewHolder.messageSenderPicture.setBackground(R.drawable.);
                 messageViewHolder.itemView.setOnClickListener {
                     val intent = Intent(
@@ -130,8 +135,8 @@ ${messages.time} - ${messages.date}"""
                     messageViewHolder.itemView.context.startActivity(intent)
                 }
             } else {
-                messageViewHolder.receiverProfileImage.visibility = View.VISIBLE
-                messageViewHolder.messageReceiverPicture.visibility = View.VISIBLE
+                messageViewHolder.binding.messageReceiverImageView.visibility = View.VISIBLE
+                messageViewHolder.binding.messageReceiverImageView.visibility = View.VISIBLE
                 //                messageViewHolder.messageReceiverPicture.setBackground(R.drawable.file);
             }
         }
@@ -152,23 +157,27 @@ ${messages.time} - ${messages.date}"""
                         AlertDialog.Builder(messageViewHolder.itemView.context)
                     builder.setTitle("Delete Message")
                     builder.setItems(options) { dialogInterface, position ->
-                        if (position == 0) {
-                            deleteSentMessage(position, messageViewHolder)
-                            val intent = Intent(
-                                messageViewHolder.itemView.context,
-                                LandingActivity::class.java
-                            )
-                            messageViewHolder.itemView.context.startActivity(intent)
-                        } else if (position == 1) {
-                            val intent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse(
-                                    userMessagesList[position].message
+                        when (position) {
+                            0 -> {
+                                deleteSentMessage(position, messageViewHolder)
+                                val intent = Intent(
+                                    messageViewHolder.itemView.context,
+                                    LandingActivity::class.java
                                 )
-                            )
-                            messageViewHolder.itemView.context.startActivity(intent)
-                        } else if (position == 3) {
-                            deleteMessageForEveryOne(position, messageViewHolder)
+                                messageViewHolder.itemView.context.startActivity(intent)
+                            }
+                            1 -> {
+                                val intent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(
+                                        userMessagesList[position].message
+                                    )
+                                )
+                                messageViewHolder.itemView.context.startActivity(intent)
+                            }
+                            3 -> {
+                                deleteMessageForEveryOne(position, messageViewHolder)
+                            }
                         }
                     }
                     builder.show()
@@ -207,25 +216,29 @@ ${messages.time} - ${messages.date}"""
                         AlertDialog.Builder(messageViewHolder.itemView.context)
                     builder.setTitle("Delete Message")
                     builder.setItems(options) { dialogInterface, position ->
-                        if (position == 0) {
-                            deleteSentMessage(position, messageViewHolder)
-                            val intent = Intent(
-                                messageViewHolder.itemView.context,
-                                LandingActivity::class.java
-                            )
-                            messageViewHolder.itemView.context.startActivity(intent)
-                        } else if (position == 1) {
-                            val intent = Intent(
-                                messageViewHolder.itemView.context,
-                                ImageViewerActivity::class.java
-                            )
-                            intent.putExtra(
-                                "url",
-                                userMessagesList[position].message
-                            )
-                            messageViewHolder.itemView.context.startActivity(intent)
-                        } else if (position == 3) {
-                            deleteMessageForEveryOne(position, messageViewHolder)
+                        when (position) {
+                            0 -> {
+                                deleteSentMessage(position, messageViewHolder)
+                                val intent = Intent(
+                                    messageViewHolder.itemView.context,
+                                    LandingActivity::class.java
+                                )
+                                messageViewHolder.itemView.context.startActivity(intent)
+                            }
+                            1 -> {
+                                val intent = Intent(
+                                    messageViewHolder.itemView.context,
+                                    ImageViewerActivity::class.java
+                                )
+                                intent.putExtra(
+                                    "url",
+                                    userMessagesList[position].message
+                                )
+                                messageViewHolder.itemView.context.startActivity(intent)
+                            }
+                            3 -> {
+                                deleteMessageForEveryOne(position, messageViewHolder)
+                            }
                         }
                     }
                     builder.show()
@@ -403,26 +416,6 @@ ${messages.time} - ${messages.date}"""
             }
     }
 
-    inner class MessageViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-        var senderMessageText: TextView
-        var receiverMessageText: TextView
-        var receiverProfileImage: CircleImageView
-        var messageSenderPicture: ImageView
-        var messageReceiverPicture: ImageView
-
-        init {
-            senderMessageText =
-                itemView.findViewById<View>(R.id.sender_message_text) as TextView
-            receiverMessageText =
-                itemView.findViewById<View>(R.id.receiver_message_text) as TextView
-            receiverProfileImage =
-                itemView.findViewById<View>(R.id.message_profile_image) as CircleImageView
-            messageReceiverPicture =
-                itemView.findViewById(R.id.message_receiver_image_view)
-            messageSenderPicture =
-                itemView.findViewById(R.id.message_sender_image_view)
-        }
-    }
+    inner class MessageViewHolder(val binding: CustomMessagesLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
 }
