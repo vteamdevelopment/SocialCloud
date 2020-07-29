@@ -37,7 +37,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class ChatActivity : AppCompatActivity() {
-    private lateinit var mBinding: ActivityChatBinding
+    private lateinit var binding: ActivityChatBinding
     private lateinit var uploadTask: UploadTask
     private val messagesList: MutableList<Messages> =
         ArrayList()
@@ -64,7 +64,7 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-        mBinding= DataBindingUtil.setContentView(this,R.layout.activity_chat)
+        binding= DataBindingUtil.setContentView(this,R.layout.activity_chat)
 
         setActionBar()
         auth = FirebaseAuth.getInstance()
@@ -76,8 +76,8 @@ class ChatActivity : AppCompatActivity() {
         if (extras.containsKey("visit_image") && extras["visit_image"] != null) {
             messageReceiverImage = extras["visit_image"].toString()
         }
-        IntializeControllers()
-        mBinding.chatToolbar.user_name.text = messageReceiverName
+        intializeControllers()
+        binding.chatToolbar.user_name.text = messageReceiverName
         val reference = FirebaseStorage.getInstance().reference
         if (!TextUtils.isEmpty(messageReceiverImage)) {
             reference.child(messageReceiverImage!!).downloadUrl
@@ -85,14 +85,14 @@ class ChatActivity : AppCompatActivity() {
                     Log.d("URL", "" + uri)
                     Glide.with(applicationContext)
                         .load(uri)
-                        .into(mBinding.chatToolbar.profile_image!!)
+                        .into(binding.chatToolbar.profile_image!!)
                 }.addOnFailureListener {
                     // Handle any errors
                 }
         }
-        mBinding.sendMessageBtn!!.setOnClickListener { SendMessage() }
+        binding.sendMessageBtn.setOnClickListener { SendMessage() }
         DisplayLastSeen()
-        mBinding.sendFilesBtn!!.setOnClickListener {
+        binding.sendFilesBtn.setOnClickListener {
             val options = arrayOf<CharSequence>(
                 "Images",
                 "Pdf Files",
@@ -136,14 +136,14 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun IntializeControllers() {
+    private fun intializeControllers() {
         loadingBar = ProgressDialog(this)
 
         messageAdapter = MessageAdapter(messagesList)
 
         linearLayoutManager = LinearLayoutManager(this)
-        mBinding.userMessagesList!!.layoutManager = linearLayoutManager
-        mBinding.userMessagesList!!.adapter = messageAdapter
+        binding.userMessagesList.layoutManager = linearLayoutManager
+        binding.userMessagesList.adapter = messageAdapter
         val calendar = Calendar.getInstance()
         val currentDate = SimpleDateFormat("MMM dd, yyyy")
         saveCurrentDate = currentDate.format(calendar.time)
@@ -153,7 +153,7 @@ class ChatActivity : AppCompatActivity() {
 
     private fun setActionBar() {
 
-        setSupportActionBar(mBinding.chatToolbar as Toolbar)
+        setSupportActionBar(binding.chatToolbar as Toolbar)
         val actionBar = supportActionBar
         actionBar!!.setDisplayShowCustomEnabled(true)
         val layoutInflater =
@@ -175,119 +175,123 @@ class ChatActivity : AppCompatActivity() {
             loadingBar!!.setCanceledOnTouchOutside(false)
             loadingBar!!.show()
             fileUri = data.data
-            if (checker != "image") {
-                val storageReference =
-                    FirebaseStorage.getInstance().reference.child("Image Files")
-                val messageSenderRef =
-                    "Messages/$messageSenderID/$messageReceiverID"
-                val messageReceiverRef =
-                    "Messages/$messageReceiverID/$messageSenderID"
-                val userMessageKeyRef = rootRef!!.child("Messages")
-                    .child(messageSenderID!!).child(messageReceiverID!!).push()
-                val messagePushID = userMessageKeyRef.key
-                val filePath =
-                    storageReference.child("$messagePushID.$checker")
-                filePath.putFile(fileUri!!).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val messageTextBody: MutableMap<String, Any?> =
-                            HashMap<String, Any?>()
-                        messageTextBody["message"] = myUrl
-                        messageTextBody["name"] = fileUri!!.lastPathSegment
-                        if (checker == "pdf") {
-                            messageTextBody["type"] = checker
-                        } else {
-                            messageTextBody["type"] = checker
+            when {
+                checker != "image" -> {
+                    val storageReference =
+                        FirebaseStorage.getInstance().reference.child("Image Files")
+                    val messageSenderRef =
+                        "Messages/$messageSenderID/$messageReceiverID"
+                    val messageReceiverRef =
+                        "Messages/$messageReceiverID/$messageSenderID"
+                    val userMessageKeyRef = rootRef!!.child("Messages")
+                        .child(messageSenderID!!).child(messageReceiverID!!).push()
+                    val messagePushID = userMessageKeyRef.key
+                    val filePath =
+                        storageReference.child("$messagePushID.$checker")
+                    filePath.putFile(fileUri!!).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val messageTextBody: MutableMap<String, Any?> =
+                                HashMap()
+                            messageTextBody["message"] = myUrl
+                            messageTextBody["name"] = fileUri!!.lastPathSegment
+                            if (checker == "pdf") {
+                                messageTextBody["type"] = checker
+                            } else {
+                                messageTextBody["type"] = checker
+                            }
+                            messageTextBody["from"] = messageSenderID
+                            messageTextBody["to"] = messageReceiverID
+                            messageTextBody["messageID"] = messagePushID
+                            messageTextBody["time"] = saveCurrentTime
+                            messageTextBody["date"] = saveCurrentDate
+                            val messageBodyDetails: MutableMap<String, Any?> =
+                                HashMap()
+                            messageBodyDetails["$messageSenderRef/$messagePushID"] = messageTextBody
+                            messageBodyDetails["$messageReceiverRef/$messagePushID"] = messageTextBody
+                            rootRef!!.updateChildren(messageBodyDetails)
+                            loadingBar!!.dismiss()
                         }
-                        messageTextBody["from"] = messageSenderID
-                        messageTextBody["to"] = messageReceiverID
-                        messageTextBody["messageID"] = messagePushID
-                        messageTextBody["time"] = saveCurrentTime
-                        messageTextBody["date"] = saveCurrentDate
-                        val messageBodyDetails: MutableMap<String, Any?> =
-                            HashMap<String, Any?>()
-                        messageBodyDetails["$messageSenderRef/$messagePushID"] = messageTextBody
-                        messageBodyDetails["$messageReceiverRef/$messagePushID"] = messageTextBody
-                        rootRef!!.updateChildren(messageBodyDetails)
+                    }.addOnFailureListener { e ->
                         loadingBar!!.dismiss()
+                        Toast.makeText(this@ChatActivity, e.message, Toast.LENGTH_SHORT).show()
                     }
-                }.addOnFailureListener { e ->
-                    loadingBar!!.dismiss()
-                    Toast.makeText(this@ChatActivity, e.message, Toast.LENGTH_SHORT).show()
-                }
-                    .addOnProgressListener { taskSnapshot ->
-                        val p =
-                            100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount
-                        loadingBar!!.setMessage((p as Int).toString() + "% Uploading...")
-                    }
-            } else if (checker == "image") {
-                val storageReference =
-                    FirebaseStorage.getInstance().reference.child("Image Files")
-                val messageSenderRef =
-                    "Messages/$messageSenderID/$messageReceiverID"
-                val messageReceiverRef =
-                    "Messages/$messageReceiverID/$messageSenderID"
-                val userMessageKeyRef = rootRef!!.child("Messages")
-                    .child(messageSenderID!!).child(messageReceiverID!!).push()
-                val messagePushID = userMessageKeyRef.key
-                val filePath = storageReference.child("$messagePushID.jpg")
-
-              uploadTask = filePath.putFile(fileUri!!)
-                uploadTask.continueWithTask(object :
-                    Continuation<UploadTask.TaskSnapshot, Task<Uri>>{
-                    override fun then(p0: Task<UploadTask.TaskSnapshot>): Task<Uri> {
-                        if (!p0.isSuccessful) {
-                            throw p0.exception!!
+                        .addOnProgressListener { taskSnapshot ->
+                            val p =
+                                100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount
+                            loadingBar!!.setMessage((p as Int).toString() + "% Uploading...")
                         }
-                        return filePath.downloadUrl
-                    }
-                })
-                    .addOnCompleteListener { task ->
-                        val downloadUrl = task.result
-                        myUrl = downloadUrl.toString()
-                        val messageSenderRef =
-                            "ChatNode/$messageSenderID/$messageReceiverID"
-                        val messageReceiverRef =
-                            "ChatNode/$messageReceiverID/$messageSenderID"
-                        val messageRef =
-                            "MessagesNode/" + setOneToOneChat(
-                                messageSenderID!!,
-                                messageReceiverID!!
-                            )
-                        val chatModel = ChatModel()
-                        chatModel.fromUid = messageSenderID
-                        chatModel.fromUid = messageReceiverID
-                        chatModel.date = saveCurrentDate
-                        chatModel.time = saveCurrentTime
-                        chatModel.lastMessage = myUrl
-                        chatModel.type = checker
-                        val messageTextBody: MutableMap<String, Any?> =
-                            HashMap<String, Any?>()
-                        messageTextBody["message"] = myUrl
-                        messageTextBody["name"] = fileUri!!.lastPathSegment
-                        messageTextBody["type"] = checker
-                        messageTextBody["from"] = messageSenderID
-                        messageTextBody["to"] = messageReceiverID
-                        messageTextBody["messageID"] = messagePushID
-                        messageTextBody["time"] = saveCurrentTime
-                        messageTextBody["date"] = saveCurrentDate
-                        val messageBodyDetails: MutableMap<String, Any?> =
-                            HashMap<String, Any?>()
-                        messageBodyDetails["$messageSenderRef/"] = chatModel
-                        messageBodyDetails["$messageReceiverRef/$messagePushID"] = chatModel
-                        messageBodyDetails["$messageRef/$messagePushID"] = messageTextBody
-                        rootRef!!.updateChildren(messageBodyDetails)
-                            .addOnCompleteListener(object : OnCompleteListener<Void> {
+                }
+                checker == "image" -> {
+                    val storageReference =
+                        FirebaseStorage.getInstance().reference.child("Image Files")
+                    val messageSenderRef =
+                        "Messages/$messageSenderID/$messageReceiverID"
+                    val messageReceiverRef =
+                        "Messages/$messageReceiverID/$messageSenderID"
+                    val userMessageKeyRef = rootRef!!.child("Messages")
+                        .child(messageSenderID!!).child(messageReceiverID!!).push()
+                    val messagePushID = userMessageKeyRef.key
+                    val filePath = storageReference.child("$messagePushID.jpg")
 
-                                override fun onComplete(p0: Task<Void>) {
-                                    loadingBar!!.dismiss()
-                                    mBinding.inputMessage!!.setText("")
-                                }
-                            })
-                    }
+                    uploadTask = filePath.putFile(fileUri!!)
+                    uploadTask.continueWithTask(object :
+                        Continuation<UploadTask.TaskSnapshot, Task<Uri>>{
+                        override fun then(p0: Task<UploadTask.TaskSnapshot>): Task<Uri> {
+                            if (!p0.isSuccessful) {
+                                throw p0.exception!!
+                            }
+                            return filePath.downloadUrl
+                        }
+                    })
+                        .addOnCompleteListener { task ->
+                            val downloadUrl = task.result
+                            myUrl = downloadUrl.toString()
+                            val messageSenderRef =
+                                "ChatNode/$messageSenderID/$messageReceiverID"
+                            val messageReceiverRef =
+                                "ChatNode/$messageReceiverID/$messageSenderID"
+                            val messageRef =
+                                "MessagesNode/" + setOneToOneChat(
+                                    messageSenderID!!,
+                                    messageReceiverID!!
+                                )
+                            val chatModel = ChatModel()
+                            chatModel.fromUid = messageSenderID
+                            chatModel.fromUid = messageReceiverID
+                            chatModel.date = saveCurrentDate
+                            chatModel.time = saveCurrentTime
+                            chatModel.lastMessage = myUrl
+                            chatModel.type = checker
+                            val messageTextBody: MutableMap<String, Any?> =
+                                HashMap()
+                            messageTextBody["message"] = myUrl
+                            messageTextBody["name"] = fileUri!!.lastPathSegment
+                            messageTextBody["type"] = checker
+                            messageTextBody["from"] = messageSenderID
+                            messageTextBody["to"] = messageReceiverID
+                            messageTextBody["messageID"] = messagePushID
+                            messageTextBody["time"] = saveCurrentTime
+                            messageTextBody["date"] = saveCurrentDate
+                            val messageBodyDetails: MutableMap<String, Any?> =
+                                HashMap()
+                            messageBodyDetails["$messageSenderRef/"] = chatModel
+                            messageBodyDetails["$messageReceiverRef/$messagePushID"] = chatModel
+                            messageBodyDetails["$messageRef/$messagePushID"] = messageTextBody
+                            rootRef!!.updateChildren(messageBodyDetails)
+                                .addOnCompleteListener(object : OnCompleteListener<Void> {
 
-            } else {
-                loadingBar!!.dismiss()
-//                Toast.makeText(this, "nothing selected,error", Toast.LENGTH_SHORT).show()
+                                    override fun onComplete(p0: Task<Void>) {
+                                        loadingBar!!.dismiss()
+                                        binding.inputMessage.setText("")
+                                    }
+                                })
+                        }
+
+                }
+                else -> {
+                    loadingBar!!.dismiss()
+        //                Toast.makeText(this, "nothing selected,error", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -304,12 +308,12 @@ class ChatActivity : AppCompatActivity() {
                         val time =
                             dataSnapshot.child("userState").child("time").value.toString()
                         if (state == "online") {
-                            mBinding.chatToolbar.user_last_seen.text = "online"
+                            binding.chatToolbar.user_last_seen.text = "online"
                         } else if (state == "offline") {
-                            mBinding.chatToolbar.user_last_seen.text = "Last Seen: $date $time"
+                            binding.chatToolbar.user_last_seen.text = "Last Seen: $date $time"
                         }
                     } else {
-                        mBinding.chatToolbar.user_last_seen.text= "offline"
+                        binding.chatToolbar.user_last_seen.text= "offline"
                     }
                 }
 
@@ -336,8 +340,8 @@ class ChatActivity : AppCompatActivity() {
                         )!!
                     messagesList.add(messages)
                     messageAdapter!!.notifyDataSetChanged()
-                    mBinding.userMessagesList!!.smoothScrollToPosition(
-                        mBinding.userMessagesList!!.adapter!!.itemCount
+                    binding.userMessagesList.smoothScrollToPosition(
+                        binding.userMessagesList.adapter!!.itemCount
                     )
                 }
 
@@ -359,7 +363,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun SendMessage() {
-        val messageText = mBinding.inputMessage.text.toString()
+        val messageText = binding.inputMessage.text.toString()
         if (TextUtils.isEmpty(messageText)) {
             Toast.makeText(this, "first write your message...", Toast.LENGTH_SHORT).show()
         } else {
@@ -384,7 +388,7 @@ class ChatActivity : AppCompatActivity() {
             chatModel.lastMessage = messageText
             chatModel.type = type
             val messageTextBody: MutableMap<String, Any?> =
-                HashMap<String, Any?>()
+                HashMap()
             messageTextBody["message"] = messageText
             messageTextBody["type"] = type
             messageTextBody["from"] = messageSenderID
@@ -395,22 +399,14 @@ class ChatActivity : AppCompatActivity() {
 
 //            Map messageBodyDetails = new HashMap();
 //            messageBodyDetails.put(messageRef + "/" + messagePushID, messageTextBody);
-            val ChatBodyDetails: MutableMap<String, Any?> =
-                HashMap<String, Any?>()
-            ChatBodyDetails["$messageSenderRef/"] = chatModel
-            ChatBodyDetails["$messageReceiverRef/"] = chatModel
+            val chatBodyDetails: MutableMap<String, Any?> =
+                HashMap()
+            chatBodyDetails["$messageSenderRef/"] = chatModel
+            chatBodyDetails["$messageReceiverRef/"] = chatModel
             userMessageKeyRef.updateChildren(messageTextBody)
-                .addOnCompleteListener(object : OnCompleteListener<Void> {
-                    override fun onComplete(task: Task<Void>) {
-                       mBinding.inputMessage!!.setText("")
-                    }
-                })
-            userChatNodeKeyRef.updateChildren(ChatBodyDetails)
-                .addOnCompleteListener(object : OnCompleteListener<Void> {
-                    override fun onComplete(task: Task<Void>) {
-
-                    }
-                })
+                .addOnCompleteListener { binding.inputMessage.setText("") }
+            userChatNodeKeyRef.updateChildren(chatBodyDetails)
+                .addOnCompleteListener { }
         }
     }
 }
