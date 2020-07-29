@@ -32,33 +32,32 @@ import com.vteam.testdemo.common.Utils.setOneToOneChat
 import com.vteam.testdemo.databinding.ActivityChatBinding
 import com.vteam.testdemo.landing.model.ChatModel
 import com.vteam.testdemo.top.Messages
-import kotlinx.android.synthetic.main.create_group_fragment.*
 import kotlinx.android.synthetic.main.custom_chat_bar.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityChatBinding
-    private lateinit var mUploadTask: UploadTask
-    private val mMessagesList: MutableList<Messages> =
+    private lateinit var uploadTask: UploadTask
+    private val messagesList: MutableList<Messages> =
         ArrayList()
-    private var mMessageReceiverID: String? = null
-    private var mMessageReceiverName: String? = null
-    private var mMessageReceiverImage: String? = null
-    private var mMessageSenderID: String? = null
+    private var messageReceiverID: String? = null
+    private var messageReceiverName: String? = null
+    private var messageReceiverImage: String? = null
+    private var messageSenderID: String? = null
 
-    private var mAuth: FirebaseAuth? = null
-    private var mRootRef: DatabaseReference? = null
+    private var auth: FirebaseAuth? = null
+    private var rootRef: DatabaseReference? = null
 
-    private var mLinearLayoutManager: LinearLayoutManager? = null
-    private var mMessageAdapter: MessageAdapter? = null
+    private var linearLayoutManager: LinearLayoutManager? = null
+    private var messageAdapter: MessageAdapter? = null
 //    private var userMessagesList: RecyclerView? = null
-    private var mLoadingBar: ProgressDialog? = null
-    private var mSaveCurrentTime: String? = null
-    private var mSaveCurrentDate: String? = null
-    private var mChecker = ""
-    private var mMyUrl = ""
-    private var mFileUri: Uri? = null
+    private var loadingBar: ProgressDialog? = null
+    private var saveCurrentTime: String? = null
+    private var saveCurrentDate: String? = null
+    private var checker = ""
+    private var myUrl = ""
+    private var fileUri: Uri? = null
 
 
 
@@ -68,20 +67,20 @@ class ChatActivity : AppCompatActivity() {
         mBinding= DataBindingUtil.setContentView(this,R.layout.activity_chat)
 
         setActionBar()
-        mAuth = FirebaseAuth.getInstance()
-        mMessageSenderID = mAuth!!.currentUser!!.uid
-        mRootRef = FirebaseDatabase.getInstance().reference
+        auth = FirebaseAuth.getInstance()
+        messageSenderID = auth!!.currentUser!!.uid
+        rootRef = FirebaseDatabase.getInstance().reference
         val extras = intent.extras
-        mMessageReceiverID = extras!!["visit_user_id"].toString()
-        mMessageReceiverName = extras["visit_user_name"].toString()
+        messageReceiverID = extras!!["visit_user_id"].toString()
+        messageReceiverName = extras["visit_user_name"].toString()
         if (extras.containsKey("visit_image") && extras["visit_image"] != null) {
-            mMessageReceiverImage = extras["visit_image"].toString()
+            messageReceiverImage = extras["visit_image"].toString()
         }
         IntializeControllers()
-        mBinding.chatToolbar.user_name.text = mMessageReceiverName
+        mBinding.chatToolbar.user_name.text = messageReceiverName
         val reference = FirebaseStorage.getInstance().reference
-        if (!TextUtils.isEmpty(mMessageReceiverImage)) {
-            reference.child(mMessageReceiverImage!!).downloadUrl
+        if (!TextUtils.isEmpty(messageReceiverImage)) {
+            reference.child(messageReceiverImage!!).downloadUrl
                 .addOnSuccessListener { uri -> // Got the download URL for 'users/me/profile.png'
                     Log.d("URL", "" + uri)
                     Glide.with(applicationContext)
@@ -104,7 +103,7 @@ class ChatActivity : AppCompatActivity() {
             builder.setTitle("Select the File")
             builder.setItems(options) { dialogInterface, i ->
                 if (i == 0) {
-                    mChecker = "image"
+                    checker = "image"
                     val intent = Intent()
                     intent.action = Intent.ACTION_GET_CONTENT
                     intent.type = "image/*"
@@ -114,14 +113,14 @@ class ChatActivity : AppCompatActivity() {
                     )
                 }
                 if (i == 1) {
-                    mChecker = "pdf"
+                    checker = "pdf"
                     val intent = Intent()
                     intent.action = Intent.ACTION_GET_CONTENT
                     intent.type = "application/pdf"
                     startActivityForResult(Intent.createChooser(intent, "Select PDF"), 443)
                 }
                 if (i == 2) {
-                    mChecker = "docx"
+                    checker = "docx"
                     val intent = Intent()
                     intent.action = Intent.ACTION_GET_CONTENT
                     intent.type = "application/msword"
@@ -138,18 +137,18 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun IntializeControllers() {
-        mLoadingBar = ProgressDialog(this)
+        loadingBar = ProgressDialog(this)
 
-        mMessageAdapter = MessageAdapter(mMessagesList)
+        messageAdapter = MessageAdapter(messagesList)
 
-        mLinearLayoutManager = LinearLayoutManager(this)
-        mBinding.userMessagesList!!.layoutManager = mLinearLayoutManager
-        mBinding.userMessagesList!!.adapter = mMessageAdapter
+        linearLayoutManager = LinearLayoutManager(this)
+        mBinding.userMessagesList!!.layoutManager = linearLayoutManager
+        mBinding.userMessagesList!!.adapter = messageAdapter
         val calendar = Calendar.getInstance()
         val currentDate = SimpleDateFormat("MMM dd, yyyy")
-        mSaveCurrentDate = currentDate.format(calendar.time)
+        saveCurrentDate = currentDate.format(calendar.time)
         val currentTime = SimpleDateFormat("hh:mm a")
-        mSaveCurrentTime = currentTime.format(calendar.time)
+        saveCurrentTime = currentTime.format(calendar.time)
     }
 
     private fun setActionBar() {
@@ -171,69 +170,69 @@ class ChatActivity : AppCompatActivity() {
     ) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 443 && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            mLoadingBar!!.setTitle("Sending File")
-            mLoadingBar!!.setMessage("Please wait, we are sending....")
-            mLoadingBar!!.setCanceledOnTouchOutside(false)
-            mLoadingBar!!.show()
-            mFileUri = data.data
-            if (mChecker != "image") {
+            loadingBar!!.setTitle("Sending File")
+            loadingBar!!.setMessage("Please wait, we are sending....")
+            loadingBar!!.setCanceledOnTouchOutside(false)
+            loadingBar!!.show()
+            fileUri = data.data
+            if (checker != "image") {
                 val storageReference =
                     FirebaseStorage.getInstance().reference.child("Image Files")
                 val messageSenderRef =
-                    "Messages/$mMessageSenderID/$mMessageReceiverID"
+                    "Messages/$messageSenderID/$messageReceiverID"
                 val messageReceiverRef =
-                    "Messages/$mMessageReceiverID/$mMessageSenderID"
-                val userMessageKeyRef = mRootRef!!.child("Messages")
-                    .child(mMessageSenderID!!).child(mMessageReceiverID!!).push()
+                    "Messages/$messageReceiverID/$messageSenderID"
+                val userMessageKeyRef = rootRef!!.child("Messages")
+                    .child(messageSenderID!!).child(messageReceiverID!!).push()
                 val messagePushID = userMessageKeyRef.key
                 val filePath =
-                    storageReference.child("$messagePushID.$mChecker")
-                filePath.putFile(mFileUri!!).addOnCompleteListener { task ->
+                    storageReference.child("$messagePushID.$checker")
+                filePath.putFile(fileUri!!).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val messageTextBody: MutableMap<String, Any?> =
                             HashMap<String, Any?>()
-                        messageTextBody["message"] = mMyUrl
-                        messageTextBody["name"] = mFileUri!!.lastPathSegment
-                        if (mChecker == "pdf") {
-                            messageTextBody["type"] = mChecker
+                        messageTextBody["message"] = myUrl
+                        messageTextBody["name"] = fileUri!!.lastPathSegment
+                        if (checker == "pdf") {
+                            messageTextBody["type"] = checker
                         } else {
-                            messageTextBody["type"] = mChecker
+                            messageTextBody["type"] = checker
                         }
-                        messageTextBody["from"] = mMessageSenderID
-                        messageTextBody["to"] = mMessageReceiverID
+                        messageTextBody["from"] = messageSenderID
+                        messageTextBody["to"] = messageReceiverID
                         messageTextBody["messageID"] = messagePushID
-                        messageTextBody["time"] = mSaveCurrentTime
-                        messageTextBody["date"] = mSaveCurrentDate
+                        messageTextBody["time"] = saveCurrentTime
+                        messageTextBody["date"] = saveCurrentDate
                         val messageBodyDetails: MutableMap<String, Any?> =
                             HashMap<String, Any?>()
                         messageBodyDetails["$messageSenderRef/$messagePushID"] = messageTextBody
                         messageBodyDetails["$messageReceiverRef/$messagePushID"] = messageTextBody
-                        mRootRef!!.updateChildren(messageBodyDetails)
-                        mLoadingBar!!.dismiss()
+                        rootRef!!.updateChildren(messageBodyDetails)
+                        loadingBar!!.dismiss()
                     }
                 }.addOnFailureListener { e ->
-                    mLoadingBar!!.dismiss()
+                    loadingBar!!.dismiss()
                     Toast.makeText(this@ChatActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
                     .addOnProgressListener { taskSnapshot ->
                         val p =
                             100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount
-                        mLoadingBar!!.setMessage((p as Int).toString() + "% Uploading...")
+                        loadingBar!!.setMessage((p as Int).toString() + "% Uploading...")
                     }
-            } else if (mChecker == "image") {
+            } else if (checker == "image") {
                 val storageReference =
                     FirebaseStorage.getInstance().reference.child("Image Files")
                 val messageSenderRef =
-                    "Messages/$mMessageSenderID/$mMessageReceiverID"
+                    "Messages/$messageSenderID/$messageReceiverID"
                 val messageReceiverRef =
-                    "Messages/$mMessageReceiverID/$mMessageSenderID"
-                val userMessageKeyRef = mRootRef!!.child("Messages")
-                    .child(mMessageSenderID!!).child(mMessageReceiverID!!).push()
+                    "Messages/$messageReceiverID/$messageSenderID"
+                val userMessageKeyRef = rootRef!!.child("Messages")
+                    .child(messageSenderID!!).child(messageReceiverID!!).push()
                 val messagePushID = userMessageKeyRef.key
                 val filePath = storageReference.child("$messagePushID.jpg")
 
-              mUploadTask = filePath.putFile(mFileUri!!)
-                mUploadTask.continueWithTask(object :
+              uploadTask = filePath.putFile(fileUri!!)
+                uploadTask.continueWithTask(object :
                     Continuation<UploadTask.TaskSnapshot, Task<Uri>>{
                     override fun then(p0: Task<UploadTask.TaskSnapshot>): Task<Uri> {
                         if (!p0.isSuccessful) {
@@ -244,57 +243,57 @@ class ChatActivity : AppCompatActivity() {
                 })
                     .addOnCompleteListener { task ->
                         val downloadUrl = task.result
-                        mMyUrl = downloadUrl.toString()
+                        myUrl = downloadUrl.toString()
                         val messageSenderRef =
-                            "ChatNode/$mMessageSenderID/$mMessageReceiverID"
+                            "ChatNode/$messageSenderID/$messageReceiverID"
                         val messageReceiverRef =
-                            "ChatNode/$mMessageReceiverID/$mMessageSenderID"
+                            "ChatNode/$messageReceiverID/$messageSenderID"
                         val messageRef =
                             "MessagesNode/" + setOneToOneChat(
-                                mMessageSenderID!!,
-                                mMessageReceiverID!!
+                                messageSenderID!!,
+                                messageReceiverID!!
                             )
                         val chatModel = ChatModel()
-                        chatModel.fromUid = mMessageSenderID
-                        chatModel.fromUid = mMessageReceiverID
-                        chatModel.date = mSaveCurrentDate
-                        chatModel.time = mSaveCurrentTime
-                        chatModel.lastMessage = mMyUrl
-                        chatModel.type = mChecker
+                        chatModel.fromUid = messageSenderID
+                        chatModel.fromUid = messageReceiverID
+                        chatModel.date = saveCurrentDate
+                        chatModel.time = saveCurrentTime
+                        chatModel.lastMessage = myUrl
+                        chatModel.type = checker
                         val messageTextBody: MutableMap<String, Any?> =
                             HashMap<String, Any?>()
-                        messageTextBody["message"] = mMyUrl
-                        messageTextBody["name"] = mFileUri!!.lastPathSegment
-                        messageTextBody["type"] = mChecker
-                        messageTextBody["from"] = mMessageSenderID
-                        messageTextBody["to"] = mMessageReceiverID
+                        messageTextBody["message"] = myUrl
+                        messageTextBody["name"] = fileUri!!.lastPathSegment
+                        messageTextBody["type"] = checker
+                        messageTextBody["from"] = messageSenderID
+                        messageTextBody["to"] = messageReceiverID
                         messageTextBody["messageID"] = messagePushID
-                        messageTextBody["time"] = mSaveCurrentTime
-                        messageTextBody["date"] = mSaveCurrentDate
+                        messageTextBody["time"] = saveCurrentTime
+                        messageTextBody["date"] = saveCurrentDate
                         val messageBodyDetails: MutableMap<String, Any?> =
                             HashMap<String, Any?>()
                         messageBodyDetails["$messageSenderRef/"] = chatModel
                         messageBodyDetails["$messageReceiverRef/$messagePushID"] = chatModel
                         messageBodyDetails["$messageRef/$messagePushID"] = messageTextBody
-                        mRootRef!!.updateChildren(messageBodyDetails)
+                        rootRef!!.updateChildren(messageBodyDetails)
                             .addOnCompleteListener(object : OnCompleteListener<Void> {
 
                                 override fun onComplete(p0: Task<Void>) {
-                                    mLoadingBar!!.dismiss()
+                                    loadingBar!!.dismiss()
                                     mBinding.inputMessage!!.setText("")
                                 }
                             })
                     }
 
             } else {
-                mLoadingBar!!.dismiss()
+                loadingBar!!.dismiss()
 //                Toast.makeText(this, "nothing selected,error", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun DisplayLastSeen() {
-        mRootRef!!.child(Constants.NODES.USER_NODE).child(mMessageReceiverID!!)
+        rootRef!!.child(Constants.NODES.USER_NODE).child(messageReceiverID!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.child("userState").hasChild("state")) {
@@ -320,10 +319,10 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        mRootRef!!.child(MESSAGES_NODE).child(
+        rootRef!!.child(MESSAGES_NODE).child(
             setOneToOneChat(
-                mMessageSenderID!!,
-                mMessageReceiverID!!
+                messageSenderID!!,
+                messageReceiverID!!
             )
         )
             .addChildEventListener(object : ChildEventListener {
@@ -335,8 +334,8 @@ class ChatActivity : AppCompatActivity() {
                         dataSnapshot.getValue(
                             Messages::class.java
                         )!!
-                    mMessagesList.add(messages)
-                    mMessageAdapter!!.notifyDataSetChanged()
+                    messagesList.add(messages)
+                    messageAdapter!!.notifyDataSetChanged()
                     mBinding.userMessagesList!!.smoothScrollToPosition(
                         mBinding.userMessagesList!!.adapter!!.itemCount
                     )
@@ -364,35 +363,35 @@ class ChatActivity : AppCompatActivity() {
         if (TextUtils.isEmpty(messageText)) {
             Toast.makeText(this, "first write your message...", Toast.LENGTH_SHORT).show()
         } else {
-            val userMessageKeyRef = mRootRef!!.child(MESSAGES_NODE)
+            val userMessageKeyRef = rootRef!!.child(MESSAGES_NODE)
                 .child(
                     setOneToOneChat(
-                        mMessageSenderID!!,
-                        mMessageReceiverID!!
+                        messageSenderID!!,
+                        messageReceiverID!!
                     )
                 ).push()
-            val userChatNodeKeyRef = mRootRef!!.child(CHAT_NODE)
+            val userChatNodeKeyRef = rootRef!!.child(CHAT_NODE)
             val type = "text"
             val messagePushID = userMessageKeyRef.key
-            val messageSenderRef = "$mMessageSenderID/$mMessageReceiverID"
-            val messageReceiverRef = "$mMessageReceiverID/$mMessageSenderID"
+            val messageSenderRef = "$messageSenderID/$messageReceiverID"
+            val messageReceiverRef = "$messageReceiverID/$messageSenderID"
             //            String messageRef = "MessagesNode/" + Utils.setOneToOneChat(messageSenderID,messageReceiverID);
             val chatModel = ChatModel()
-            chatModel.fromUid = mMessageSenderID
-            chatModel.toUid = mMessageReceiverID
-            chatModel.date = mSaveCurrentDate
-            chatModel.time = mSaveCurrentTime
+            chatModel.fromUid = messageSenderID
+            chatModel.toUid = messageReceiverID
+            chatModel.date = saveCurrentDate
+            chatModel.time = saveCurrentTime
             chatModel.lastMessage = messageText
             chatModel.type = type
             val messageTextBody: MutableMap<String, Any?> =
                 HashMap<String, Any?>()
             messageTextBody["message"] = messageText
             messageTextBody["type"] = type
-            messageTextBody["from"] = mMessageSenderID
-            messageTextBody["to"] = mMessageReceiverID
+            messageTextBody["from"] = messageSenderID
+            messageTextBody["to"] = messageReceiverID
             messageTextBody["messageID"] = messagePushID
-            messageTextBody["time"] = mSaveCurrentTime
-            messageTextBody["date"] = mSaveCurrentDate
+            messageTextBody["time"] = saveCurrentTime
+            messageTextBody["date"] = saveCurrentDate
 
 //            Map messageBodyDetails = new HashMap();
 //            messageBodyDetails.put(messageRef + "/" + messagePushID, messageTextBody);

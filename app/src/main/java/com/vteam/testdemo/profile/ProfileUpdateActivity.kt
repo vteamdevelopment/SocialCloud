@@ -24,35 +24,34 @@ import com.vteam.testdemo.common.Constants
 import com.vteam.testdemo.landing.LandingActivity
 import com.vteam.testdemo.landing.model.UserStatus
 import com.vteam.testdemo.landing.model.Users
-import com.vteam.testdemo.profile.ProfileUpdateActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ProfileUpdateActivity : AppCompatActivity() {
-    private var RootRef: DatabaseReference? = null
-    private var mAuth: FirebaseAuth? = null
+    private var rootRef: DatabaseReference? = null
+    private var auth: FirebaseAuth? = null
     private var currentUserID: String? = null
-    private var UpdateAccountSettings: Button? = null
+    private var updateAccountSettings: Button? = null
     private var userName: EditText? = null
     private var userStatus: EditText? = null
     private var userProfileImage: CircleImageView? = null
-    private var UserProfileImagesRef: StorageReference? = null
+    private var userProfileImagesRef: StorageReference? = null
     private var loadingBar: ProgressDialog? = null
-    private var SettingsToolBar: Toolbar? = null
+    private var settingsToolBar: Toolbar? = null
     private var userProfileImageEdit: CircleImageView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         setActionBar()
         InitializeFields()
-        mAuth = FirebaseAuth.getInstance()
-        currentUserID = mAuth!!.currentUser!!.uid
-        RootRef = FirebaseDatabase.getInstance().reference
-        UserProfileImagesRef = FirebaseStorage.getInstance().reference.child("Profile Images")
+        auth = FirebaseAuth.getInstance()
+        currentUserID = auth!!.currentUser!!.uid
+        rootRef = FirebaseDatabase.getInstance().reference
+        userProfileImagesRef = FirebaseStorage.getInstance().reference.child("Profile Images")
 
 //        userName.setEnabled(false);
-        UpdateAccountSettings!!.setOnClickListener { UpdateSettings() }
+        updateAccountSettings!!.setOnClickListener { UpdateSettings() }
         RetrieveUserInfo()
         userProfileImageEdit!!.setOnClickListener { //                Intent galleryIntent = new Intent();
 //                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
@@ -94,7 +93,7 @@ class ProfileUpdateActivity : AppCompatActivity() {
             val userMap: MutableMap<String?, Any> =
                 HashMap()
             userMap[currentUserID] = users
-            RootRef!!.child(Constants.NODES.USER_NODE)
+            rootRef!!.child(Constants.NODES.USER_NODE)
                 .updateChildren(userMap)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -117,7 +116,7 @@ class ProfileUpdateActivity : AppCompatActivity() {
     }
 
     private fun RetrieveUserInfo() {
-        RootRef!!.child(Constants.NODES.USER_NODE).child(currentUserID!!)
+        rootRef!!.child(Constants.NODES.USER_NODE).child(currentUserID!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists() && dataSnapshot.hasChild("name") && dataSnapshot.hasChild(
@@ -172,7 +171,7 @@ class ProfileUpdateActivity : AppCompatActivity() {
     }
 
     private fun InitializeFields() {
-        UpdateAccountSettings =
+        updateAccountSettings =
             findViewById<View>(R.id.update_settings_button) as Button
         userName = findViewById<View>(R.id.set_user_name) as EditText
         userStatus = findViewById<View>(R.id.set_profile_status) as EditText
@@ -184,9 +183,9 @@ class ProfileUpdateActivity : AppCompatActivity() {
     }
 
     private fun setActionBar() {
-        SettingsToolBar =
+        settingsToolBar =
             findViewById<View>(R.id.settings_toolbar) as Toolbar
-        setSupportActionBar(SettingsToolBar)
+        setSupportActionBar(settingsToolBar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowCustomEnabled(true)
         supportActionBar!!.title = "Profile Update"
@@ -214,7 +213,7 @@ class ProfileUpdateActivity : AppCompatActivity() {
                 loadingBar!!.setCanceledOnTouchOutside(false)
                 loadingBar!!.show()
                 val resultUri = result.uri
-                val filePath = UserProfileImagesRef!!.child("$currentUserID.jpg")
+                val filePath = userProfileImagesRef!!.child("$currentUserID.jpg")
                 filePath.putFile(resultUri).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(
@@ -224,7 +223,7 @@ class ProfileUpdateActivity : AppCompatActivity() {
                         ).show()
                         val downloaedUrl =
                             task.result.metadata!!.path
-                        RootRef!!.child(Constants.NODES.USER_NODE)
+                        rootRef!!.child(Constants.NODES.USER_NODE)
                             .child(currentUserID!!).child("image")
                             .setValue(downloaedUrl)
                             .addOnCompleteListener { task ->

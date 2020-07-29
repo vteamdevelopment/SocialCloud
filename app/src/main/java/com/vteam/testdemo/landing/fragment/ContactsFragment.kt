@@ -29,10 +29,10 @@ import com.vteam.testdemo.landing.model.Users
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ContactsFragment : Fragment() {
-    private var mContactsView: View? = null
-    private var mContactsList: RecyclerView? = null
-    private var mUsersRef: DatabaseReference? = null
-    private var mAuth: FirebaseAuth? = null
+    private var contactsView: View? = null
+    private var contactsList: RecyclerView? = null
+    private var usersRef: DatabaseReference? = null
+    private var auth: FirebaseAuth? = null
     private val mCurrentUserID: String? = null
     private val senderUserID: String? = null
     private var adapter: FirebaseRecyclerAdapter<Users, ContactsViewHolder>? =
@@ -42,20 +42,20 @@ class ContactsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mContactsView = inflater.inflate(R.layout.fragment_contacts, container, false)
-        mContactsList = mContactsView?.findViewById<View>(R.id.group_list) as RecyclerView
+        contactsView = inflater.inflate(R.layout.fragment_contacts, container, false)
+        contactsList = contactsView?.findViewById<View>(R.id.group_list) as RecyclerView
         val layoutManager = LinearLayoutManager(context)
-        mContactsList!!.layoutManager = layoutManager
+        contactsList!!.layoutManager = layoutManager
         val mDividerItemDecoration = DividerItemDecoration(
-            mContactsList!!.context,
+            contactsList!!.context,
             layoutManager.orientation
         )
-        mContactsList!!.addItemDecoration(mDividerItemDecoration)
-        mAuth = FirebaseAuth.getInstance()
-        mUsersRef = FirebaseDatabase.getInstance().reference
+        contactsList!!.addItemDecoration(mDividerItemDecoration)
+        auth = FirebaseAuth.getInstance()
+        usersRef = FirebaseDatabase.getInstance().reference
             .child(Constants.NODES.USER_NODE)
-        query = mUsersRef!!.limitToLast(50)
-        return mContactsView
+        query = usersRef!!.limitToLast(50)
+        return contactsView
     }
 
     override fun onStart() {
@@ -125,7 +125,7 @@ class ContactsFragment : Fragment() {
                 return ContactsViewHolder(view)
             }
         }
-        mContactsList!!.adapter = adapter
+        contactsList!!.adapter = adapter
         adapter?.startListening()
     }
 

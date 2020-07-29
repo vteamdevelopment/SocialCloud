@@ -19,24 +19,24 @@ import com.vteam.testdemo.top.GroupChatActivity
 import java.util.*
 
 class GroupsFragment : Fragment() {
-    private var mGroupFragmentView: View? = null
-    private var mRecyclerView: RecyclerView? = null
-    private var mGroupAdapter: GroupAdapter? = null
-    private val mGroupList =
+    private var groupView: View? = null
+    private var recyclerView: RecyclerView? = null
+    private var groupAdapter: GroupAdapter? = null
+    private val groupList =
         ArrayList<String>()
-    private var mUserGroupsRef: DatabaseReference? = null
-    private var mAuth: FirebaseAuth? = null
-    private var mCurrentUserID: String? = null
+    private var userGroupsRef: DatabaseReference? = null
+    private var auth: FirebaseAuth? = null
+    private var currentUserID: String? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mGroupFragmentView = inflater.inflate(R.layout.fragment_groups, container, false)
-        mAuth = FirebaseAuth.getInstance()
-        mCurrentUserID = mAuth!!.currentUser!!.uid
-        mUserGroupsRef = FirebaseDatabase.getInstance().reference
-            .child(Constants.NODES.USER_NODE).child(mCurrentUserID!!)
+        groupView = inflater.inflate(R.layout.fragment_groups, container, false)
+        auth = FirebaseAuth.getInstance()
+        currentUserID = auth!!.currentUser!!.uid
+        userGroupsRef = FirebaseDatabase.getInstance().reference
+            .child(Constants.NODES.USER_NODE).child(currentUserID!!)
             .child(Constants.CHILD_NODES.GROUPS)
         initializeFields()
         retrieveAndDisplayGroups()
@@ -50,11 +50,11 @@ class GroupsFragment : Fragment() {
 //                startActivity(groupChatIntent);
 //            }
 //        });
-        return mGroupFragmentView
+        return groupView
     }
 
     private fun retrieveAndDisplayGroups() {
-        mUserGroupsRef!!.addValueEventListener(object : ValueEventListener {
+        userGroupsRef!!.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val set: MutableSet<String> =
                     HashSet()
@@ -62,9 +62,9 @@ class GroupsFragment : Fragment() {
                 while (iterator.hasNext()) {
                     (iterator.next() as DataSnapshot).key?.let { set.add(it) }
                 }
-                mGroupList.clear()
-                mGroupList.addAll(set)
-                mGroupAdapter!!.notifyDataSetChanged()
+                groupList.clear()
+                groupList.addAll(set)
+                groupAdapter!!.notifyDataSetChanged()
                 //                mGroupAdapter = new GroupAdapter(mGroupList);
 //                mRecyclerView.setAdapter(mGroupAdapter);
             }
@@ -74,19 +74,19 @@ class GroupsFragment : Fragment() {
     }
 
     private fun initializeFields() {
-        mRecyclerView =
-            mGroupFragmentView!!.findViewById<View>(R.id.list_view) as RecyclerView
+        recyclerView =
+            groupView!!.findViewById<View>(R.id.list_view) as RecyclerView
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = RecyclerView.VERTICAL
-        mRecyclerView!!.layoutManager = layoutManager
-        mGroupAdapter = GroupAdapter(mGroupList)
-        mRecyclerView!!.adapter = mGroupAdapter
+        recyclerView!!.layoutManager = layoutManager
+        groupAdapter = GroupAdapter(groupList)
+        recyclerView!!.adapter = groupAdapter
         val mDividerItemDecoration = DividerItemDecoration(
-            mRecyclerView!!.context,
+            recyclerView!!.context,
             layoutManager.orientation
         )
-        mRecyclerView!!.addItemDecoration(mDividerItemDecoration)
-        mGroupAdapter!!.setOnItemClickListener(object : OnGroupItemClick {
+        recyclerView!!.addItemDecoration(mDividerItemDecoration)
+        groupAdapter!!.setOnItemClickListener(object : OnGroupItemClick {
             override fun onItemClicked(position: Int, groupId: String) {
                 val intent = Intent(context, GroupChatActivity::class.java)
                 intent.putExtra(Constants.KEY.GROUP_ID, groupId)

@@ -2,9 +2,7 @@ package com.vteam.testdemo
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.IntDef
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.vteam.testdemo.common.NavigationUtils
@@ -16,12 +14,12 @@ import com.vteam.testdemo.landing.LandingActivity
 class SplashActivity : AppCompatActivity() {
 
     private var currentUserID: FirebaseUser?
-    private var mAuth: FirebaseAuth
+    private var auth: FirebaseAuth
 
     init {
 
-        mAuth = FirebaseAuth.getInstance()
-        currentUserID = mAuth.getCurrentUser()
+        auth = FirebaseAuth.getInstance()
+        currentUserID = auth.getCurrentUser()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

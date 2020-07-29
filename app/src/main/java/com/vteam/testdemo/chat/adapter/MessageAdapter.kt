@@ -23,14 +23,13 @@ import com.vteam.testdemo.top.ImageViewerActivity
 import com.vteam.testdemo.top.Messages
 import de.hdodenhof.circleimageview.CircleImageView
 
-class MessageAdapter(private val userMessagesList: List<Messages>) :
-    RecyclerView.Adapter<MessageViewHolder>() {
-    private var mAuth: FirebaseAuth? = null
+class MessageAdapter(private val userMessagesList: List<Messages>) : RecyclerView.Adapter<MessageViewHolder>() {
+    private var auth: FirebaseAuth? = null
     private var usersRef: DatabaseReference? = null
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): MessageViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.custom_messages_layout, viewGroup, false)
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         return MessageViewHolder(view)
     }
 
@@ -38,7 +37,7 @@ class MessageAdapter(private val userMessagesList: List<Messages>) :
         messageViewHolder: MessageViewHolder,
         position: Int
     ) {
-        val messageSenderId = mAuth!!.currentUser!!.uid
+        val messageSenderId = auth!!.currentUser!!.uid
         val messages = userMessagesList[position]
         val fromUserID = messages.from
         val fromMessageType = messages.type

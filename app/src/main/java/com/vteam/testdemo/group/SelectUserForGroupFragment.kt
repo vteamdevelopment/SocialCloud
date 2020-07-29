@@ -42,8 +42,8 @@ class SelectUserForGroupFragment : Fragment() {
 
     private lateinit var adapter: FirebaseRecyclerAdapter<Users, ContactsViewHolder>
     private lateinit var selectedAdapter: SelectedUserAdapter
-    private lateinit var mQuery: Query
-    private lateinit var mUsersRef: DatabaseReference
+    private lateinit var query: Query
+    private lateinit var usersRef: DatabaseReference
     private lateinit var auth: FirebaseAuth
     lateinit var binding: SelectUserForGroupFragmentBinding
     private lateinit var viewModel: SelectUserForGroupViewModel
@@ -92,9 +92,9 @@ class SelectUserForGroupFragment : Fragment() {
         )
         binding.groupList.addItemDecoration(mDividerItemDecoration)
         auth = FirebaseAuth.getInstance()
-        mUsersRef = FirebaseDatabase.getInstance().reference
+        usersRef = FirebaseDatabase.getInstance().reference
             .child(Constants.NODES.USER_NODE)
-        mQuery = mUsersRef.limitToLast(50)
+        query = usersRef.limitToLast(50)
     }
 
 
@@ -102,7 +102,7 @@ class SelectUserForGroupFragment : Fragment() {
         super.onStart()
 
         val options = FirebaseRecyclerOptions.Builder<Users>()
-            .setQuery(mQuery, Users::class.java)
+            .setQuery(query, Users::class.java)
             .build()
 
         adapter =

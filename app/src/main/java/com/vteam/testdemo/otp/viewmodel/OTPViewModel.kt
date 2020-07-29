@@ -17,7 +17,6 @@ import com.google.firebase.database.ValueEventListener
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel.Constant.TAG
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel.UiMode.CREDENTIAL_RECEIVED
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel.UiMode.STATE_LANDING_PAGE
-import com.vteam.testdemo.otp.viewmodel.OTPViewModel.UiMode.STATE_PROFILE_PAGE
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel.UiMode.STATE_SIGNIN_FAILED
 import com.vteam.testdemo.otp.viewmodel.OTPViewModel.UiMode.STATE_SIGNIN_SUCCESS
 
@@ -30,7 +29,7 @@ class OTPViewModel : ViewModel() {
     private var storedVerificationId: String? = null
     private var resendToken: PhoneAuthProvider.ForceResendingToken? = null
 
-    private var mCredential: PhoneAuthCredential? = null
+    private var credential: PhoneAuthCredential? = null
 
     private var auth: FirebaseAuth
 
@@ -52,7 +51,7 @@ class OTPViewModel : ViewModel() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                 Log.d(TAG, "onVerificationCompleted:$credential")
-                mCredential = credential
+                this@OTPViewModel.credential = credential
                 uiModel.value = CREDENTIAL_RECEIVED
 //            signInWithPhoneAuthCredential(credential)
             }
@@ -135,14 +134,14 @@ class OTPViewModel : ViewModel() {
     fun verifyOtp(activity: Activity, code: String) {
         Log.d(TAG, "code:$code  ")
 
-        mCredential = storedVerificationId?.let { PhoneAuthProvider.getCredential(it, code) }
+        credential = storedVerificationId?.let { PhoneAuthProvider.getCredential(it, code) }
         signInWithPhoneAuthCredential(activity)
     }
 
 
     fun signInWithPhoneAuthCredential(activity: Activity) {
 
-        mCredential?.let {
+        credential?.let {
             auth.signInWithCredential(it)
                 .addOnCompleteListener(activity) { task ->
                     if (task.isSuccessful) {

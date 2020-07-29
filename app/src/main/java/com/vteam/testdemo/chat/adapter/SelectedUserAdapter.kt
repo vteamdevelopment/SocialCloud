@@ -1,6 +1,5 @@
 package com.vteam.testdemo.chat.adapter
 
-import android.app.Activity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ class SelectedUserAdapter(private val userSelectedList: List<Users>) :
     RecyclerView.Adapter<SelectedUserAdapter.SelectedUserViewHolder>() {
 
 
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectedUserViewHolder {
         var binding: SelectedUserItemLayoutBinding = DataBindingUtil.inflate(
@@ -28,7 +27,7 @@ class SelectedUserAdapter(private val userSelectedList: List<Users>) :
             false
         )
 
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         return SelectedUserViewHolder(binding)
     }
 

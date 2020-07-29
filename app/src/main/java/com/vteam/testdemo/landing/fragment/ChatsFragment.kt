@@ -26,24 +26,24 @@ import com.vteam.testdemo.landing.model.ChatModel
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ChatsFragment : Fragment() {
-    private var PrivateChatsView: View? = null
+    private var chatsView: View? = null
     private var chatsList: RecyclerView? = null
     private var ChatsRef: DatabaseReference? = null
-    private var UsersRef: DatabaseReference? = null
-    private var mAuth: FirebaseAuth? = null
+    private var usersRef: DatabaseReference? = null
+    private var auth: FirebaseAuth? = null
     private var currentUserID = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        PrivateChatsView = inflater.inflate(R.layout.fragment_chats, container, false)
-        mAuth = FirebaseAuth.getInstance()
-        currentUserID = mAuth!!.currentUser!!.uid
+        chatsView = inflater.inflate(R.layout.fragment_chats, container, false)
+        auth = FirebaseAuth.getInstance()
+        currentUserID = auth!!.currentUser!!.uid
         ChatsRef =
             FirebaseDatabase.getInstance().reference.child(CHAT_NODE).child(currentUserID)
-        UsersRef = FirebaseDatabase.getInstance().reference
+        usersRef = FirebaseDatabase.getInstance().reference
             .child(Constants.NODES.USER_NODE)
-        chatsList = PrivateChatsView?.findViewById<View>(R.id.chats_list) as RecyclerView
+        chatsList = chatsView?.findViewById<View>(R.id.chats_list) as RecyclerView
         val layoutManager = LinearLayoutManager(context)
         chatsList!!.layoutManager = layoutManager
         val mDividerItemDecoration = DividerItemDecoration(
@@ -51,7 +51,7 @@ class ChatsFragment : Fragment() {
             layoutManager.orientation
         )
         chatsList!!.addItemDecoration(mDividerItemDecoration)
-        return PrivateChatsView
+        return chatsView
     }
 
     override fun onStart() {
@@ -75,7 +75,7 @@ class ChatsFragment : Fragment() {
                     Log.d("Vikash", "Last message $lastMessage")
                     holder.lastSeenMessage.text = lastMessage
                     holder.lastSeenTime.text = lastSeenTime
-                    UsersRef!!.child(usersIDs!!).addValueEventListener(object : ValueEventListener {
+                    usersRef!!.child(usersIDs!!).addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 if (dataSnapshot.hasChild("image")) {

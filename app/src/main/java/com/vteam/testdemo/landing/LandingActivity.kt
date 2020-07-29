@@ -21,37 +21,36 @@ import com.vteam.testdemo.R
 import com.vteam.testdemo.SplashActivity
 import com.vteam.testdemo.common.Constants
 import com.vteam.testdemo.group.CreateGroupActivity
-import com.vteam.testdemo.landing.LandingActivity
 import com.vteam.testdemo.landing.model.UserStatus
 import com.vteam.testdemo.profile.ProfileUpdateActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
 class LandingActivity : AppCompatActivity() {
-    private var mToolbar: Toolbar? = null
+    private var toolbar: Toolbar? = null
     private var currentUser: FirebaseUser? = null
-    private var mAuth: FirebaseAuth? = null
-    private var RootRef: DatabaseReference? = null
+    private var auth: FirebaseAuth? = null
+    private var rootRef: DatabaseReference? = null
     private var currentUserID: String? = null
     private val existingUser = false
-    private var myViewPager: ViewPager? = null
-    private var myTabsAccessorAdapter: TabsAccessorAdapter? = null
-    private var myTabLayout: TabLayout? = null
+    private var viewPager: ViewPager? = null
+    private var tabsAccessorAdapter: TabsAccessorAdapter? = null
+    private var tabLayout: TabLayout? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing)
-        mToolbar =
+        toolbar =
             findViewById<View>(R.id.main_page_toolbar) as Toolbar
-        setSupportActionBar(mToolbar)
+        setSupportActionBar(toolbar)
         supportActionBar!!.title = getString(R.string.app_name)
-        mAuth = FirebaseAuth.getInstance()
-        currentUser = mAuth!!.currentUser
-        RootRef = FirebaseDatabase.getInstance().reference
-        myViewPager = findViewById<View>(R.id.main_tabs_pager) as ViewPager
-        myTabsAccessorAdapter = TabsAccessorAdapter(supportFragmentManager)
-        myViewPager!!.adapter = myTabsAccessorAdapter
-        myTabLayout = findViewById<View>(R.id.main_tabs) as TabLayout
-        myTabLayout!!.setupWithViewPager(myViewPager)
+        auth = FirebaseAuth.getInstance()
+        currentUser = auth!!.currentUser
+        rootRef = FirebaseDatabase.getInstance().reference
+        viewPager = findViewById<View>(R.id.main_tabs_pager) as ViewPager
+        tabsAccessorAdapter = TabsAccessorAdapter(supportFragmentManager)
+        viewPager!!.adapter = tabsAccessorAdapter
+        tabLayout = findViewById<View>(R.id.main_tabs) as TabLayout
+        tabLayout!!.setupWithViewPager(viewPager)
     }
 
     override fun onStart() {
@@ -78,8 +77,8 @@ class LandingActivity : AppCompatActivity() {
     }
 
     private fun VerifyUserExistence() {
-        currentUserID = mAuth!!.currentUser!!.uid
-        RootRef!!.child(Constants.NODES.USER_NODE).child(currentUserID!!)
+        currentUserID = auth!!.currentUser!!.uid
+        rootRef!!.child(Constants.NODES.USER_NODE).child(currentUserID!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.child("name").exists()) {
@@ -107,7 +106,7 @@ class LandingActivity : AppCompatActivity() {
             SendUserToProfileUpdateActivity()
         } else if (item.itemId == R.id.main_logout_option) {
             updateUserStatus("offline")
-            mAuth!!.signOut()
+            auth!!.signOut()
             SendUserToLoginActivity()
         } else if (item.itemId == R.id.main_invite) {
             val intent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
@@ -145,7 +144,7 @@ class LandingActivity : AppCompatActivity() {
     }
 
     private fun CreateNewGroup(groupName: String) {
-        RootRef!!.child("Groups").child(groupName).setValue("")
+        rootRef!!.child("Groups").child(groupName).setValue("")
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(

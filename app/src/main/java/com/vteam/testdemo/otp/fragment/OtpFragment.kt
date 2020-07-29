@@ -22,15 +22,15 @@ class OtpFragment : Fragment() {
         fun newInstance() = OtpFragment()
     }
 
-    private var mCountryCode: String? = null
-    private var mMobileNumber: String? = null
+    private var countryCode: String? = null
+    private var mobileNumber: String? = null
     private lateinit var viewModel: OTPViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            mMobileNumber = it.getString(Constants.KEY.MOBILE_NUMBER)
-            mCountryCode = it.getString(Constants.KEY.COUNTRY_CODE)
+            mobileNumber = it.getString(Constants.KEY.MOBILE_NUMBER)
+            countryCode = it.getString(Constants.KEY.COUNTRY_CODE)
         }
     }
 
@@ -44,9 +44,9 @@ class OtpFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(OTPViewModel::class.java)
-        mMobileNumber?.let {
+        mobileNumber?.let {
             activity?.let { act ->
-                mCountryCode?.let { countryCode ->
+                countryCode?.let { countryCode ->
                     viewModel.verifyPhoneNumber(act, countryCode + it)
                 }
             }
