@@ -57,7 +57,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/inputs"
         android:drawableStart="@drawable/ic_baseline_person_24"
         android:hint="@string/username"
         android:inputType="textMultiLine"
@@ -69,9 +68,6 @@
         app:layout_constraintTop_toBottomOf="@+id/set_profile_image"
         android:textStyle="bold" />
 
-
-
-
     <EditText
         android:id="@+id/set_profile_status"
         android:layout_width="match_parent"
@@ -79,7 +75,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/inputs"
         android:drawableStart="@drawable/ic_baseline_update_24"
         android:hint="@string/hey_i_am_available_now"
         android:inputType="textMultiLine"
@@ -98,8 +93,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/inputs"
-        android:drawableStart="@drawable/ic_baseline_add_location_24"
         android:hint="Location"
         android:inputType="textMultiLine"
         android:padding="12dp"
@@ -107,11 +100,51 @@
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
+        android:drawableStart="@drawable/ic_baseline_add_location_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/set_profile_status"
-        app:layout_constraintBottom_toBottomOf="@+id/update_settings_button"/>
+       />
 
+
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:autofillHints="Date_Of_Bitrh"
+        app:layout_constraintBottom_toBottomOf="@+id/update_settings_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_profile_status"
+        app:layout_constraintVertical_bias="0.288" />
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:tooltipText=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/update_settings_button"
+        app:layout_constraintStart_toStartOf="@id/date_picker"
+        app:layout_constraintTop_toBottomOf="@+id/set_profile_status"
+        app:layout_constraintVertical_bias="0.288">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male"/>
+        <RadioButton
+
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female"/>
+    </RadioGroup>
 
     <Button
         android:id="@+id/update_settings_button"
@@ -122,7 +155,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="@dimen/dp_24"
-        android:background="@drawable/buttons"
+        android:background="@drawable/btn_rounded"
         android:inputType="textMultiLine"
         android:padding="6dp"
         android:text="Update"
